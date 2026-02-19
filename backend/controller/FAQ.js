@@ -1,13 +1,122 @@
+const { default: mongoose } = require("mongoose");
 const FAQ = require("../model/fqa");
+const ServiceCategory = require('../model/serviceCategory');
+
+const replaceSlugWithId  = async (req, res) => {
+  try {
+    const faqs = await FAQ.find({});
+    
+    let successCount = 0;
+    let skipCount = 0;
+    const errors = [];
+
+    for (const faq of faqs) {
+      try {
+        let needsUpdate = false;
+        const updates = {};
+
+        // Convert serviceparentCategoryId
+        if (faq.serviceparentCategoryId) {
+          if (typeof faq.serviceparentCategoryId === 'string' && faq.serviceparentCategoryId.trim() !== '') {
+            if (mongoose.Types.ObjectId.isValid(faq.serviceparentCategoryId)) {
+              updates.serviceparentCategoryId = new mongoose.Types.ObjectId(faq.serviceparentCategoryId);
+              needsUpdate = true;
+            } else {
+              errors.push({
+                faqId: faq._id,
+                field: 'serviceparentCategoryId',
+                value: faq.serviceparentCategoryId,
+                error: 'Invalid ObjectId format'
+              });
+            }
+          }
+        }
+
+        // Convert servicesubCategoryId
+        if (faq.servicesubCategoryId) {
+          if (typeof faq.servicesubCategoryId === 'string' && faq.servicesubCategoryId.trim() !== '') {
+            if (mongoose.Types.ObjectId.isValid(faq.servicesubCategoryId)) {
+              updates.servicesubCategoryId = new mongoose.Types.ObjectId(faq.servicesubCategoryId);
+              needsUpdate = true;
+            } else {
+              errors.push({
+                faqId: faq._id,
+                field: 'servicesubCategoryId',
+                value: faq.servicesubCategoryId,
+                error: 'Invalid ObjectId format'
+              });
+            }
+          }
+        }
+
+        // Convert servicesubSubCategoryId
+        if (faq.servicesubSubCategoryId) {
+          if (typeof faq.servicesubSubCategoryId === 'string' && faq.servicesubSubCategoryId.trim() !== '') {
+            if (mongoose.Types.ObjectId.isValid(faq.servicesubSubCategoryId)) {
+              updates.servicesubSubCategoryId = new mongoose.Types.ObjectId(faq.servicesubSubCategoryId);
+              needsUpdate = true;
+            } else {
+              errors.push({
+                faqId: faq._id,
+                field: 'servicesubSubCategoryId',
+                value: faq.servicesubSubCategoryId,
+                error: 'Invalid ObjectId format'
+              });
+            }
+          }
+        }
+
+        // Update the FAQ if needed
+        if (needsUpdate) {
+          await FAQ.updateOne(
+            { _id: faq._id },
+            { $set: updates }
+          );
+          successCount++;
+        } else {
+          skipCount++;
+        }
+
+      } catch (err) {
+        errors.push({
+          faqId: faq._id,
+          error: err.message
+        });
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'String to ObjectId conversion completed',
+      totalFAQs: faqs.length,
+      successCount,
+      skipCount,
+      errorCount: errors.length,
+      errors: errors.length > 0 ? errors : undefined
+    });
+
+  } catch (error) {
+    console.error('Error in convertStringToObjectId:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error during conversion',
+      error: error.message
+    });
+  }
+};
+
+
+
+
 
 const insertFAQ = async (req, res) => {
   try {
 
-    const { question, answer, status, serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId,industryparentCategoryId,industrysubCategoryId,industrysubSubCategoryId } = req.body;
+    const { question, answer, status, serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId, industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId } = req.body;
 
 
     const faq = new FAQ({
-      question, answer, status, serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId,industryparentCategoryId,industrysubCategoryId,industrysubSubCategoryId
+      question, answer, status, serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId, industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId
     })
 
     await faq.save();
@@ -30,8 +139,8 @@ const getFAQ = async (req, res) => {
     // const limit = 20;
     // const count = await FAQ.countDocuments();
     const faq = await FAQ.find()
-      // .skip((page - 1) * limit) // Skip records for previous pages
-      // .limit(limit);
+    // .skip((page - 1) * limit) // Skip records for previous pages
+    // .limit(limit);
 
     res.status(200).json({
       data: faq,
@@ -191,7 +300,7 @@ const getFAQBySlug = async (req, res) => {
         industrysubCategoryId: '',
         industrysubSubCategoryId: ''
       });
-      
+
       return res.status(200).json({ data: faqsWithAllEmptyFields });
     }
   } catch (error) {
@@ -202,4 +311,4 @@ const getFAQBySlug = async (req, res) => {
 
 
 
-module.exports = {getFAQBySlug, insertFAQ, getFAQ, updateFAQ, deleteFAQ, getFAQById, countFaq, getFAQWebsite }; 
+module.exports = { getFAQBySlug, replaceSlugWithId, insertFAQ, getFAQ, updateFAQ, deleteFAQ, getFAQById, countFaq, getFAQWebsite }; 

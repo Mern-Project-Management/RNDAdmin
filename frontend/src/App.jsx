@@ -127,6 +127,8 @@ const CatalogueForm = lazy(() => import('./websiteBackend/catalogue/CatalogueFor
 const PrivacyForm = lazy(() => import('./websiteBackend/privacy/PrivacyAndTerms'));
 const TermsConditionForm = lazy(() => import('./websiteBackend/privacy/TermsCondtion'));
 const CareerInfoForm = lazy(() => import('./websiteBackend/career/CareerInfoForm'));
+const PolicyTable = lazy(() => import('./websiteBackend/policy/PolicyTable'));
+const PolicyForm = lazy(() => import('./websiteBackend/policy/PolicyForm'));
 
 // Non-lazy imports
 import useDocumentTitle from './websiteBackend/staticMetaKeyword/DynamicMeta';
@@ -414,6 +416,10 @@ function App() {
             { path: 'testimonials/editTestimonials/:id', element: <Suspense fallback={<LoadingFallback />}><EditTestimonial /></Suspense> },
             // Cookies Policy Route 
             { path: 'cookies', element: <Suspense fallback={<LoadingFallback />}><CookiesForm /></Suspense> },
+            // Unified Policies CRUD (Cookies / Terms / Privacy)
+            { path: 'policy-table', element: <Suspense fallback={<LoadingFallback />}><PolicyTable /></Suspense> },
+            { path: 'policy-form', element: <Suspense fallback={<LoadingFallback />}><PolicyForm /></Suspense> },
+            { path: 'edit-policy/:id', element: <Suspense fallback={<LoadingFallback />}><PolicyForm /></Suspense> },
             // Counter Routes
             { path: 'counter', element: <Suspense fallback={<LoadingFallback />}><CounterTable /></Suspense> },
             { path: 'add-counter', element: <Suspense fallback={<LoadingFallback />}><AddCounter /></Suspense> },

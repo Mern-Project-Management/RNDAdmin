@@ -104,6 +104,8 @@ const apiRoutes = [
   ['/api/catalogue', require('./route/catalogue')],
   ['/api/privacy', require('./route/privacy')],
   ['/api/terms', require('./route/termscondition')],
+  ['/api/policy', require('./route/policy')],
+  ['/api/cookies', require('./route/cookies')],
   ['/api/careerInfo', require('./route/careerInfo')],
   ['/api/staff', require('./routes/ourStaff')],
   ['/api/coreValue', require('./route/CoreValue')],
