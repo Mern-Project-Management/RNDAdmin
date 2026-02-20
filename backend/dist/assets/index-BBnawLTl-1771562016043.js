@@ -1,0 +1,1 @@
+import{r as u}from"./index-DXWPiya9-1771562016043.js";function o(r){const e=u.useRef({value:r,previous:r});return u.useMemo(()=>(e.current.value!==r&&(e.current.previous=e.current.value,e.current.value=r),e.current.previous),[r])}export{o as u};
