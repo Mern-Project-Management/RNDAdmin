@@ -49,10 +49,19 @@ const MainFaqSection = () => {
     setLoading(true);
     try {
       const response = await axios.get(`/api/faq/getFAQ?page=${pageIndex + 1}`, { withCredentials: true });
-      const faqsWithIds = response.data.data.map((faqItem, index) => ({
-        ...faqItem,
-        id: pageIndex * pageSize + index + 1,
-      }));
+      const faqsWithIds = response.data.data.map((faqItem, index) => {
+        // Normalize category name from various possible shapes returned by the API
+        const categoryName = faqItem.category?.name || faqItem.category ||
+          (faqItem.serviceparentCategoryId && (faqItem.serviceparentCategoryId.category || faqItem.serviceparentCategoryId.name)) ||
+          faqItem.serviceparentCategoryId?.category;
+
+        return {
+          ...faqItem,
+          id: pageIndex * pageSize + index + 1,
+          categoryName: categoryName || 'Uncategorized',
+        };
+      });
+    console.log("Fetched FAQs:", faqsWithIds);
       setFaqs(faqsWithIds);
       setPageCount(Math.ceil(response.data.total / pageSize));
     } catch (error) {

@@ -19,7 +19,7 @@ export const menuListingApi = createApi({
             }),
         }),
         updateMenuListing: builder.mutation({
-            query: ({ id, ...updatedMenuListing }) => ({
+            query: ({ id, updatedMenuListing }) => ({
                 url: `/update-menu/${id}`,
                 method: 'PUT',
                 body: updatedMenuListing,

@@ -3,7 +3,56 @@ const MenuListing = require('../model/menuListing');
 // Create a new menu listing
 exports.createMenuListing = async (req, res) => {
     try {
-        const { parent, children } = req.body;
+        const parseIfString = (val) => {
+            if (typeof val === 'string') {
+                try { return JSON.parse(val); } catch (e) { return val; }
+            }
+            return val;
+        };
+
+        let { parent = {}, children = [] } = req.body;
+        parent = parseIfString(parent);
+        children = parseIfString(children) || [];
+
+        // Map uploaded files to the corresponding parent/children/subChildren entries
+        if (req.files) {
+            // Parent photo (field name: 'photo')
+            if (req.files['photo'] && req.files['photo'][0]) {
+                parent.photo = req.files['photo'][0].filename;
+            }
+
+            // Dynamic child/subChild photo fields may be named in different patterns.
+            Object.keys(req.files).forEach(fieldName => {
+                // children[0][photo]
+                const childPhotoMatch = fieldName.match(/^children\[(\d+)\]\[photo\]$/);
+                if (childPhotoMatch) {
+                    const idx = Number(childPhotoMatch[1]);
+                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    return;
+                }
+
+                // children[0][subChildren][1][photo]
+                const subChildMatch = fieldName.match(/^children\[(\d+)\]\[subChildren\]\[(\d+)\]\[photo\]$/);
+                if (subChildMatch) {
+                    const pIdx = Number(subChildMatch[1]);
+                    const sIdx = Number(subChildMatch[2]);
+                    if (children[pIdx] && Array.isArray(children[pIdx].subChildren)) {
+                        if (children[pIdx].subChildren[sIdx]) {
+                            children[pIdx].subChildren[sIdx].photo = req.files[fieldName][0].filename;
+                        }
+                    }
+                    return;
+                }
+
+                // cards[0][photo] -> treat as children index
+                const cardsMatch = fieldName.match(/^cards\[(\d+)\]\[photo\]$/);
+                if (cardsMatch) {
+                    const idx = Number(cardsMatch[1]);
+                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    return;
+                }
+            });
+        }
 
         const newMenuListing = new MenuListing({ parent, children });
         await newMenuListing.save();
@@ -74,11 +123,54 @@ exports.getMenuListingById = async (req, res) => {
 // Update a menu listing by ID
 exports.updateMenuListing = async (req, res) => {
     try {
-        const { name, path, children } = req.body;
+        const parseIfString = (val) => {
+            if (typeof val === 'string') {
+                try { return JSON.parse(val); } catch (e) { return val; }
+            }
+            return val;
+        };
+
+        let { parent, children } = req.body;
+        parent = parseIfString(parent) || {};
+        children = parseIfString(children) || [];
+
+        if (req.files) {
+            if (req.files['photo'] && req.files['photo'][0]) {
+                parent.photo = req.files['photo'][0].filename;
+            }
+
+            Object.keys(req.files).forEach(fieldName => {
+                const childPhotoMatch = fieldName.match(/^children\[(\d+)\]\[photo\]$/);
+                if (childPhotoMatch) {
+                    const idx = Number(childPhotoMatch[1]);
+                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    return;
+                }
+
+                const subChildMatch = fieldName.match(/^children\[(\d+)\]\[subChildren\]\[(\d+)\]\[photo\]$/);
+                if (subChildMatch) {
+                    const pIdx = Number(subChildMatch[1]);
+                    const sIdx = Number(subChildMatch[2]);
+                    if (children[pIdx] && Array.isArray(children[pIdx].subChildren)) {
+                        if (children[pIdx].subChildren[sIdx]) {
+                            children[pIdx].subChildren[sIdx].photo = req.files[fieldName][0].filename;
+                        }
+                    }
+                    return;
+                }
+
+                const cardsMatch = fieldName.match(/^cards\[(\d+)\]\[photo\]$/);
+                if (cardsMatch) {
+                    const idx = Number(cardsMatch[1]);
+                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    return;
+                }
+            });
+        }
 
         const updatedMenuListing = await MenuListing.findByIdAndUpdate(
             req.params.id,
-            { name, path, children },
+            { parent, children },
             { new: true, runValidators: true }
         );
 

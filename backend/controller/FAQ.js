@@ -135,22 +135,66 @@ const insertFAQ = async (req, res) => {
 
 const getFAQ = async (req, res) => {
   try {
-    // const { page = 1 } = req.query;
-    // const limit = 20;
-    // const count = await FAQ.countDocuments();
-    const faq = await FAQ.find()
-    // .skip((page - 1) * limit) // Skip records for previous pages
-    // .limit(limit);
+    const faqs = await FAQ.find().lean();
 
-    res.status(200).json({
-      data: faq,
-      // total: count,
-      // currentPage: page,
-      // hasNextPage: count > page * limit
+    // Get all unique parent category IDs from FAQs
+    const parentIds = [...new Set(
+      faqs
+        .map(f => f.serviceparentCategoryId)
+        .filter(Boolean)
+        .map(id => id.toString())
+    )];
+
+    // Fetch all relevant parent categories in one query
+    const parentCategories = await ServiceCategory.find({
+      _id: { $in: parentIds }
+    }).lean();
+
+    // Build lookup maps for parent, sub, and subsub
+    const parentMap = {};
+    const subMap = {};
+    const subSubMap = {};
+
+    parentCategories.forEach(parent => {
+      parentMap[parent._id.toString()] = {
+        _id: parent._id,
+        category: parent.category
+      };
+
+      (parent.subCategories || []).forEach(sub => {
+        subMap[sub._id.toString()] = {
+          _id: sub._id,
+          category: sub.category
+        };
+
+        (sub.subSubCategory || []).forEach(subsub => {
+          subSubMap[subsub._id.toString()] = {
+            _id: subsub._id,
+            category: subsub.category
+          };
+        });
+      });
     });
-  } catch (error) {
 
-    res.status(400).send(error);
+    // Attach resolved category objects to each FAQ
+    const enrichedFaqs = faqs.map(faq => ({
+      ...faq,
+      serviceparentCategoryId: faq.serviceparentCategoryId
+        ? parentMap[faq.serviceparentCategoryId.toString()] || null
+        : null,
+      servicesubCategoryId: faq.servicesubCategoryId
+        ? subMap[faq.servicesubCategoryId.toString()] || null
+        : null,
+      servicesubSubCategoryId: faq.servicesubSubCategoryId
+        ? subSubMap[faq.servicesubSubCategoryId.toString()] || null
+        : null,
+    }));
+
+    res.status(200).json({ data: enrichedFaqs });
+
+  } catch (error) {
+    console.error("getFAQ error:", error);
+    res.status(400).json({ message: error.message, error });
   }
 };
 
