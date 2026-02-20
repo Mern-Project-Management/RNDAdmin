@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ServiceSec3Form = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const isEditMode = !!id;
-  const itemDataFromState = location.state?.itemData;
 
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -40,26 +38,17 @@ const ServiceSec3Form = () => {
   const [saving, setSaving] = useState(false);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [isFormReady, setIsFormReady] = useState(!isEditMode);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    if (isEditMode && id && categories.length > 0) {
-      // Use data passed from table via location state if available
-      if (itemDataFromState) {
-        loadEditDataFromState(itemDataFromState);
-      }
-    }
-  }, [id, categories, itemDataFromState]);
-
-  // Separate effect for fetching data from API (on hard refresh when state is lost)
-  useEffect(() => {
-    if (isEditMode && id && categories.length > 0 && !itemDataFromState) {
-      fetchDataForEdit(id);
-    }
-  }, [id, categories]);
+useEffect(() => {
+  if (isEditMode && id && categories.length > 0) {
+    fetchDataForEdit(id);
+  }
+}, [id, categories]);
 
   const fetchCategories = async () => {
     try {
@@ -75,115 +64,109 @@ const ServiceSec3Form = () => {
     }
   };
 
-  const loadSubCategoriesForEdit = (data) => {
-    if (data.categoryId) {
-      const category = categories.find(cat => cat._id === data.categoryId);
-      if (category) {
-        setSubCategories(category.subCategories || []);
-        
-        if (data.subCategoryId) {
-          const subCategory = category.subCategories?.find(sub => sub._id === data.subCategoryId);
-          if (subCategory) {
-            setSubSubCategories(subCategory.subSubCategory || []);
-          }
+const loadSubCategoriesForEdit = (data, categoriesList) => {
+  if (data.categoryId) {
+    const category = categoriesList.find(cat => cat._id === data.categoryId);
+    if (category) {
+      const subCats = category.subCategories || [];
+      setSubCategories(subCats);
+      console.log('Sub categories loaded:', subCats);
+
+      if (data.subCategoryId) {
+        const subCategory = subCats.find(sub => sub._id === data.subCategoryId);
+        if (subCategory) {
+          const subSubCats = subCategory.subSubCategory || [];
+          setSubSubCategories(subSubCats);
+          console.log('Sub-sub categories loaded:', subSubCats);
+        } else {
+          console.warn('Sub category not found with ID:', data.subCategoryId);
         }
       }
+    } else {
+      console.warn('Category not found with ID:', data.categoryId);
     }
-  };
+  }
+};
+const fetchDataForEdit = async (dataId) => {
+  try {
+    setLoading(true);
 
-  const loadEditDataFromState = (item) => {
-    // Load data passed from table via location state (no API call needed)
-    const tempDataForSubs = {
-      categoryId: (typeof item.categoryId === 'object' ? item.categoryId?._id : item.categoryId) || '',
-      subCategoryId: item.subCategoryId || '',
-      subSubCategoryId: item.subSubCategoryId || '',
+    // Fetch both in parallel
+    const [editRes, catRes] = await Promise.all([
+      axios.get(`/api/serviceSec3/${dataId}`),
+      categories.length > 0
+        ? Promise.resolve({ data: categories })
+        : axios.get('/api/services/getAll').then(r => ({
+            data: Array.isArray(r.data) ? r.data : r.data.data || []
+          }))
+    ]);
+
+    const item = editRes.data.data;
+    const categoriesList = catRes.data;
+    
+    console.log('Fetched item for edit:', item);
+    console.log('Fetched categories for edit:', categoriesList);
+    
+    // Handle nested category objects from API response
+    const tempData = {
+      categoryId: (item.categoryId && typeof item.categoryId === 'object' ? item.categoryId._id : item.categoryId) || '',
+      subCategoryId: (item.subCategoryId && typeof item.subCategoryId === 'object' ? item.subCategoryId._id : item.subCategoryId) || '',
+      subSubCategoryId: (item.subSubCategoryId && typeof item.subSubCategoryId === 'object' ? item.subSubCategoryId._id : item.subSubCategoryId) || '',
     };
 
-    setFormData({
-      heading: item.heading || '',
-      subheading: item.subheading || '',
-      details: item.details || '',
-      categoryId: tempDataForSubs.categoryId,
-      subCategoryId: tempDataForSubs.subCategoryId,
-      subSubCategoryId: tempDataForSubs.subSubCategoryId,
-      cards: item.cards.length > 0
+    console.log('Extracted IDs:', tempData);
+    console.log('Heading:', item.heading);
+    console.log('Subheading:', item.subheading);
+    console.log('Details:', item.details);
+    console.log('Cards:', item.cards);
+
+    // Build the complete form data
+    const newFormData = {
+      heading: item.heading ? String(item.heading).trim() : '',
+      subheading: item.subheading ? String(item.subheading).trim() : '',
+      details: item.details ? String(item.details).trim() : '',
+      categoryId: tempData.categoryId,
+      subCategoryId: tempData.subCategoryId,
+      subSubCategoryId: tempData.subSubCategoryId,
+      cards: item.cards && Array.isArray(item.cards) && item.cards.length > 0
         ? item.cards.map(card => ({
-            title: card.title || '',
-            subTitle: card.subTitle || '',
-            description: card.description || '',
+            title: card.title ? String(card.title).trim() : '',
+            subTitle: card.subTitle ? String(card.subTitle).trim() : '',
+            description: card.description ? String(card.description).trim() : '',
             photo: null,
-            currentPhoto: card.photo || '',
-            alt: card.alt || '',
-            imgTitle: card.imgTitle || '',
+            currentPhoto: card.photo ? String(card.photo).trim() : '',
+            alt: card.alt ? String(card.alt).trim() : '',
+            imgTitle: card.imgTitle ? String(card.imgTitle).trim() : '',
           }))
         : [{ title: '', subTitle: '', description: '', photo: null, currentPhoto: '', alt: '', imgTitle: '' }],
-    });
+    };
 
-    loadSubCategoriesForEdit(tempDataForSubs);
+    console.log('Setting form data to:', newFormData);
+    setFormData(newFormData);
 
-    if (item.subSubCategoryId) {
-      setSelectedLevel('subsubcategory');
-    } else if (item.subCategoryId) {
-      setSelectedLevel('subcategory');
-    } else {
-      setSelectedLevel('category');
+    // Set categories if not already loaded
+    if (categories.length === 0) {
+      setCategories(categoriesList);
     }
 
+    // ✅ Pass categoriesList directly — no stale closure issue
+    loadSubCategoriesForEdit(tempData, categoriesList);
+
+    if (tempData.subSubCategoryId) setSelectedLevel('subsubcategory');
+    else if (tempData.subCategoryId) setSelectedLevel('subcategory');
+    else setSelectedLevel('category');
+
+    // Mark form as ready to display
+    setIsFormReady(true);
+
+  } catch (err) {
+    console.error('Error loading data for edit:', err);
+    setMessage({ type: 'error', text: 'Failed to load data' });
+    setTimeout(() => navigate('/serviceSec3-table'), 2000);
+  } finally {
     setLoading(false);
-    setMessage({ type: 'info', text: 'Data loaded for editing' });
-  };
-
-  const fetchDataForEdit = async (dataId) => {
-    try {
-      setLoading(true);
-      const res = await axios.get(`/api/serviceSec3/${dataId}`);
-      const item = res.data.data;
-
-      // Handle categoryId as object (populated) or string; subCategoryId and subSubCategoryId as strings
-      const tempDataForSubs = {
-        categoryId: (typeof item.categoryId === 'object' ? item.categoryId?._id : item.categoryId) || '',
-        subCategoryId: item.subCategoryId || '',
-        subSubCategoryId: item.subSubCategoryId || '',
-      };
-
-      setFormData({
-        heading: item.heading || '',
-        subheading: item.subheading || '',
-        details: item.details || '',
-        categoryId: tempDataForSubs.categoryId,
-        subCategoryId: tempDataForSubs.subCategoryId,
-        subSubCategoryId: tempDataForSubs.subSubCategoryId,
-        cards: item.cards.length > 0
-          ? item.cards.map(card => ({
-              title: card.title || '',
-              subTitle: card.subTitle || '',
-              description: card.description || '',
-              photo: null,
-              currentPhoto: card.photo || '',
-              alt: card.alt || '',
-              imgTitle: card.imgTitle || '',
-            }))
-          : [{ title: '', subTitle: '', description: '', photo: null, currentPhoto: '', alt: '', imgTitle: '' }],
-      });
-
-      loadSubCategoriesForEdit(tempDataForSubs);
-
-      if (item.subSubCategoryId) {
-        setSelectedLevel('subsubcategory');
-      } else if (item.subCategoryId) {
-        setSelectedLevel('subcategory');
-      } else {
-        setSelectedLevel('category');
-      }
-
-      setMessage({ type: 'info', text: 'Data loaded for editing' });
-    } catch (err) {
-      setMessage({ type: 'error', text: 'Failed to load data' });
-      setTimeout(() => navigate('/serviceSec3-table'), 2000);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }
+};
 
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value;
@@ -331,6 +314,12 @@ const ServiceSec3Form = () => {
         </div>
       )}
 
+      {loading && (
+        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
+          <p className="text-blue-800">Loading form data...</p>
+        </div>
+      )}
+
       {message.text && (
         <div className={`mb-4 p-4 rounded ${
           message.type === 'success' ? 'bg-green-100 text-green-700' :
@@ -348,7 +337,12 @@ const ServiceSec3Form = () => {
         </div>
       )}
 
-      <div className="space-y-6">
+      {!isFormReady && isEditMode ? (
+        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
+          <p className="text-blue-800">Initializing form with data...</p>
+        </div>
+      ) : (
+        <div className="space-y-6" style={{ opacity: (loading && isEditMode) ? 0.5 : 1, pointerEvents: (loading && isEditMode) ? 'none' : 'auto' }}>
         {/* Level Selection */}
         <div className="bg-gray-50 p-4 rounded-lg">
           <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -638,6 +632,7 @@ const ServiceSec3Form = () => {
           </button>
         </div>
       </div>
+      )}
     </div>
   );
 };

@@ -94,10 +94,11 @@ const fetchDataForEdit = async (dataId) => {
     const item = res.data.data;
 console.log('Fetched item for edit:', item);
     // Prepare temp data for subcategory loading (uses item directly to avoid setState async)
+    // Handle nested category objects from API response
     const tempDataForSubs = {
-      categoryId: item.categoryId?._id || '',
-      subCategoryId: item.subCategoryId?._id || '',
-      subSubCategoryId: item.subSubCategoryId?._id || '',
+      categoryId: (item.categoryId && typeof item.categoryId === 'object' ? item.categoryId._id : item.categoryId) || '',
+      subCategoryId: (item.subCategoryId && typeof item.subCategoryId === 'object' ? item.subCategoryId._id : item.subCategoryId) || '',
+      subSubCategoryId: (item.subSubCategoryId && typeof item.subSubCategoryId === 'object' ? item.subSubCategoryId._id : item.subSubCategoryId) || '',
     };
 
     setFormData({
@@ -123,10 +124,10 @@ console.log('Fetched item for edit:', item);
     // Now load subcategories using the temp data (runs immediately, categories are already loaded)
     loadSubCategoriesForEdit(tempDataForSubs);
 
-    // Set selectedLevel based on item
-    if (item.subSubCategoryId) {
+    // Set selectedLevel based on extracted IDs (not the original item which might have nested objects)
+    if (tempDataForSubs.subSubCategoryId) {
       setSelectedLevel('subsubcategory');
-    } else if (item.subCategoryId) {
+    } else if (tempDataForSubs.subCategoryId) {
       setSelectedLevel('subcategory');
     } else {
       setSelectedLevel('category');

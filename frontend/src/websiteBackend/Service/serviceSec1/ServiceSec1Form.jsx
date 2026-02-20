@@ -108,10 +108,15 @@ const ServiceSec1Form = () => {
       if (data.success && data.data) {
         const fetchedData = data.data;
         
+        // Handle nested category objects from API response
+        const categoryId = (fetchedData.categoryId && typeof fetchedData.categoryId === 'object' ? fetchedData.categoryId._id : fetchedData.categoryId) || '';
+        const subCategoryId = (fetchedData.subCategoryId && typeof fetchedData.subCategoryId === 'object' ? fetchedData.subCategoryId._id : fetchedData.subCategoryId) || '';
+        const subSubCategoryId = (fetchedData.subSubCategoryId && typeof fetchedData.subSubCategoryId === 'object' ? fetchedData.subSubCategoryId._id : fetchedData.subSubCategoryId) || '';
+        
         setFormData({
-          categoryId: fetchedData.categoryId || '',
-          subCategoryId: fetchedData.subCategoryId || '',
-          subSubCategoryId: fetchedData.subSubCategoryId || '',
+          categoryId,
+          subCategoryId,
+          subSubCategoryId,
           heading: fetchedData.heading || '',
           subheading: fetchedData.subheading || '',
           details: fetchedData.details || '',
@@ -120,9 +125,9 @@ const ServiceSec1Form = () => {
           imgTitle: fetchedData.imgTitle || ''
         });
         
-        if (fetchedData.subSubCategoryId) {
+        if (subSubCategoryId) {
           setSelectedLevel('subsubcategory');
-        } else if (fetchedData.subCategoryId) {
+        } else if (subCategoryId) {
           setSelectedLevel('subcategory');
         } else {
           setSelectedLevel('category');

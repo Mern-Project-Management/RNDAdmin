@@ -3,6 +3,7 @@ const ServiceSec3 = require('../model/servicesec3');
 const fs = require('fs');
 const { default: mongoose } = require('mongoose');
 const path = require('path');
+const serviceCategory = require('../model/serviceCategory');
 
 const photoDir = path.join(__dirname, '../uploads/images');
 
@@ -198,16 +199,60 @@ exports.getSec3ById = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid ID' });
     }
 
-    const sec3 = await ServiceSec3.findById(id)
-      .populate('categoryId','category')
-      .populate('subCategoryId')
-      .populate('subSubCategoryId');
+    const sec3 = await ServiceSec3.findById(id).lean();
 
     if (!sec3) {
       return res.status(404).json({ success: false, message: 'Service Section 3 not found' });
     }
 
-    res.status(200).json({ success: true, data: sec3 });
+    // Fetch parent category to resolve all levels
+    const parentId = sec3.categoryId?.toString();
+
+    let parentMap = {};
+    let subMap = {};
+    let subSubMap = {};
+
+    if (parentId) {
+      const parentCategory = await serviceCategory.findById(parentId).lean();
+
+      if (parentCategory) {
+        parentMap[parentCategory._id.toString()] = {
+          _id: parentCategory._id,
+          category: parentCategory.category,
+        };
+
+        (parentCategory.subCategories || []).forEach(sub => {
+          subMap[sub._id.toString()] = {
+            _id: sub._id,
+            category: sub.category,
+          };
+
+          (sub.subSubCategory || []).forEach(subsub => {
+            subSubMap[subsub._id.toString()] = {
+              _id: subsub._id,
+              category: subsub.category,
+            };
+          });
+        });
+      }
+    }
+
+    // Manually attach resolved category objects
+    const enrichedSec3 = {
+      ...sec3,
+      categoryId: sec3.categoryId
+        ? parentMap[sec3.categoryId.toString()] || null
+        : null,
+      subCategoryId: sec3.subCategoryId
+        ? subMap[sec3.subCategoryId.toString()] || null
+        : null,
+      subSubCategoryId: sec3.subSubCategoryId
+        ? subSubMap[sec3.subSubCategoryId.toString()] || null
+        : null,
+    };
+
+    res.status(200).json({ success: true, data: enrichedSec3 });
+
   } catch (error) {
     console.error('Error fetching Sec3 by ID:', error);
     res.status(500).json({ success: false, message: 'Server error' });
