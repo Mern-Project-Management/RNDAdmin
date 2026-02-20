@@ -119,7 +119,8 @@ const ServiceSec3Table = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/service-sec3-form/${id}`);
+    const itemToEdit = data.find(item => item._id === id);
+    navigate(`/service-sec3-form/${id}`, { state: { itemData: itemToEdit } });
   };
 
   const toggleRowExpansion = (id) => {

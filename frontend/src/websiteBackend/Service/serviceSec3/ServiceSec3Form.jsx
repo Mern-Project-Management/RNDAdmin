@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const ServiceSec3Form = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const isEditMode = !!id;
+  const itemDataFromState = location.state?.itemData;
 
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -45,6 +47,16 @@ const ServiceSec3Form = () => {
 
   useEffect(() => {
     if (isEditMode && id && categories.length > 0) {
+      // Use data passed from table via location state if available
+      if (itemDataFromState) {
+        loadEditDataFromState(itemDataFromState);
+      }
+    }
+  }, [id, categories, itemDataFromState]);
+
+  // Separate effect for fetching data from API (on hard refresh when state is lost)
+  useEffect(() => {
+    if (isEditMode && id && categories.length > 0 && !itemDataFromState) {
       fetchDataForEdit(id);
     }
   }, [id, categories]);
@@ -79,16 +91,59 @@ const ServiceSec3Form = () => {
     }
   };
 
+  const loadEditDataFromState = (item) => {
+    // Load data passed from table via location state (no API call needed)
+    const tempDataForSubs = {
+      categoryId: (typeof item.categoryId === 'object' ? item.categoryId?._id : item.categoryId) || '',
+      subCategoryId: item.subCategoryId || '',
+      subSubCategoryId: item.subSubCategoryId || '',
+    };
+
+    setFormData({
+      heading: item.heading || '',
+      subheading: item.subheading || '',
+      details: item.details || '',
+      categoryId: tempDataForSubs.categoryId,
+      subCategoryId: tempDataForSubs.subCategoryId,
+      subSubCategoryId: tempDataForSubs.subSubCategoryId,
+      cards: item.cards.length > 0
+        ? item.cards.map(card => ({
+            title: card.title || '',
+            subTitle: card.subTitle || '',
+            description: card.description || '',
+            photo: null,
+            currentPhoto: card.photo || '',
+            alt: card.alt || '',
+            imgTitle: card.imgTitle || '',
+          }))
+        : [{ title: '', subTitle: '', description: '', photo: null, currentPhoto: '', alt: '', imgTitle: '' }],
+    });
+
+    loadSubCategoriesForEdit(tempDataForSubs);
+
+    if (item.subSubCategoryId) {
+      setSelectedLevel('subsubcategory');
+    } else if (item.subCategoryId) {
+      setSelectedLevel('subcategory');
+    } else {
+      setSelectedLevel('category');
+    }
+
+    setLoading(false);
+    setMessage({ type: 'info', text: 'Data loaded for editing' });
+  };
+
   const fetchDataForEdit = async (dataId) => {
     try {
       setLoading(true);
       const res = await axios.get(`/api/serviceSec3/${dataId}`);
       const item = res.data.data;
 
+      // Handle categoryId as object (populated) or string; subCategoryId and subSubCategoryId as strings
       const tempDataForSubs = {
-        categoryId: item.categoryId?._id || '',
-        subCategoryId: item.subCategoryId?._id || '',
-        subSubCategoryId: item.subSubCategoryId?._id || '',
+        categoryId: (typeof item.categoryId === 'object' ? item.categoryId?._id : item.categoryId) || '',
+        subCategoryId: item.subCategoryId || '',
+        subSubCategoryId: item.subSubCategoryId || '',
       };
 
       setFormData({
