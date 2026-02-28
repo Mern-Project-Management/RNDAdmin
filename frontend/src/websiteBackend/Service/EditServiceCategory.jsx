@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import ReactQuill from "react-quill";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "react-quill/dist/quill.snow.css";
 
 const EditServiceCategory = () => {
   const { categoryId, subCategoryId, subSubCategoryId } = useParams();
@@ -76,24 +74,6 @@ const EditServiceCategory = () => {
     setPhoto(file);
   };
 
-  const modules = {
-    toolbar: [
-      [{ font: [] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-      [{ script: "sub" }, { script: "super" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      ["link", "image", "video"],
-      [{ direction: "rtl" }],
-      [{ color: [] }, { background: [] }],
-      [{ align: [] }],
-      ["clean"],
-    ],
-    clipboard: {
-      matchVisual: false,
-    },
-  };
   
   const handleDeleteImage = () => {
     setPhoto(null);
@@ -264,11 +244,10 @@ const EditServiceCategory = () => {
         <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">
           Description
         </label>
-        <ReactQuill
+        <textarea
           value={description}
-          onChange={setDescription} // Directly update heading
-          modules={modules}
-          className="quill"
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-2 border rounded focus:outline-none h-40"
         />
       </div>
       <div className="mb-4">
