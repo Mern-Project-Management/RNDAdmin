@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAddUserMutation, useUpdateUserMutation, useGetAllUsersQuery } from '@/slice/contactInfo/contactInfo';
 import { MapPin, Phone, Mail, LinkIcon } from 'lucide-react';
+import axios from 'axios';
 
 const ContactInfoForm = () => {
     const [formData, setFormData] = useState({
@@ -15,6 +16,12 @@ const ContactInfoForm = () => {
         hrEmail: '',
         hrPhone: ''
     });
+
+    const [heading, setHeading] = useState('');
+    const [subheading, setSubheading] = useState('');
+    const [headingPhoto, setHeadingPhoto] = useState('');
+    const [alt, setAlt] = useState('');
+    const [imgTitle, setImgTitle] = useState('');
 
     const [addUser] = useAddUserMutation();
     const [updateUser] = useUpdateUserMutation();
@@ -41,6 +48,45 @@ const ContactInfoForm = () => {
             setFormData(newFormData);
         }
     }, [allUsers]);
+
+    useEffect(() => {
+        fetchHeadings();
+    }, []);
+
+    const fetchHeadings = async () => {
+        try {
+            const response = await axios.get('/api/pageHeading/heading?pageType=contact', { withCredentials: true });
+            const { heading, subheading, photo, alt, imgTitle } = response.data;
+            setHeading(heading || '');
+            setSubheading(subheading || '');
+            setHeadingPhoto(photo || '');
+            setAlt(alt || '');
+            setImgTitle(imgTitle || '');
+        } catch (error) {
+            console.error('Failed to fetch headings:', error);
+            alert('Failed to load page headings');
+        }
+    };
+
+    const saveHeadings = async () => {
+        const formData = new FormData();
+        formData.append("heading", heading);
+        formData.append("subheading", subheading);
+        formData.append("alt", alt);
+        formData.append("imgTitle", imgTitle);
+        if (headingPhoto instanceof File) {
+            formData.append("photo", headingPhoto);
+        }
+        try {
+            await axios.put('/api/pageHeading/updateHeading?pageType=contact', formData, { withCredentials: true });
+            alert('Page heading updated successfully!');
+        } catch (error) {
+            console.error('Failed to update page heading:', error);
+            alert('Failed to update page heading');
+        }
+    };
+
+    const handleHeadingFileChange = (e) => setHeadingPhoto(e.target.files[0]);
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
@@ -127,6 +173,61 @@ const ContactInfoForm = () => {
     return (
         <div className="min-h-screen ">
             <div className="max-w-3xl ">
+                <div className="mb-8 border border-gray-200 shadow-lg p-4 rounded-2xl bg-white">
+                    <h3 className="text-lg font-semibold mb-4">Edit Page Heading</h3>
+                    <div className="grid md:grid-cols-2 md:gap-6 grid-cols-1">
+                        <div className="mb-6">
+                            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Heading</label>
+                            <input
+                                type="text"
+                                value={heading}
+                                onChange={(e) => setHeading(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Sub heading</label>
+                            <input
+                                type="text"
+                                value={subheading}
+                                onChange={(e) => setSubheading(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Upload Image</label>
+                            <input
+                                type="file"
+                                onChange={handleHeadingFileChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+                            />
+                            {headingPhoto && (
+                                <div className="mt-2">
+                                    <img
+                                        src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/image/download/${headingPhoto}`}
+                                        alt={alt}
+                                        className="w-32 h-32 object-cover rounded"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Alt Text</label>
+                            <input
+                                type="text"
+                                value={alt}
+                                onChange={(e) => setAlt(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+                            />
+                        </div>
+                    </div>
+                    <button
+                        onClick={saveHeadings}
+                        className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300 font-serif"
+                    >
+                        Save Headings
+                    </button>
+                </div>
                 {/* Header */}
                 <div className="bg-white rounded-t-2xl  p-2 border-b-4 border-indigo-600">
                     <h1 className="text-3xl font-bold text-gray-900">Contact Information</h1>
