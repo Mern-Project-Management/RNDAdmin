@@ -112,7 +112,7 @@ const menuData = [
       },
 
       {
-        title: "Corporate",
+        title: "About Us",
         icon: Building,
         children: [
           { title: "List", icon: List, url: "/about-us-table" },
