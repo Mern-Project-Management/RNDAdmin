@@ -18,7 +18,10 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    const fileName = `${file.fieldname}_${Date.now()}.webp`; // Always use .webp extension
+    // Preserve GIF extension so animations are not broken
+    const isGif = file.mimetype === 'image/gif';
+    const ext = isGif ? '.gif' : '.webp';
+    const fileName = `${file.fieldname}_${Date.now()}${ext}`;
     cb(null, fileName);
   }
 });
@@ -36,9 +39,13 @@ const upload = multer({
   }
 });
 
-// Process the image in place to ensure WebP format
-const processLogoImage = async (filePath) => {
+// Process the image in place to ensure WebP format (skip GIFs to preserve animations)
+const processLogoImage = async (filePath, mimetype) => {
   try {
+    // Skip GIFs — preserve animation
+    if (mimetype === 'image/gif') {
+      return;
+    }
     // If the file is already a .webp, skip processing
     if (path.extname(filePath).toLowerCase() === '.webp') {
       return;
@@ -72,8 +79,8 @@ const uploadLogo = async (req, res, next) => {
         const filePath = req.file.path;
         console.log('File saved to:', filePath);
 
-        // Process the image to ensure it's in WebP format
-        await processLogoImage(filePath);
+        // Process the image to ensure it's in WebP format (skip GIFs)
+        await processLogoImage(filePath, req.file.mimetype);
 
         next();
       } catch (processError) {

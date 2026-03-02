@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
-import { Edit,  //Edit
+import {
+  Edit,  //Edit
   Trash2,  //Trash2
   Check,  //Check
   Eye,  //Eye
@@ -8,7 +9,7 @@ import { Edit,  //Edit
   ArrowUp,  //ArrowUp
   ArrowDown,  //ArrowDown
   Plus  //Plus
- } from 'lucide-react';
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
@@ -73,7 +74,7 @@ const CareerOptionTable = () => {
             onClick={() => navigate(`/careeroption/editCareerOption/${row.original._id}`)}
           >
             <p dangerouslySetInnerHTML={{ __html: row.original.description }}></p>
-         
+
           </span>
         ),
       },
@@ -244,7 +245,7 @@ const CareerOptionTable = () => {
             {headingPhoto && (
               <div className="mt-2">
                 <img
-                  src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/image/download/${headingPhoto}`}
+                  src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/logo/download/${headingPhoto}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -260,7 +261,7 @@ const CareerOptionTable = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-          
+
         </div>
         <button
           onClick={saveHeadings}
@@ -347,7 +348,7 @@ const CareerOptionTable = () => {
         className="fixed inset-0 flex items-center   justify-center bg-gray-800 bg-opacity-50"
       >
         <div className="bg-white p-8 rounded overflow-auto shadow-lg w-96 h-[80%] relative">
-        <button onClick={closeModal} className="absolute top-5 right-5 text-gray-500 hover:text-gray-700">
+          <button onClick={closeModal} className="absolute top-5 right-5 text-gray-500 hover:text-gray-700">
             <X size={20} />
           </button>
           <h2 className="text-xl font-bold mb-4">Career option Description</h2>
@@ -357,7 +358,7 @@ const CareerOptionTable = () => {
                 <p className="mr-2 font-semibold font-serif">Priority :</p>
                 <p dangerouslySetInnerHTML={{ __html: selectedCoption.title }}></p>
 
-                
+
               </div>
               <div className="flex mt-2">
                 <p className="mr-2 font-semibold font-serif">Section :</p>

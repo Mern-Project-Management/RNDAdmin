@@ -11,7 +11,7 @@ const MAX_PDF_SIZE = 100 * 1024 * 1024; // 100MB for PDFs
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let dir = 'uploads/images';
-        
+
         // Choose directory based on file type
         if (file.mimetype === 'application/pdf') {
             dir = 'uploads/catalogs';
@@ -21,13 +21,17 @@ const storage = multer.diskStorage({
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
-        
+
         cb(null, dir);
     },
     filename: function (req, file, cb) {
         // Use different naming for PDFs vs images
         if (file.mimetype === 'application/pdf') {
             const fileName = `catalog_${Date.now()}.pdf`;
+            cb(null, fileName);
+        } else if (file.mimetype === 'image/gif') {
+            // Preserve GIF extension so animations are not broken
+            const fileName = `${file.fieldname}_${Date.now()}.gif`;
             cb(null, fileName);
         } else {
             const fileName = `${file.fieldname}_${Date.now()}.webp`;
@@ -41,7 +45,7 @@ const fileFilter = (req, file, cb) => {
     const allowedImageTypes = /jpeg|jpg|png|gif|webp/;
     const allowedImageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     const allowedPdfMimeType = 'application/pdf';
-    
+
     if (file.mimetype === allowedPdfMimeType) {
         cb(null, true);
         return;
@@ -60,7 +64,7 @@ const fileFilter = (req, file, cb) => {
 // Update upload configuration to handle both images and catalogs
 const upload = multer({
     storage: storage,
-    limits: { 
+    limits: {
         fileSize: MAX_PDF_SIZE  // Use larger size limit to accommodate PDFs
     },
     fileFilter: fileFilter

@@ -234,7 +234,7 @@ const StaffTable = () => {
             {photo && (
               <div className="mt-2">
                 <img
-                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/logo/download/${photo}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -250,7 +250,7 @@ const StaffTable = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-        
+
         </div>
         <button
           onClick={saveHeadings}

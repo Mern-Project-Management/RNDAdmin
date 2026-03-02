@@ -141,9 +141,8 @@ const BlogTable = () => {
       render: (text, record) => (
         <div>
           <div
-            className={`relative overflow-hidden transition-all duration-300 ${
-              expandedRows[record._id] ? 'max-h-none' : 'max-h-20'
-            }`}
+            className={`relative overflow-hidden transition-all duration-300 ${expandedRows[record._id] ? 'max-h-none' : 'max-h-20'
+              }`}
             dangerouslySetInnerHTML={{ __html: text }}
           />
           {text && text.length > 100 && (
@@ -265,7 +264,7 @@ const BlogTable = () => {
             {headingPhoto && (
               <div className="mt-2">
                 <img
-                  src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/image/download/${headingPhoto}`}
+                  src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/logo/download/${headingPhoto}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -285,7 +284,7 @@ const BlogTable = () => {
               placeholder="Enter alt text"
             />
           </div>
-         
+
         </div>
 
         <div className="mt-6 flex items-center gap-4">

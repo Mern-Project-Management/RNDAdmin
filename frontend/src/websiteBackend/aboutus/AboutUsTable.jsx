@@ -89,28 +89,28 @@ const AboutUsTable = () => {
       key: 'image',
       width: '15%',
       render: (image) => (
-        <img 
-          src={`/api/image/download/${image}`} 
-          alt="About Us" 
+        <img
+          src={`/api/image/download/${image}`}
+          alt="About Us"
           className='w-[100px] h-[50px] object-cover'
         />
       ),
     },
-    
+
     {
       title: 'Actions',
       key: 'actions',
       width: '10%',
       render: (_, record) => (
         <Space>
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             icon={<EditOutlined />}
             onClick={() => navigate(`/edit-about-us-form/${record._id}`)}
           >
           </Button>
-          <Button 
-            danger 
+          <Button
+            danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record._id)}
           >
@@ -153,7 +153,7 @@ const AboutUsTable = () => {
             {photo && (
               <div className="mt-2">
                 <img
-                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/logo/download/${photo}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -169,7 +169,7 @@ const AboutUsTable = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-          
+
         </div>
         <button
           onClick={saveHeadings}
@@ -178,13 +178,13 @@ const AboutUsTable = () => {
           Save Headings
         </button>
       </div>
-      <div  className='flex justify-between p-6 items-center'>
+      <div className='flex justify-between p-6 items-center'>
         <div className='text-2xl font-bold'>
-          <h1>About Us</h1>   
+          <h1>About Us</h1>
         </div>
         <div>
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => navigate('/about-us-form')}
             className='mb-4'
@@ -193,9 +193,9 @@ const AboutUsTable = () => {
           </Button>
         </div>
       </div>
-      <Table 
-        columns={columns} 
-        dataSource={aboutUsData} 
+      <Table
+        columns={columns}
+        dataSource={aboutUsData}
         loading={isLoading}
         rowKey="_id"
         pagination={false}

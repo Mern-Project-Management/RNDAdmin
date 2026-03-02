@@ -91,16 +91,16 @@ const CookiesForm = () => {
 
   const fetchHeadings = async () => {
     try {
-        const response = await axios.get('/api/pageHeading/heading?pageType=cookies-policy');
-        const { heading, subheading, photo, alt, imgTitle } = response.data;
-        setHeading(heading || '');
-        setSubheading(subheading || '');
-        setPhoto(photo || '');
-        setAlt(alt || '');
-        setImgTitle(imgTitle || '');
+      const response = await axios.get('/api/pageHeading/heading?pageType=cookies-policy');
+      const { heading, subheading, photo, alt, imgTitle } = response.data;
+      setHeading(heading || '');
+      setSubheading(subheading || '');
+      setPhoto(photo || '');
+      setAlt(alt || '');
+      setImgTitle(imgTitle || '');
     } catch (error) {
-        console.error('Failed to fetch headings:', error);
-        message.error('Failed to load page headings');
+      console.error('Failed to fetch headings:', error);
+      message.error('Failed to load page headings');
     }
   };
 
@@ -109,11 +109,11 @@ const CookiesForm = () => {
     // Update form field value to trigger validation
     form.setFieldsValue({ cookiesPolicy: content });
   };
-  
+
   const handleFinish = async () => {
     try {
       const dataToSend = { CookiesPolicy: cookiesPolicy }; // API expects 'CookiesPolicy'
-      
+
       if (isExistingData) {
         await axios.put(`/api/cookies/${cookiesId}`, dataToSend);
         message.success('Cookies data updated successfully');
@@ -121,7 +121,7 @@ const CookiesForm = () => {
         await axios.post('/api/cookies', dataToSend);
         message.success('Cookies data created successfully');
       }
-     
+
     } catch (error) {
       message.error('Failed to save cookies data');
       console.error('Error:', error);
@@ -135,14 +135,14 @@ const CookiesForm = () => {
     formData.append("alt", alt);
     formData.append("imgTitle", imgTitle);
     if (photo instanceof File) {
-        formData.append("photo", photo);
+      formData.append("photo", photo);
     }
     try {
-        await axios.put('/api/pageHeading/updateHeading?pageType=cookies-policy', formData, { withCredentials: true });
-        message.success('Page heading updated successfully!');
+      await axios.put('/api/pageHeading/updateHeading?pageType=cookies-policy', formData, { withCredentials: true });
+      message.success('Page heading updated successfully!');
     } catch (error) {
-        console.error('Failed to update page heading:', error);
-        message.error('Failed to update page heading');
+      console.error('Failed to update page heading:', error);
+      message.error('Failed to update page heading');
     }
   };
 
@@ -191,7 +191,7 @@ const CookiesForm = () => {
             {photo && (
               <div className="mt-2">
                 <img
-                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/logo/download/${photo}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -207,7 +207,7 @@ const CookiesForm = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-         
+
         </div>
         <button
           onClick={saveHeadings}
@@ -217,13 +217,13 @@ const CookiesForm = () => {
         </button>
       </div>
       <Form form={form} layout="vertical" onFinish={handleFinish}>
-        <Form.Item 
-          name="cookiesPolicy" 
-          label="Cookies Policy" 
+        <Form.Item
+          name="cookiesPolicy"
+          label="Cookies Policy"
           rules={[
-            { 
-              required: true, 
-              message: 'Please enter the cookies policy' 
+            {
+              required: true,
+              message: 'Please enter the cookies policy'
             },
             {
               validator: (_, value) => {

@@ -87,33 +87,46 @@ const TermsConditionForm = () => {
 
     fetchTermsConditionData();
     fetchHeadings();
-  }, [form]);
+  }, []);
 
   const fetchHeadings = async () => {
     try {
-        const response = await axios.get('/api/pageHeading/heading?pageType=terms-condition');
-        const { heading, subheading, photo, alt, imgTitle } = response.data;
-        setHeading(heading || '');
-        setSubheading(subheading || '');
-        setPhoto(photo || '');
-        setAlt(alt || '');
-        setImgTitle(imgTitle || '');
+      const response = await axios.get('/api/pageHeading/heading?pageType=terms-condition');
+      const { heading, subheading, photo, alt, imgTitle } = response.data;
+      setHeading(heading || '');
+      setSubheading(subheading || '');
+      setPhoto(photo || '');
+      setAlt(alt || '');
+      setImgTitle(imgTitle || '');
     } catch (error) {
-        console.error('Failed to fetch headings:', error);
-        message.error('Failed to load page headings');
+      console.error('Failed to fetch headings:', error);
+      message.error('Failed to load page headings');
     }
   };
 
   const handleEditorChange = (content) => {
+    // Guard: ReactQuill fires onChange with empty string on initial mount
+    // Don't overwrite already-loaded DB content with an empty reset
+    if (!content || content === '<p><br></p>') {
+      if (termsCondition && termsCondition !== '<p><br></p>') {
+        return; // Ignore the empty reset, keep DB content
+      }
+    }
     setTermsCondition(content);
-    // Update form field value to trigger validation
     form.setFieldsValue({ termsCondition: content });
   };
 
   const handleFinish = async () => {
     try {
-      const dataToSend = { termsCondition };
-      
+      // Use form field value as source of truth (most reliable after edits)
+      const currentContent = form.getFieldValue('termsCondition') || termsCondition;
+      const dataToSend = { termsCondition: currentContent };
+
+      if (!currentContent || currentContent.replace(/<[^>]*>/g, '').trim() === '') {
+        message.error('Terms and conditions content cannot be empty');
+        return;
+      }
+
       if (isExistingData) {
         await axios.put(`/api/terms/${termsConditionId}`, dataToSend);
         message.success('Terms and conditions updated successfully');
@@ -121,7 +134,6 @@ const TermsConditionForm = () => {
         await axios.post('/api/terms/add', dataToSend);
         message.success('Terms and conditions created successfully');
       }
-      // navigate('/termscondition');
     } catch (error) {
       message.error('Failed to save terms and conditions');
       console.error('Error:', error);
@@ -135,14 +147,14 @@ const TermsConditionForm = () => {
     formData.append("alt", alt);
     formData.append("imgTitle", imgTitle);
     if (photo instanceof File) {
-        formData.append("photo", photo);
+      formData.append("photo", photo);
     }
     try {
-        await axios.put('/api/pageHeading/updateHeading?pageType=terms-condition', formData, { withCredentials: true });
-        message.success('Page heading updated successfully!');
+      await axios.put('/api/pageHeading/updateHeading?pageType=terms-condition', formData, { withCredentials: true });
+      message.success('Page heading updated successfully!');
     } catch (error) {
-        console.error('Failed to update page heading:', error);
-        message.error('Failed to update page heading');
+      console.error('Failed to update page heading:', error);
+      message.error('Failed to update page heading');
     }
   };
 
@@ -150,7 +162,6 @@ const TermsConditionForm = () => {
     setPhoto(e.target.files[0]);
   };
 
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
@@ -191,7 +202,7 @@ const TermsConditionForm = () => {
             {photo && (
               <div className="mt-2">
                 <img
-                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/logo/download/${photo}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
@@ -207,7 +218,7 @@ const TermsConditionForm = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-         
+
         </div>
         <button
           onClick={saveHeadings}
@@ -217,13 +228,13 @@ const TermsConditionForm = () => {
         </button>
       </div>
       <Form form={form} layout="vertical" onFinish={handleFinish}>
-        <Form.Item 
-          name="termsCondition" 
-          label="Terms and Conditions" 
+        <Form.Item
+          name="termsCondition"
+          label="Terms and Conditions"
           rules={[
-            { 
-              required: true, 
-              message: 'Please enter the terms and conditions' 
+            {
+              required: true,
+              message: 'Please enter the terms and conditions'
             },
             {
               validator: (_, value) => {
@@ -248,9 +259,10 @@ const TermsConditionForm = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoading} disabled={isLoading}>
             {isExistingData ? 'Update' : 'Save'}
           </Button>
+          {isLoading && <span className="ml-3 text-gray-500 text-sm">Loading data...</span>}
         </Form.Item>
       </Form>
 

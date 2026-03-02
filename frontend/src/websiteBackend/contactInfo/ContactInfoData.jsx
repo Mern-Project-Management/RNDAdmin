@@ -91,7 +91,7 @@ const ContactInfoForm = () => {
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         const newPreviewUrls = files.map(file => URL.createObjectURL(file));
-        
+
         setFormData(prev => ({
             ...prev,
             photo: files,
@@ -114,13 +114,13 @@ const ContactInfoForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const submitFormData = new FormData();
         submitFormData.append('address', formData.address);
         submitFormData.append('mapLink', formData.mapLink);
         submitFormData.append('hrEmail', formData.hrEmail);
         submitFormData.append('hrPhone', formData.hrPhone);
-        
+
         console.log('📝 Form Data Before Submit:', formData);
         console.log('📦 Submitted Data:');
         console.log('  - Address:', formData.address);
@@ -129,14 +129,14 @@ const ContactInfoForm = () => {
         console.log('  - Emails:', formData.emails);
         console.log('  - HR Email:', formData.hrEmail);
         console.log('  - HR Phone:', formData.hrPhone);
-        
+
         formData.mobiles.forEach(mobile => {
             submitFormData.append('mobiles[]', mobile);
         });
         formData.emails.forEach(email => {
             submitFormData.append('emails[]', email);
         });
-        
+
         // Handle multiple photo uploads
         if (formData.photo.length > 0) {
             formData.photo.forEach(file => {
@@ -152,9 +152,9 @@ const ContactInfoForm = () => {
         try {
             if (allUsers && allUsers.length > 0) {
                 console.log('🔄 Updating Contact with ID:', allUsers[0]._id);
-                await updateUser({ 
-                    id: allUsers[0]._id, 
-                    formData: submitFormData 
+                await updateUser({
+                    id: allUsers[0]._id,
+                    formData: submitFormData
                 }).unwrap();
                 console.log('✅ Successfully Updated!');
                 alert('Contact information updated successfully!');
@@ -172,7 +172,7 @@ const ContactInfoForm = () => {
 
     return (
         <div className="min-h-screen ">
-            <div className="max-w-3xl ">
+            <div className="w-full">
                 <div className="mb-8 border border-gray-200 shadow-lg p-4 rounded-2xl bg-white">
                     <h3 className="text-lg font-semibold mb-4">Edit Page Heading</h3>
                     <div className="grid md:grid-cols-2 md:gap-6 grid-cols-1">
@@ -204,7 +204,7 @@ const ContactInfoForm = () => {
                             {headingPhoto && (
                                 <div className="mt-2">
                                     <img
-                                        src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/image/download/${headingPhoto}`}
+                                        src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/logo/download/${headingPhoto}`}
                                         alt={alt}
                                         className="w-32 h-32 object-cover rounded"
                                     />
@@ -231,7 +231,7 @@ const ContactInfoForm = () => {
                 {/* Header */}
                 <div className="bg-white rounded-t-2xl  p-2 border-b-4 border-indigo-600">
                     <h1 className="text-3xl font-bold text-gray-900">Contact Information</h1>
-                  
+
                 </div>
 
                 {/* Form */}
@@ -297,8 +297,8 @@ const ContactInfoForm = () => {
                                     required
                                 />
                                 {formData.mobiles.length > 1 && (
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => setFormData(prev => {
                                             const newArray = [...prev.mobiles];
                                             newArray.splice(index, 1);
@@ -306,7 +306,7 @@ const ContactInfoForm = () => {
                                                 ...prev,
                                                 mobiles: newArray
                                             };
-                                        })} 
+                                        })}
                                         className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors font-medium"
                                     >
                                         Remove
@@ -314,12 +314,12 @@ const ContactInfoForm = () => {
                                 )}
                             </div>
                         ))}
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             onClick={() => setFormData(prev => ({
                                 ...prev,
                                 mobiles: [...prev.mobiles, '']
-                            }))} 
+                            }))}
                             className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center gap-1"
                         >
                             <span className="text-xl">+</span> Add Mobile Number
@@ -386,8 +386,8 @@ const ContactInfoForm = () => {
                                     required
                                 />
                                 {formData.emails.length > 1 && (
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => setFormData(prev => {
                                             const newArray = [...prev.emails];
                                             newArray.splice(index, 1);
@@ -395,7 +395,7 @@ const ContactInfoForm = () => {
                                                 ...prev,
                                                 emails: newArray
                                             };
-                                        })} 
+                                        })}
                                         className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors font-medium"
                                     >
                                         Remove
@@ -403,12 +403,12 @@ const ContactInfoForm = () => {
                                 )}
                             </div>
                         ))}
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             onClick={() => setFormData(prev => ({
                                 ...prev,
                                 emails: [...prev.emails, '']
-                            }))} 
+                            }))}
                             className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center gap-1"
                         >
                             <span className="text-xl">+</span> Add Email Address
