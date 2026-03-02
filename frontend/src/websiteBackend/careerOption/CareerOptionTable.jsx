@@ -26,7 +26,7 @@ Modal.setAppElement('#root');
 const CareerOptionTable = () => {
   const [heading, setHeading] = useState("");
   const [subheading, setSubheading] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [headingPhoto, setHeadingPhoto] = useState("");
   const [alt, setAlt] = useState("");
   const [imgTitle, setImgTitle] = useState("");
   const [careerOptions, setCareerOptions] = useState([]);
@@ -174,7 +174,7 @@ const CareerOptionTable = () => {
       const { heading, subheading, photo, alt, imgTitle } = response.data;
       setHeading(heading || '');
       setSubheading(subheading || '');
-      setPhoto(photo || '');
+      setHeadingPhoto(photo || '');
       setAlt(alt || '');
       setImgTitle(imgTitle || '');
     } catch (error) {
@@ -188,8 +188,8 @@ const CareerOptionTable = () => {
     formData.append("subheading", subheading);
     formData.append("alt", alt);
     formData.append("imgTitle", imgTitle);
-    if (photo instanceof File) {
-      formData.append("photo", photo);
+    if (headingPhoto instanceof File) {
+      formData.append("photo", headingPhoto);
     }
     try {
       await axios.put('/api/pageHeading/updateHeading?pageType=career', formData, { withCredentials: true });
@@ -207,8 +207,8 @@ const CareerOptionTable = () => {
   const handleSubheadingChange = (e) => setSubheading(e.target.value);
   const handleAltChange = (e) => setAlt(e.target.value);
   const handleImgTitleChange = (e) => setImgTitle(e.target.value);
-  const handleFileChange = (e) => {
-    setPhoto(e.target.files[0]);
+  const handleHeadingFileChange = (e) => {
+    setHeadingPhoto(e.target.files[0]);
   };
 
   return (
@@ -238,13 +238,13 @@ const CareerOptionTable = () => {
             <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Upload Image</label>
             <input
               type="file"
-              onChange={handleFileChange}
+              onChange={handleHeadingFileChange}
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
-            {photo && (
+            {headingPhoto && (
               <div className="mt-2">
                 <img
-                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/image/download/${headingPhoto}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />

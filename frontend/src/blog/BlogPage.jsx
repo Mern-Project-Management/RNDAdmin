@@ -21,7 +21,7 @@ const BlogTable = () => {
   // State for page headings (current editable values)
   const [heading, setHeading] = useState('');
   const [subheading, setSubheading] = useState('');
-  const [photo, setPhoto] = useState('');
+  const [headingPhoto, setHeadingPhoto] = useState('');
   const [alt, setAlt] = useState('');
   const [imgTitle, setImgTitle] = useState('');
 
@@ -49,7 +49,7 @@ const BlogTable = () => {
 
       setHeading(fetchedHeading);
       setSubheading(fetchedSubheading);
-      setPhoto(fetchedPhoto);
+      setHeadingPhoto(fetchedPhoto);
       setAlt(fetchedAlt);
       setImgTitle(fetchedImgTitle);
 
@@ -73,8 +73,8 @@ const BlogTable = () => {
     formData.append('subheading', subheading);
     formData.append('alt', alt);
     formData.append('imgTitle', imgTitle);
-    if (photo instanceof File) {
-      formData.append('photo', photo);
+    if (headingPhoto instanceof File) {
+      formData.append('photo', headingPhoto);
     }
 
     try {
@@ -95,11 +95,11 @@ const BlogTable = () => {
   };
 
   // Detect if there are unsaved changes
-  const hasChanges = heading !== originalHeading || subheading !== originalSubheading || alt !== originalAlt || imgTitle !== originalImgTitle || (photo instanceof File);
+  const hasChanges = heading !== originalHeading || subheading !== originalSubheading || alt !== originalAlt || imgTitle !== originalImgTitle || (headingPhoto instanceof File);
 
-  const handleFileChange = (e) => {
+  const handleHeadingFileChange = (e) => {
     const file = e.target.files[0];
-    setPhoto(file);
+    setHeadingPhoto(file);
   };
 
   const handleDelete = async (id) => {
@@ -259,13 +259,13 @@ const BlogTable = () => {
             </label>
             <input
               type="file"
-              onChange={handleFileChange}
+              onChange={handleHeadingFileChange}
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {photo && (
+            {headingPhoto && (
               <div className="mt-2">
                 <img
-                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  src={headingPhoto instanceof File ? URL.createObjectURL(headingPhoto) : `/api/image/download/${headingPhoto}`}
                   alt={alt}
                   className="w-32 h-32 object-cover rounded"
                 />
