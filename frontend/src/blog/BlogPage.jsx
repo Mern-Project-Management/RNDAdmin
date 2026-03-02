@@ -21,10 +21,15 @@ const BlogTable = () => {
   // State for page headings (current editable values)
   const [heading, setHeading] = useState('');
   const [subheading, setSubheading] = useState('');
+  const [photo, setPhoto] = useState('');
+  const [alt, setAlt] = useState('');
+  const [imgTitle, setImgTitle] = useState('');
 
   // State for original fetched values (to detect changes)
   const [originalHeading, setOriginalHeading] = useState('');
   const [originalSubheading, setOriginalSubheading] = useState('');
+  const [originalAlt, setOriginalAlt] = useState('');
+  const [originalImgTitle, setOriginalImgTitle] = useState('');
 
   // Loading state for heading operations
   const [loadingHeadings, setLoadingHeadings] = useState(false);
@@ -40,12 +45,18 @@ const BlogTable = () => {
       const response = await axios.get('/api/pageHeading/heading?pageType=blogtitle', {
         withCredentials: true,
       });
-      const { heading: fetchedHeading = '', subheading: fetchedSubheading = '' } = response.data || {};
+      const { heading: fetchedHeading = '', subheading: fetchedSubheading = '', photo: fetchedPhoto = '', alt: fetchedAlt = '', imgTitle: fetchedImgTitle = '' } = response.data || {};
 
       setHeading(fetchedHeading);
       setSubheading(fetchedSubheading);
+      setPhoto(fetchedPhoto);
+      setAlt(fetchedAlt);
+      setImgTitle(fetchedImgTitle);
+
       setOriginalHeading(fetchedHeading);
       setOriginalSubheading(fetchedSubheading);
+      setOriginalAlt(fetchedAlt);
+      setOriginalImgTitle(fetchedImgTitle);
     } catch (err) {
       console.error('Failed to fetch headings:', err);
       message.error('Failed to load page headings');
@@ -56,22 +67,25 @@ const BlogTable = () => {
 
   const saveHeadings = async () => {
     setLoadingHeadings(true);
+    const formData = new FormData();
+    formData.append('pageType', 'blogtitle');
+    formData.append('heading', heading);
+    formData.append('subheading', subheading);
+    formData.append('alt', alt);
+    formData.append('imgTitle', imgTitle);
+    if (photo instanceof File) {
+      formData.append('photo', photo);
+    }
+
     try {
       await axios.put(
         '/api/pageHeading/updateHeading?pageType=blogtitle',
-        {
-          pageType: 'blogtitle',
-          heading,
-          subheading,
-        },
+        formData,
         { withCredentials: true }
       );
 
-      // Update original values after successful save
-      setOriginalHeading(heading);
-      setOriginalSubheading(subheading);
-
       message.success('Headings saved successfully!');
+      await fetchHeadings();
     } catch (err) {
       console.error('Failed to save headings:', err);
       message.error('Failed to save headings');
@@ -81,7 +95,12 @@ const BlogTable = () => {
   };
 
   // Detect if there are unsaved changes
-  const hasChanges = heading !== originalHeading || subheading !== originalSubheading;
+  const hasChanges = heading !== originalHeading || subheading !== originalSubheading || alt !== originalAlt || imgTitle !== originalImgTitle || (photo instanceof File);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setPhoto(file);
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -234,6 +253,39 @@ const BlogTable = () => {
               placeholder="Enter subheading"
             />
           </div>
+          <div>
+            <label className="block text-gray-700 font-bold mb-2 uppercase tracking-wider">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {photo && (
+              <div className="mt-2">
+                <img
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  alt={alt}
+                  className="w-32 h-32 object-cover rounded"
+                />
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="block text-gray-700 font-bold mb-2 uppercase tracking-wider">
+              Alt Text
+            </label>
+            <input
+              type="text"
+              value={alt}
+              onChange={(e) => setAlt(e.target.value)}
+              disabled={loadingHeadings}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter alt text"
+            />
+          </div>
+         
         </div>
 
         <div className="mt-6 flex items-center gap-4">

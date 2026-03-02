@@ -12,6 +12,9 @@ import loading from "react-useanimations/lib/loading";
 const StaffTable = () => {
   const [heading, setHeading] = useState("");
   const [subheading, setSubheading] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [alt, setAlt] = useState("");
+  const [imgTitle, setImgTitle] = useState("");
   const [staff, setStaff] = useState([]);
   const [loadings, setLoading] = useState(true);
   const [pageIndex, setPageIndex] = useState(0);
@@ -155,21 +158,28 @@ const StaffTable = () => {
   const fetchHeadings = async () => {
     try {
       const response = await axios.get('/api/pageHeading/heading?pageType=ourStaff', { withCredentials: true });
-      const { heading, subheading } = response.data;
+      const { heading, subheading, photo, alt, imgTitle } = response.data;
       setHeading(heading || '');
       setSubheading(subheading || '');
+      setPhoto(photo || '');
+      setAlt(alt || '');
+      setImgTitle(imgTitle || '');
     } catch (error) {
       console.error(error);
     }
   };
 
   const saveHeadings = async () => {
+    const formData = new FormData();
+    formData.append("heading", heading);
+    formData.append("subheading", subheading);
+    formData.append("alt", alt);
+    formData.append("imgTitle", imgTitle);
+    if (photo instanceof File) {
+      formData.append("photo", photo);
+    }
     try {
-      await axios.put('/api/pageHeading/updateHeading?pageType=ourStaff', {
-        pagetype: 'ourStaff',
-        heading,
-        subheading,
-      }, { withCredentials: true });
+      await axios.put('/api/pageHeading/updateHeading?pageType=ourStaff', formData, { withCredentials: true });
       notify();
     } catch (error) {
       console.error(error);
@@ -182,6 +192,11 @@ const StaffTable = () => {
 
   const handleHeadingChange = (e) => setHeading(e.target.value);
   const handleSubheadingChange = (e) => setSubheading(e.target.value);
+  const handleAltChange = (e) => setAlt(e.target.value);
+  const handleImgTitleChange = (e) => setImgTitle(e.target.value);
+  const handleFileChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
 
   return (
     <div className="p-4 overflow-x-auto">
@@ -209,6 +224,33 @@ const StaffTable = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Upload Image</label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+            />
+            {photo && (
+              <div className="mt-2">
+                <img
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  alt={alt}
+                  className="w-32 h-32 object-cover rounded"
+                />
+              </div>
+            )}
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Alt Text</label>
+            <input
+              type="text"
+              value={alt}
+              onChange={handleAltChange}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+            />
+          </div>
+        
         </div>
         <button
           onClick={saveHeadings}

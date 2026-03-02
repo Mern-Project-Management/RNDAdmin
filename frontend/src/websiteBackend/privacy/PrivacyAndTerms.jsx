@@ -12,6 +12,11 @@ const PrivacyForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isExistingData, setIsExistingData] = useState(false);
   const [privacyId, setPrivacyId] = useState(null);
+  const [heading, setHeading] = useState('');
+  const [subheading, setSubheading] = useState('');
+  const [photo, setPhoto] = useState('');
+  const [alt, setAlt] = useState('');
+  const [imgTitle, setImgTitle] = useState('');
 
   // Quill modules configuration
   const modules = useMemo(
@@ -81,7 +86,23 @@ const PrivacyForm = () => {
     };
 
     fetchPrivacyData();
+    fetchHeadings();
   }, [form]);
+
+  const fetchHeadings = async () => {
+    try {
+        const response = await axios.get('/api/pageHeading/heading?pageType=privacy-policy');
+        const { heading, subheading, photo, alt, imgTitle } = response.data;
+        setHeading(heading || '');
+        setSubheading(subheading || '');
+        setPhoto(photo || '');
+        setAlt(alt || '');
+        setImgTitle(imgTitle || '');
+    } catch (error) {
+        console.error('Failed to fetch headings:', error);
+        message.error('Failed to load page headings');
+    }
+  };
 
   const handleEditorChange = (content) => {
     setPrivacyPolicy(content);
@@ -107,6 +128,28 @@ const PrivacyForm = () => {
     }
   };
 
+  const saveHeadings = async () => {
+    const formData = new FormData();
+    formData.append("heading", heading);
+    formData.append("subheading", subheading);
+    formData.append("alt", alt);
+    formData.append("imgTitle", imgTitle);
+    if (photo instanceof File) {
+        formData.append("photo", photo);
+    }
+    try {
+        await axios.put('/api/pageHeading/updateHeading?pageType=privacy-policy', formData, { withCredentials: true });
+        message.success('Page heading updated successfully!');
+    } catch (error) {
+        console.error('Failed to update page heading:', error);
+        message.error('Failed to update page heading');
+    }
+  };
+
+  const handleFileChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
   if (isLoading) return <p>Loading...</p>;
 
   return (
@@ -117,6 +160,62 @@ const PrivacyForm = () => {
         </Breadcrumb.Item>
         <Breadcrumb.Item>Privacy Form</Breadcrumb.Item>
       </Breadcrumb>
+      <div className="mb-8 border border-gray-200 shadow-lg p-4 rounded ">
+        <h3 className="text-lg font-semibold mb-4">Edit Page Heading</h3>
+        <div className="grid md:grid-cols-2 md:gap-6 grid-cols-1">
+          <div className="mb-6">
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Heading</label>
+            <input
+              type="text"
+              value={heading}
+              onChange={(e) => setHeading(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Sub heading</label>
+            <input
+              type="text"
+              value={subheading}
+              onChange={(e) => setSubheading(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Upload Image</label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+            />
+            {photo && (
+              <div className="mt-2">
+                <img
+                  src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${photo}`}
+                  alt={alt}
+                  className="w-32 h-32 object-cover rounded"
+                />
+              </div>
+            )}
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Alt Text</label>
+            <input
+              type="text"
+              value={alt}
+              onChange={(e) => setAlt(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
+            />
+          </div>
+          
+        </div>
+        <button
+          onClick={saveHeadings}
+          className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300 font-serif"
+        >
+          Save Headings
+        </button>
+      </div>
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Form.Item 
           name="privacyPolicy" 
