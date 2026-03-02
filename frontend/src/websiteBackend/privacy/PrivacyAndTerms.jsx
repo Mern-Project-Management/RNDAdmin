@@ -153,6 +153,7 @@ const PrivacyForm = () => {
         <Breadcrumb.Item>Privacy Form</Breadcrumb.Item>
       </Breadcrumb>
 
+
       <div className="mb-8 border border-gray-200 shadow-lg p-4 rounded">
         <h3 className="text-lg font-semibold mb-4">Edit Page Heading</h3>
         <div className="grid md:grid-cols-2 md:gap-6 grid-cols-1">

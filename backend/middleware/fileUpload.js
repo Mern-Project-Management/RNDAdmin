@@ -53,7 +53,6 @@ const upload = multer({
   }
 });
 
-// Track files that need cleanup
 const filesToCleanup = new Set();
 
 // Schedule cleanup every 5 minutes
