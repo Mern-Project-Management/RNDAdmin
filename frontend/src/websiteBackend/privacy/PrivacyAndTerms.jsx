@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Form, Button, message, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -18,7 +18,9 @@ const PrivacyForm = () => {
   const [alt, setAlt] = useState('');
   const [imgTitle, setImgTitle] = useState('');
 
-  // Quill modules configuration
+  // Guard: prevent ReactQuill's initial empty onChange from wiping loaded DB content
+  const dataLoadedRef = useRef(false);
+
   const modules = useMemo(
     () => ({
       toolbar: [
@@ -26,43 +28,21 @@ const PrivacyForm = () => {
         [{ font: [] }],
         [{ size: [] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [
-          { list: 'ordered' },
-          { list: 'bullet' },
-          { indent: '-1' },
-          { indent: '+1' },
-        ],
+        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
         ['link', 'image', 'video'],
         [{ align: [] }],
         [{ color: [] }, { background: [] }],
         ['clean'],
       ],
-      clipboard: {
-        matchVisual: false,
-      },
+      clipboard: { matchVisual: false },
     }),
     []
   );
 
-  // Quill formats
   const formats = [
-    'header',
-    'font',
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'video',
-    'align',
-    'color',
-    'background',
+    'header', 'font', 'size', 'bold', 'italic', 'underline',
+    'strike', 'blockquote', 'list', 'bullet', 'indent',
+    'link', 'image', 'video', 'align', 'color', 'background',
   ];
 
   useEffect(() => {
@@ -73,15 +53,16 @@ const PrivacyForm = () => {
           const privacyData = response.data[0];
           setPrivacyPolicy(privacyData.privacyPolicy);
           setPrivacyId(privacyData._id);
-          form.setFieldsValue({
-            privacyPolicy: privacyData.privacyPolicy,
-          });
+          form.setFieldsValue({ privacyPolicy: privacyData.privacyPolicy });
           setIsExistingData(true);
         }
       } catch (error) {
         message.error('Failed to fetch privacy data');
       } finally {
         setIsLoading(false);
+        // Mark data as loaded AFTER everything is set
+        // Small timeout ensures ReactQuill's initial onChange fires before this flag is set
+        setTimeout(() => { dataLoadedRef.current = true; }, 100);
       }
     };
 
@@ -105,27 +86,23 @@ const PrivacyForm = () => {
   };
 
   const handleEditorChange = (content) => {
-    // Guard: ReactQuill fires onChange with empty string on initial mount
-    // Don't overwrite already-loaded DB content with an empty reset
-    if (!content || content === '<p><br></p>') {
-      if (privacyPolicy && privacyPolicy !== '<p><br></p>') {
-        return; // Ignore the empty reset, keep DB content
-      }
-    }
+    // Block any changes until data has fully loaded from the API
+    if (!dataLoadedRef.current) return;
+
     setPrivacyPolicy(content);
     form.setFieldsValue({ privacyPolicy: content });
   };
 
   const handleFinish = async () => {
     try {
-      // Use form field value as source of truth (most reliable after edits)
       const currentContent = form.getFieldValue('privacyPolicy') || privacyPolicy;
-      const dataToSend = { privacyPolicy: currentContent };
 
       if (!currentContent || currentContent.replace(/<[^>]*>/g, '').trim() === '') {
         message.error('Privacy policy content cannot be empty');
         return;
       }
+
+      const dataToSend = { privacyPolicy: currentContent };
 
       if (isExistingData) {
         await axios.put(`/api/privacy/${privacyId}`, dataToSend);
@@ -143,15 +120,19 @@ const PrivacyForm = () => {
 
   const saveHeadings = async () => {
     const formData = new FormData();
-    formData.append("heading", heading);
-    formData.append("subheading", subheading);
-    formData.append("alt", alt);
-    formData.append("imgTitle", imgTitle);
+    formData.append('heading', heading);
+    formData.append('subheading', subheading);
+    formData.append('alt', alt);
+    formData.append('imgTitle', imgTitle);
     if (photo instanceof File) {
-      formData.append("photo", photo);
+      formData.append('photo', photo);
     }
     try {
-      await axios.put('/api/pageHeading/updateHeading?pageType=privacy-policy', formData, { withCredentials: true });
+      await axios.put(
+        '/api/pageHeading/updateHeading?pageType=privacy-policy',
+        formData,
+        { withCredentials: true }
+      );
       message.success('Page heading updated successfully!');
     } catch (error) {
       console.error('Failed to update page heading:', error);
@@ -163,16 +144,16 @@ const PrivacyForm = () => {
     setPhoto(e.target.files[0]);
   };
 
-
   return (
     <>
-      <Breadcrumb className='mb-4'>
+      <Breadcrumb className="mb-4">
         <Breadcrumb.Item>
           <Link to="/dashboard">Dashboard</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>Privacy Form</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="mb-8 border border-gray-200 shadow-lg p-4 rounded ">
+
+      <div className="mb-8 border border-gray-200 shadow-lg p-4 rounded">
         <h3 className="text-lg font-semibold mb-4">Edit Page Heading</h3>
         <div className="grid md:grid-cols-2 md:gap-6 grid-cols-1">
           <div className="mb-6">
@@ -185,7 +166,7 @@ const PrivacyForm = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Sub heading</label>
+            <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Sub Heading</label>
             <input
               type="text"
               value={subheading}
@@ -219,7 +200,6 @@ const PrivacyForm = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-
         </div>
         <button
           onClick={saveHeadings}
@@ -228,25 +208,22 @@ const PrivacyForm = () => {
           Save Headings
         </button>
       </div>
+
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Form.Item
           name="privacyPolicy"
           label="Privacy Policy"
           rules={[
-            {
-              required: true,
-              message: 'Please enter the privacy policy'
-            },
+            { required: true, message: 'Please enter the privacy policy' },
             {
               validator: (_, value) => {
-                // Check if content is empty (Quill returns '<p><br></p>' for empty content)
                 const textContent = value?.replace(/<[^>]*>/g, '').trim();
                 if (!textContent || textContent === '') {
                   return Promise.reject('Please enter the privacy policy');
                 }
                 return Promise.resolve();
-              }
-            }
+              },
+            },
           ]}
         >
           <ReactQuill
@@ -263,7 +240,9 @@ const PrivacyForm = () => {
           <Button type="primary" htmlType="submit" loading={isLoading} disabled={isLoading}>
             {isExistingData ? 'Update' : 'Save'}
           </Button>
-          {isLoading && <span className="ml-3 text-gray-500 text-sm">Loading data...</span>}
+          {isLoading && (
+            <span className="ml-3 text-gray-500 text-sm">Loading data...</span>
+          )}
         </Form.Item>
       </Form>
     </>
