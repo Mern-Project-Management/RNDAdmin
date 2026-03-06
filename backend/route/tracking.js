@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const ClickEvent = require('../model/clickEvent');
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 
 // Track event
 router.post('/track-event', async (req, res) => {
