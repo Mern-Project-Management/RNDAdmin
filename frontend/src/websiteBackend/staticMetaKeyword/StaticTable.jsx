@@ -61,6 +61,12 @@ const MetaList = () => {
       key: "metaKeyword",
     },
     {
+      title: "Canonical Link",
+      dataIndex: "canonicalLink",
+      key: "canonicalLink",
+      render: (text) => text ? <a href={text} target="_blank" rel="noopener noreferrer">{text}</a> : "-",
+    },
+    {
       title: "Actions",
       key: "actions",
       render: (text, record) => (

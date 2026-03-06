@@ -3,8 +3,8 @@ const Meta = require('../model/staticMeta');
 // Create a new meta
 exports.createMeta = async (req, res) => {
     try {
-        const { pageName, metaTitle,pageSlug, metaDescription, metaKeyword } = req.body;
-        const newMeta = new Meta({ pageName, metaTitle, metaDescription, metaKeyword,pageSlug });
+        const { pageName, metaTitle, pageSlug, metaDescription, metaKeyword, canonicalLink } = req.body;
+        const newMeta = new Meta({ pageName, metaTitle, metaDescription, metaKeyword, pageSlug, canonicalLink });
         await newMeta.save();
         res.status(201).json({ success: true, data: newMeta });
     } catch (error) {
@@ -51,10 +51,10 @@ exports.getMetaById = async (req, res) => {
 // Update a meta by ID
 exports.updateMeta = async (req, res) => {
     try {
-        const { pageName, metaTitle, metaDescription,pageSlug, metaKeyword } = req.body;
+        const { pageName, metaTitle, metaDescription, pageSlug, metaKeyword, canonicalLink } = req.body;
         const updatedMeta = await Meta.findByIdAndUpdate(
             req.params.id,
-            { pageName, metaTitle, metaDescription, metaKeyword ,pageSlug},
+            { pageName, metaTitle, metaDescription, metaKeyword, pageSlug, canonicalLink },
             { new: true, runValidators: true }
         );
         if (!updatedMeta) {
