@@ -1,6 +1,5 @@
 import React from 'react'
 import Slideshow from './../componets/home/SlideShow';
-import NavigationMenu from '../componets/home/NavigationMenu';
 import CategoryCards from '../componets/home/CategoryCards';
 import FeaturedProducts from '../componets/home/FeatureProducts';
 import CorporateProfile from '../componets/home/CorporateProfile';
@@ -12,11 +11,10 @@ const HomePage = () => {
     <div className='w-full'>
       {/* <h1 className="text-3xl font-bold mb-4 text-center">Responsive Slideshow</h1> */}
       <Slideshow />
-      <NavigationMenu />
       <CategoryCards />
       <FeaturedProducts />
       <CorporateProfile />
-      
+
     </div>
   )
 }

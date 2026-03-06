@@ -6,7 +6,6 @@ import { chemicalTypeApi } from '@/slice/chemicalType/chemicalType';
 import { unitApi } from '@/slice/chemicalUnit/unitSlice';
 import { chemicalCategoryApi } from '@/slice/chemicalSlice/chemicalCategory';
 import { smtpApi } from '@/slice/smtpSlice/smtp';
-import {navigationLinkApi } from '@/slice/navigationLink/navigationSlice';  
 import { inquiryApi } from '@/slice/inquiry/inquiry';
 import { followupApi } from '@/slice/followUp/followUp';
 import { catalogueApi } from '@/slice/catalogue/catalogueslice';
@@ -27,7 +26,7 @@ import { logoApi } from '../slice/logo/LogoSlice';
 import { contactInfoApi } from '../slice/contactInfo/contactInfo';
 import { metaApi } from '@/slice/staticMeta/staticMeta';
 import { menuListingApi } from '@/slice/menuListing/menuList';
-import{whatsUpInfoApi} from '@/slice/whatsUpInfo/WhatsUpInfo';
+import { whatsUpInfoApi } from '@/slice/whatsUpInfo/WhatsUpInfo';
 import { coreValueApi } from '@/slice/coreValue/coreValue';
 import { policyApi } from '@/slice/policy/policy';
 const store = configureStore({
@@ -44,10 +43,10 @@ const store = configureStore({
     [templateApi.reducerPath]: templateApi.reducer, // Email template reducer
     [statusApi.reducerPath]: statusApi.reducer, // RTK Query reducer for status
     [sourceApi.reducerPath]: sourceApi.reducer, // RTK Query reducer for source
-    [adminApi.reducerPath]:adminApi.reducer,
-    [blogCategoryApi.reducerPath]:blogCategoryApi.reducer,
-    [blogApi.reducerPath]:blogApi.reducer,
-    [emailApi.reducerPath]:emailApi.reducer,
+    [adminApi.reducerPath]: adminApi.reducer,
+    [blogCategoryApi.reducerPath]: blogCategoryApi.reducer,
+    [blogApi.reducerPath]: blogApi.reducer,
+    [emailApi.reducerPath]: emailApi.reducer,
     [productInquiryApi.reducerPath]: productInquiryApi.reducer, // RTK Query reducer for product inquiries
     [aboutUsApi.reducerPath]: aboutUsApi.reducer,
     [bannerApi.reducerPath]: bannerApi.reducer,
@@ -58,8 +57,7 @@ const store = configureStore({
     [contactInfoApi.reducerPath]: contactInfoApi.reducer,
     [metaApi.reducerPath]: metaApi.reducer,
     [menuListingApi.reducerPath]: menuListingApi.reducer,
-    [whatsUpInfoApi.reducerPath]:whatsUpInfoApi.reducer ,
-    [navigationLinkApi.reducerPath]: navigationLinkApi.reducer,
+    [whatsUpInfoApi.reducerPath]: whatsUpInfoApi.reducer,
     [catalogueApi.reducerPath]: catalogueApi.reducer,
     [coreValueApi.reducerPath]: coreValueApi.reducer,
     [policyApi.reducerPath]: policyApi.reducer
@@ -95,7 +93,6 @@ const store = configureStore({
       .concat(metaApi.middleware)
       .concat(menuListingApi.middleware)
       .concat(whatsUpInfoApi.middleware)
-      .concat(navigationLinkApi.middleware)
       .concat(catalogueApi.middleware)
       .concat(coreValueApi.middleware)
       .concat(policyApi.middleware),
