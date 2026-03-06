@@ -119,7 +119,6 @@ const TermsAndConditions = lazy(() => import('./website/pages/TermsandCondition'
 const WhatsUpInfoTable = lazy(() => import('./websiteBackend/whatsUpInfo/WhatsUpTable'));
 const WhatsUpInfoForm = lazy(() => import('./websiteBackend/whatsUpInfo/WhatUpForm'));
 const EventForm = lazy(() => import('./websiteBackend/event/Events'));
-const BlogCardForm = lazy(() => import('./websiteBackend/blogCard/BlogCard'));
 const NavigationLinkTable = lazy(() => import('./websiteBackend/navigationLinks/NavigationLinkTable'));
 const NavigationLinkForm = lazy(() => import('./websiteBackend/navigationLinks/NavigationLinkForm'));
 const CatalogueTable = lazy(() => import('./websiteBackend/catalogue/CatalogueTable'));
@@ -205,7 +204,7 @@ function App() {
       path: '/',
       element: <AppContent />, // Use the AppContent here
       children: [
-       
+
         {
           path: 'login',
           element: <Suspense fallback={<LoadingFallback />}><LoginRoute /></Suspense>
@@ -247,7 +246,7 @@ function App() {
             { path: 'add-core-value', element: <Suspense fallback={<LoadingFallback />}><AddCoreValue /></Suspense> },
             { path: 'edit-core-value/:id', element: <Suspense fallback={<LoadingFallback />}><EditCoreValue /></Suspense> },
 
-          
+
             //Service Management Routes
             { path: 'service-category', element: <Suspense fallback={<LoadingFallback />}><CategoryTable /></Suspense> },
             { path: 'service-category-form', element: <Suspense fallback={<LoadingFallback />}><ServiceCategoryForm /></Suspense> },
@@ -279,10 +278,11 @@ function App() {
 
             // Portfolio Management Routes
             { path: 'portfolio-category', element: <Suspense fallback={<LoadingFallback />}><PorfolioCategoryTable /></Suspense> },
-            {path:'/portfolio-category/:categoryId/:subCategoryId?/:subSubCategoryId?',element:<Suspense fallback={<LoadingFallback />}><EditPortfolioCategory /></Suspense>
-          },
+            {
+              path: '/portfolio-category/:categoryId/:subCategoryId?/:subSubCategoryId?', element: <Suspense fallback={<LoadingFallback />}><EditPortfolioCategory /></Suspense>
+            },
             { path: 'portfolio-category-form', element: <Suspense fallback={<LoadingFallback />}><PortfolioCategoryForm /></Suspense> },
-        
+
             { path: 'portfolio', element: <Suspense fallback={<LoadingFallback />}><PortfolioTable /></Suspense> },
             { path: 'portfolio-form', element: <Suspense fallback={<LoadingFallback />}><PortfolioForm /></Suspense> },
             { path: 'portfolio/:categoryId/:subCategoryId?/:subSubCategoryId?', element: <Suspense fallback={<LoadingFallback />}><EditPortfolio /></Suspense> },
@@ -333,7 +333,7 @@ function App() {
 
             // Career Management Routes
             { path: 'career-table', element: <Suspense fallback={<LoadingFallback />}><CareerTable /></Suspense> },
-              { path: 'JobApplication', element: <Suspense fallback={<LoadingFallback />}><CareerOptionTable /></Suspense> },
+            { path: 'JobApplication', element: <Suspense fallback={<LoadingFallback />}><CareerOptionTable /></Suspense> },
             { path: 'career/add', element: <Suspense fallback={<LoadingFallback />}><CareerOptionForm /></Suspense> },
             { path: 'careeroption/editCareerOption/:id', element: <Suspense fallback={<LoadingFallback />}><EditCareerOptionForm /></Suspense> },
             { path: 'career-info-form', element: <Suspense fallback={<LoadingFallback />}><CareerInfoForm /></Suspense> },
@@ -368,9 +368,6 @@ function App() {
 
             // Events
             { path: 'events', element: <Suspense fallback={<LoadingFallback />}><EventForm /></Suspense> },
-
-            // Blog card
-            { path: 'blogCard', element: <Suspense fallback={<LoadingFallback />}><BlogCardForm /></Suspense> },
 
             // Navigation Link
             { path: 'navigationLink', element: <Suspense fallback={<LoadingFallback />}><NavigationLinkTable /></Suspense> },

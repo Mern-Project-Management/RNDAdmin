@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
 const { generateAllSitemaps } = require('./route/sitemap');
- 
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -61,7 +61,7 @@ app.use(express.static(path.join(__dirname, 'dist'), {
 const apiRoutes = [
   ['/api/admin', admin],
   ['/api/supplier', require('./route/supplier')],
-   ['/api/services', require('./routes/services')],
+  ['/api/services', require('./routes/services')],
   ['/api/faq', require('./route/FAQ')],
   ['/api/portfolio', require('./route/portfolio')],
   ['/api/pageHeading', require('./route/pageHeading.js')],
@@ -70,7 +70,7 @@ const apiRoutes = [
   ['/api/customer', require('./route/customer')],
   ['/api/chemicalType', require('./route/chemicalType')],
   ['/api/unit', require('./route/unit')],
-  ['/api/smtp', require('./route/smtp_setting')], 
+  ['/api/smtp', require('./route/smtp_setting')],
   ['/api/inquiry', require('./route/inquiry')],
   ['/api/followUp', require('./route/followUp')],
   ['/api/status', require('./route/statusMaster')],
@@ -99,7 +99,6 @@ const apiRoutes = [
   ['/api/slideshow', require('./route/slideShow')],
   ['/api/whatsup', require('./route/whatsUpInfo')],
   ['/api/events', require('./route/events')],
-  ['/api/blogCard', require('./route/blogCard')],
   ['/api/navigationLink', require('./route/NavigationLink')],
   ['/api/catalogue', require('./route/catalogue')],
   ['/api/privacy', require('./route/privacy')],
