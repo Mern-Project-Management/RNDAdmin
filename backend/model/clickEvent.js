@@ -6,15 +6,15 @@ const clickEventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  
+
   page: String,
   buttonName: String,
- 
+
   timestamp: {
     type: Date,
     default: Date.now
   },
-   repetitionCount: {
+  repetitionCount: {
     type: Number,
     default: 1
   },
