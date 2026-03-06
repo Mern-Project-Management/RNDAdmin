@@ -6,9 +6,12 @@ const clickEventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
+  userId: String,
+  sessionId: String,
   page: String,
   buttonName: String,
+  productId: String,
+  productName: String,
 
   timestamp: {
     type: Date,

@@ -20,7 +20,7 @@ router.post('/track-event', async (req, res) => {
       metadata
     } = req.body;
 
-    const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+    const ipAddress = req.body.ipAddress || req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
 
     // Validate required field
     if (!eventType) {
@@ -32,12 +32,13 @@ router.post('/track-event', async (req, res) => {
 
     // Define fields to check for duplicates
     const duplicateQuery = {
-      ipAddress,
       eventType,
       page: page || null,
       buttonName: buttonName || null,
       productId: productId || null,
-      productName: productName || null
+      productName: productName || null,
+      userId: userId || null,
+      sessionId: sessionId || null
     };
 
     // Look for existing event
