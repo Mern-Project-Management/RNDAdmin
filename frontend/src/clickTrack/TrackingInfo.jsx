@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import EventTable from "./Event-Table"
 import EventCharts from "./Events-Chart"
 import { BarChart3 } from "lucide-react"
+import axios from "axios"
 
 export default function TrackingInfo() {
   const [activeTab, setActiveTab] = useState("table")
@@ -17,16 +18,19 @@ export default function TrackingInfo() {
       try {
         setLoading(true)
         const [eventsRes, analyticsRes] = await Promise.all([
-          fetch("/api/tracking/events"),
-          fetch("/api/tracking/analytics"),
+          axios.get("/api/tracking/events"),
+          axios.get("/api/tracking/analytics"),
         ])
-
-        if (!eventsRes.ok || !analyticsRes.ok) {
+        console.log(eventsRes, analyticsRes);
+        if (eventsRes.status !== 200 || analyticsRes.status !== 200) {
           throw new Error("Failed to fetch data")
         }
 
-        const eventsData = await eventsRes.json()
-        const analyticsData = await analyticsRes.json()
+        const eventsData = eventsRes.data;
+        const analyticsData = analyticsRes.data;
+
+        console.log("Tracking Events Response:", eventsData);
+        console.log("Tracking Analytics Response:", analyticsData);
 
         setEvents(eventsData.events || [])
         setAnalytics(analyticsData)
@@ -100,21 +104,19 @@ export default function TrackingInfo() {
           <div className="flex border-b border-gray-200 bg-gray-50">
             <button
               onClick={() => setActiveTab("table")}
-              className={`flex-1 px-6 py-4 font-semibold text-sm transition-all duration-300 ${
-                activeTab === "table"
-                  ? "text-red-600 border-b-2 border-red-500 bg-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+              className={`flex-1 px-6 py-4 font-semibold text-sm transition-all duration-300 ${activeTab === "table"
+                ? "text-red-600 border-b-2 border-red-500 bg-white"
+                : "text-gray-600 hover:text-gray-900"
+                }`}
             >
               📊 Table View
             </button>
             <button
               onClick={() => setActiveTab("charts")}
-              className={`flex-1 px-6 py-4 font-semibold text-sm transition-all duration-300 ${
-                activeTab === "charts"
-                  ? "text-red-600 border-b-2 border-red-500 bg-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+              className={`flex-1 px-6 py-4 font-semibold text-sm transition-all duration-300 ${activeTab === "charts"
+                ? "text-red-600 border-b-2 border-red-500 bg-white"
+                : "text-gray-600 hover:text-gray-900"
+                }`}
             >
               📈 Analytics View
             </button>

@@ -10,8 +10,10 @@ const app = express();
 require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { generateAllSitemaps } = require('./route/sitemap');
 
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -117,7 +119,8 @@ const apiRoutes = [
   ['/api/video', require('./route/video')],
   ['/api/footer', require('./route/footer')],
   ['/api/text-slider', require('./route/textSliderRoutes')],
-  ['/api/socialMedia', require('./route/socialMedia')]
+  ['/api/socialMedia', require('./route/socialMedia')],
+  ['/api/tracking', require('./route/tracking')]
 ];
 
 // Apply cache middleware to all API routes

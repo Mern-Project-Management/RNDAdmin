@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, Home, MessageCircle, Users, Settings,
-  Hotel, Car, MoreHorizontal, RefreshCw, Server, Briefcase
+  Hotel, Car, MoreHorizontal, RefreshCw, Server, Briefcase, Activity
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,7 @@ export function SidebarNav({ className, ...props }) {
     { href: '/dashboard', title: 'Dashboard', icon: LayoutDashboard },
     { href: '/home', title: 'Home', icon: Home },
     { href: '/query', title: 'Query', icon: MessageCircle },
+    { href: '/tracking', title: 'Website Tracking', icon: Activity },
   ]
 
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Trash2, X, AlertTriangle } from "lucide-react"
+import axios from "axios"
 
 export default function EventTable({ data: initialData }) {
   const [data, setData] = useState(initialData)
@@ -42,18 +43,16 @@ export default function EventTable({ data: initialData }) {
 
   const handleDelete = async (eventId) => {
     setDeletingId(eventId)
-    
-    try {
-      const response = await fetch(`/api/tracking/delete?id=${eventId}`, {
-        method: 'DELETE',
-      })
 
-      const result = await response.json()
+    try {
+      const response = await axios.delete(`/api/tracking/delete?id=${eventId}`)
+
+      const result = response.data
 
       if (result.success) {
         // Remove the deleted item from local state
         setData(prevData => prevData.filter(event => event._id !== eventId))
-        
+
         // Adjust current page if needed
         const newTotalPages = Math.ceil((data.length - 1) / itemsPerPage)
         if (currentPage > newTotalPages && newTotalPages > 0) {
@@ -86,8 +85,8 @@ export default function EventTable({ data: initialData }) {
     if (sortConfig?.key !== column) {
       return <ChevronUp className="w-4 h-4 opacity-40" />
     }
-    return sortConfig.direction === "asc" ? 
-      <ChevronUp className="w-4 h-4" /> : 
+    return sortConfig.direction === "asc" ?
+      <ChevronUp className="w-4 h-4" /> :
       <ChevronDown className="w-4 h-4" />
   }
 
@@ -174,11 +173,10 @@ export default function EventTable({ data: initialData }) {
             {paginatedData.map((event, idx) => (
               <tr
                 key={event._id}
-                className={`border-b border-gray-200 transition-colors ${
-                  idx % 2 === 0
+                className={`border-b border-gray-200 transition-colors ${idx % 2 === 0
                     ? "bg-white hover:bg-gray-50"
                     : "bg-gray-50 hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 <td className="px-6 py-4 text-sm text-gray-700 font-medium">
                   {formatDate(event.timestamp)}
@@ -252,11 +250,10 @@ export default function EventTable({ data: initialData }) {
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`w-9 h-9 rounded-lg text-sm font-semibold transition-all ${
-                    currentPage === page
+                  className={`w-9 h-9 rounded-lg text-sm font-semibold transition-all ${currentPage === page
                       ? "bg-red-600 text-white shadow-lg"
                       : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                  }`}
+                    }`}
                 >
                   {page}
                 </button>

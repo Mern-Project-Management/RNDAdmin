@@ -11,6 +11,8 @@ const LoadingFallback = () => (
   </div>
 );
 
+import { useClickTracking } from './hooks/useTracking';
+
 
 // Website Components - Lazy loaded
 const Navbar = lazy(() => import('./website/Navbar'));
@@ -185,6 +187,75 @@ const LoginRoute = () => {
 // Dynamic meta function
 const AppContent = () => {
   useDocumentTitle(); // Use the hook here
+  const { trackEvent } = useClickTracking(); // Initialize page tracking
+  const location = useLocation();
+
+  React.useEffect(() => {
+    // List of all admin-related parent paths that shouldn't be tracked
+    const isAdminRoute = [
+      '/login', '/dashboard', '/chemical', '/service', '/portfolio', '/smtp',
+      '/email', '/inquiry', '/source', '/status', '/faq', '/blog',
+      '/product-inquiry', '/about-us', '/banner', '/video', '/footer',
+      '/social-media', '/worldwide', '/career', '/logo', '/contact-info',
+      '/menu-listing', '/meta', '/slideShow', '/whatsUpInfo', '/events',
+      '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
+      '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
+      '/policy', '/counter', '/text-slider', '/add-', '/edit-'
+    ].some(route => location.pathname.startsWith(route) || location.pathname.includes(route));
+
+    // We only want to track public website views
+    if (!location.pathname.startsWith('/api') && !isAdminRoute) {
+      trackEvent('page_view', { page: location.pathname });
+    }
+  }, [location.pathname, trackEvent]);
+
+  React.useEffect(() => {
+    const handleGlobalClick = (e) => {
+      // Re-check admin status for clicks
+      const isAdminRoute = [
+        '/login', '/dashboard', '/chemical', '/service', '/portfolio', '/smtp',
+        '/email', '/inquiry', '/source', '/status', '/faq', '/blog',
+        '/product-inquiry', '/about-us', '/banner', '/video', '/footer',
+        '/social-media', '/worldwide', '/career', '/logo', '/contact-info',
+        '/menu-listing', '/meta', '/slideShow', '/whatsUpInfo', '/events',
+        '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
+        '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
+        '/policy', '/counter', '/text-slider', '/add-', '/edit-'
+      ].some(route => location.pathname.startsWith(route) || location.pathname.includes(route));
+
+      // Don't track admin dashboard testing
+      if (isAdminRoute) return;
+
+      // Find the closest clickable element (button, link, etc)
+      const clickableElement = e.target.closest('button, a, [role="button"], input[type="submit"]');
+
+      if (clickableElement) {
+        let buttonName = clickableElement.innerText || clickableElement.getAttribute('aria-label') || clickableElement.value;
+
+        // Clean up the text
+        if (typeof buttonName === 'string') {
+          buttonName = buttonName.trim().substring(0, 50); // limit length
+        } else {
+          buttonName = 'Icon/Image Button';
+        }
+
+        // Only track if it has some identifying text or attributes
+        if (buttonName) {
+          trackEvent('click', {
+            buttonName: buttonName,
+            page: location.pathname
+          });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick);
+
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+    };
+  }, [location.pathname, trackEvent]);
+
   <CriticalStyles />
   return (
     <Suspense fallback={<LoadingFallback />}>
