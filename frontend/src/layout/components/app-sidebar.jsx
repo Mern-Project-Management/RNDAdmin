@@ -138,14 +138,7 @@ const menuData = [
 
         ]
       },
-      {
-        title: "Hero Section",
-        icon: PanelTop,
-        children: [
-          { title: "List", icon: List, url: "/hero-section-table" },
-          { title: "Add New", icon: PlusSquare, url: "/hero-section-form" },
-        ]
-      },
+
       {
         title: "Video",
         icon: Video,
@@ -226,14 +219,7 @@ const menuData = [
           { title: "Tracking Info", icon: List, url: "/tracking" },
         ]
       },
-      {
-        title: "Navigation Link",
-        icon: LinkIcon,
-        children: [
-          { title: "List", icon: List, url: "/navigationLink" },
-          { title: "Add New", icon: PlusSquare, url: "/navigationLink-form" },
-        ]
-      },
+
       {
         title: "catalogue Management",
         icon: BookCopy,

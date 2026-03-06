@@ -87,8 +87,6 @@ const AddBannerForm = lazy(() => import('./websiteBackend/banner/AddBannerForm')
 const EditBannerForm = lazy(() => import('./websiteBackend/banner/EditBannerForm'));
 const VideoTable = lazy(() => import('./components/ui/VideoTable'));
 const VideoForm = lazy(() => import('./components/ui/VideoForm'));
-const HeroSectionTable = lazy(() => import('./components/ui/HeroSectionTable'));
-const HeroSectionForm = lazy(() => import('./components/ui/HeroSectionForm'));
 const FooterTable = lazy(() => import('./websiteBackend/footer/FooterTable'));
 const FooterForm = lazy(() => import('./websiteBackend/footer/FooterForm'));
 const SocialMediaTable = lazy(() => import('./components/SocialMedia/SocialMediaTable'));
@@ -119,8 +117,6 @@ const TermsAndConditions = lazy(() => import('./website/pages/TermsandCondition'
 const WhatsUpInfoTable = lazy(() => import('./websiteBackend/whatsUpInfo/WhatsUpTable'));
 const WhatsUpInfoForm = lazy(() => import('./websiteBackend/whatsUpInfo/WhatUpForm'));
 const EventForm = lazy(() => import('./websiteBackend/event/Events'));
-const NavigationLinkTable = lazy(() => import('./websiteBackend/navigationLinks/NavigationLinkTable'));
-const NavigationLinkForm = lazy(() => import('./websiteBackend/navigationLinks/NavigationLinkForm'));
 const CatalogueTable = lazy(() => import('./websiteBackend/catalogue/CatalogueTable'));
 const CatalogueForm = lazy(() => import('./websiteBackend/catalogue/CatalogueForm'));
 const PrivacyForm = lazy(() => import('./websiteBackend/privacy/PrivacyAndTerms'));
@@ -312,11 +308,6 @@ function App() {
             { path: 'video-table', element: <Suspense fallback={<LoadingFallback />}><VideoTable /></Suspense> },
             { path: 'video-form', element: <Suspense fallback={<LoadingFallback />}><VideoForm /></Suspense> },
 
-            // Hero Section Routes
-            { path: 'hero-section-table', element: <Suspense fallback={<LoadingFallback />}><HeroSectionTable /></Suspense> },
-            { path: 'hero-section-form', element: <Suspense fallback={<LoadingFallback />}><HeroSectionForm /></Suspense> },
-            { path: 'hero-section-form/:id', element: <Suspense fallback={<LoadingFallback />}><HeroSectionForm /></Suspense> },
-
             // Footer Routes
             { path: 'footer-table', element: <Suspense fallback={<LoadingFallback />}><FooterTable /></Suspense> },
             { path: 'footer-form', element: <Suspense fallback={<LoadingFallback />}><FooterForm /></Suspense> },
@@ -368,11 +359,6 @@ function App() {
 
             // Events
             { path: 'events', element: <Suspense fallback={<LoadingFallback />}><EventForm /></Suspense> },
-
-            // Navigation Link
-            { path: 'navigationLink', element: <Suspense fallback={<LoadingFallback />}><NavigationLinkTable /></Suspense> },
-            { path: 'navigationLink-form', element: <Suspense fallback={<LoadingFallback />}><NavigationLinkForm /></Suspense> },
-            { path: 'edit-navigation-link/:id', element: <Suspense fallback={<LoadingFallback />}><NavigationLinkForm /></Suspense> },
 
             // Catalogue Management Routes
             { path: 'catalogue-table', element: <Suspense fallback={<LoadingFallback />}><CatalogueTable /></Suspense> },
