@@ -190,9 +190,9 @@ const AppContent = () => {
   const { trackEvent } = useClickTracking(); // Initialize page tracking
   const location = useLocation();
 
-  React.useEffect(() => {
-    // List of all admin-related parent paths that shouldn't be tracked
-    const isAdminRoute = [
+  // Helper to check if current path is an admin/dashboard route
+  const isAdminPath = (pathname) => {
+    const adminFragments = [
       '/login', '/dashboard', '/chemical', '/service', '/portfolio', '/smtp',
       '/email', '/inquiry', '/source', '/status', '/faq', '/blog',
       '/product-inquiry', '/about-us', '/banner', '/video', '/footer',
@@ -200,31 +200,26 @@ const AppContent = () => {
       '/menu-listing', '/meta', '/slideShow', '/whatsUpInfo', '/events',
       '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
       '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
-      '/policy', '/counter', '/text-slider', '/add-', '/edit-'
-    ].some(route => location.pathname.startsWith(route) || location.pathname.includes(route));
+      '/policy', '/counter', '/text-slider', '/staff', '/list', '/table',
+      '/form', '/add-', '/edit-', '/admin'
+    ];
+    return adminFragments.some(fragment =>
+      pathname.toLowerCase().startsWith(fragment.toLowerCase()) ||
+      pathname.toLowerCase().includes(fragment.toLowerCase())
+    );
+  };
 
+  React.useEffect(() => {
     // We only want to track public website views
-    if (!location.pathname.startsWith('/api') && !isAdminRoute) {
+    if (!location.pathname.startsWith('/api') && !isAdminPath(location.pathname)) {
       trackEvent('page_view', { page: location.pathname });
     }
   }, [location.pathname, trackEvent]);
 
   React.useEffect(() => {
     const handleGlobalClick = (e) => {
-      // Re-check admin status for clicks
-      const isAdminRoute = [
-        '/login', '/dashboard', '/chemical', '/service', '/portfolio', '/smtp',
-        '/email', '/inquiry', '/source', '/status', '/faq', '/blog',
-        '/product-inquiry', '/about-us', '/banner', '/video', '/footer',
-        '/social-media', '/worldwide', '/career', '/logo', '/contact-info',
-        '/menu-listing', '/meta', '/slideShow', '/whatsUpInfo', '/events',
-        '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
-        '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
-        '/policy', '/counter', '/text-slider', '/add-', '/edit-'
-      ].some(route => location.pathname.startsWith(route) || location.pathname.includes(route));
-
-      // Don't track admin dashboard testing
-      if (isAdminRoute) return;
+      // Don't track clicks on admin dashboard
+      if (isAdminPath(location.pathname)) return;
 
       // Find the closest clickable element (button, link, etc)
       const clickableElement = e.target.closest('button, a, [role="button"], input[type="submit"]');
