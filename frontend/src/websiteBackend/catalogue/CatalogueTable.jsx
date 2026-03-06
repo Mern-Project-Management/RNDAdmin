@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetAllCataloguesQuery, useDeleteCatalogueMutation } from"@/slice/catalogue/catalogueslice";
+import { useGetAllCataloguesQuery, useDeleteCatalogueMutation } from "@/slice/catalogue/catalogueslice";
 import { Table, Button, Space, message, Breadcrumb } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNavigate, Link } from 'react-router-dom';
@@ -66,7 +66,15 @@ const CatalogueTable = () => {
         </Breadcrumb.Item>
         <Breadcrumb.Item>Catalogue Table</Breadcrumb.Item>
       </Breadcrumb>
-      <h1 className='font-bold text-2xl mb-3'>Catalogue Table</h1>
+      <div className="flex justify-between items-center mb-3">
+        <h1 className='font-bold text-2xl'>Catalogue Table</h1>
+        <Button
+          type="primary"
+          onClick={() => navigate('/catalogue-form')}
+        >
+          Add Catalogue
+        </Button>
+      </div>
       <Table columns={columns} dataSource={catalogues} rowKey="_id" />
     </>
   );

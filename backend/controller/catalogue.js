@@ -55,8 +55,8 @@ const getCatalogueById = async (req, res) => {
 const updateCatalogue = async (req, res) => {
   try {
     const { title } = req.body;
-    const catalog = req.files.catalog ? req.files.catalog[0].filename : undefined;
-    const image = req.files.image ? req.files.image[0].filename : undefined;
+    const catalog = req.files?.catalog ? req.files.catalog[0].filename : undefined;
+    const image = req.files?.image ? req.files.image[0].filename : undefined;
     const updateData = { title };
     if (catalog) updateData.catalogue = catalog;
     if (image) updateData.image = image;

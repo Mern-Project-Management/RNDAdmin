@@ -225,7 +225,7 @@ const menuData = [
         icon: BookCopy,
         children: [
           { title: "Catalogue List", icon: List, url: "/catalogue-table" },
-          // {title:"Add New",icon:PlusSquare,url:"/catalogue-form"}
+          { title: "Add New", icon: PlusSquare, url: "/catalogue-form" }
         ]
       },
       {
