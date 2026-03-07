@@ -65,7 +65,7 @@ export default function InquiryList() {
                 item.organisation.toLowerCase().includes(companyNameFilter.toLowerCase())) &&
             (statusFilter === null || item.status === statusFilter) &&
             (sourceFilter === null || item.source === sourceFilter) &&
-            (nameFilter === null || 
+            (nameFilter === null ||
                 `${item.firstName} ${item.lastName}`.toLowerCase().includes(nameFilter.toLowerCase())) &&
             (emailFilter === "" ||
                 item.email.toLowerCase().includes(emailFilter.toLowerCase())) &&
@@ -128,11 +128,21 @@ export default function InquiryList() {
         );
     };
 
+    const formatUrl = (url) => {
+        if (!url || url === 'Manual Entry') return 'Manual Entry';
+        try {
+            const urlObj = new URL(url);
+            return urlObj.pathname;
+        } catch (e) {
+            return url;
+        }
+    };
+
     return (
         <div className="p-4">
             {selectedInquiries.length > 0 && (
                 <div className="mb-4">
-                    <Button 
+                    <Button
                         onClick={() => setShowEmailModal(true)}
                         className="bg-[#304a8a] hover:bg-purple-700"
                     >
@@ -146,7 +156,7 @@ export default function InquiryList() {
                     <DialogHeader>
                         <DialogTitle>Send Email to Selected Inquiries</DialogTitle>
                     </DialogHeader>
-                    <EmailForm 
+                    <EmailForm
                         defaultTo={selectedInquiryEmails}
                         onSuccess={() => {
                             setShowEmailModal(false);
@@ -173,6 +183,7 @@ export default function InquiryList() {
                         <TableHead className="w-12"></TableHead>
                         <TableHead className="lg:w-[100px] w-[50px] sticky left-0 bg-background z-50">Date</TableHead>
                         <TableHead className="text-left">Info</TableHead>
+                        <TableHead className="text-left">Page</TableHead>
                         {/* <TableHead className="text-left">Email</TableHead> */}
                         <TableHead className="text-left">Message</TableHead>
                         <TableHead className="text-left">Follow Up</TableHead>
@@ -189,6 +200,7 @@ export default function InquiryList() {
                                 onChange={(e) => setNameFilter(e.target.value)}
                             />
                         </TableHead>
+                        <TableHead></TableHead>
                         {/* <TableHead>
                             <Input
                                 placeholder="Email"
@@ -234,13 +246,18 @@ export default function InquiryList() {
                                     <div className="font-medium">{item.firstName} {item.lastName},</div>
                                     {item.organisation} ,
                                     <div className="text-sm text-muted-foreground">
-                                    {item.email}
+                                        {item.email}
                                     </div>
                                     <div className="text-sm text-muted-foreground">
-                                    
-                                        {item.phone} • {item.address} 
+
+                                        {item.phone} • {item.address}
                                     </div>
                                 </div>
+                            </TableCell>
+                            <TableCell>
+                                <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">
+                                    {formatUrl(item.url)}
+                                </span>
                             </TableCell>
                             {/* <TableCell>{item.email}</TableCell> */}
                             <TableCell>{item.message}</TableCell>
