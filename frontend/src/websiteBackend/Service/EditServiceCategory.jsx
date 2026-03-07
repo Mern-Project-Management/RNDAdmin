@@ -34,14 +34,14 @@ const EditServiceCategory = () => {
       if (categoryId && subCategoryId && subSubCategoryId) {
         urls = `/api/services/getSpecificSubSubcategory?categoryId=${categoryId}&subCategoryId=${subCategoryId}&subSubCategoryId=${subSubCategoryId}`;
       } else if (categoryId && subCategoryId) {
-        urls = `/api/service/getSpecificSubcategory?categoryId=${categoryId}&subCategoryId=${subCategoryId}`;
+        urls = `/api/services/getSpecificSubcategory?categoryId=${categoryId}&subCategoryId=${subCategoryId}`;
       } else if (categoryId) {
         urls = `/api/services/getSpecificCategory?categoryId=${categoryId}`;
       }
 
       try {
         const response = await axios.get(urls, { withCredentials: true });
-        const { category,tag,description, photo, alt, imgtitle, slug, metatitle, metadescription, metakeywords, metalanguage, metacanonical, metaschema, otherMeta, changeFreq, priority } = response.data;
+        const { category, tag, description, photo, alt, imgtitle, slug, metatitle, metadescription, metakeywords, metalanguage, metacanonical, metaschema, otherMeta, changeFreq, priority, status } = response.data;
 
         setCategory(category);
         setTag(tag);
@@ -74,7 +74,7 @@ const EditServiceCategory = () => {
     setPhoto(file);
   };
 
-  
+
   const handleDeleteImage = () => {
     setPhoto(null);
     setCurrentPhoto("");
@@ -186,7 +186,7 @@ const EditServiceCategory = () => {
         }
 
         await axios.delete(deleteUrl, { withCredentials: true });
-        
+
         toast.success("Service deleted successfully!", {
           position: "top-right",
           autoClose: 3000,
@@ -195,7 +195,7 @@ const EditServiceCategory = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        
+
         setTimeout(() => {
           navigate("/service-category");
         }, 1500);
@@ -433,8 +433,6 @@ const EditServiceCategory = () => {
           type="number"
           id="priority"
           min={0}
-          max={1}
-          step={0.01}
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
           className="w-full p-2 border rounded focus:outline-none"

@@ -266,9 +266,9 @@ const updateCategory = async (req, res) => {
     updateData.photo = photo;
   }
 
-  // Only set priority if it's a number
-  if (typeof priority === "number") {
-    updateData.priority = priority;
+  // Update priority if it's a valid number
+  if (priority !== undefined && !isNaN(priority)) {
+    updateData.priority = Number(priority);
   }
 
   try {
@@ -427,8 +427,21 @@ const updatesubsubcategory = async (req, res) => {
 
 const getActiveCategories = async (req, res) => {
   try {
-    // Fetch active categories
-    const categories = await ServiceCategory.find({ status: "active" });
+    // Fetch active categories and sort by priority
+    const categories = await ServiceCategory.find({ status: "active" }).sort({ priority: 1 }).lean();
+
+    if (categories && categories.length > 0) {
+      categories.forEach(category => {
+        if (category.subCategories && Array.isArray(category.subCategories)) {
+          category.subCategories.sort((a, b) => (a.priority || 0) - (b.priority || 0));
+          category.subCategories.forEach(subCat => {
+            if (subCat.subSubCategory && Array.isArray(subCat.subSubCategory)) {
+              subCat.subSubCategory.sort((a, b) => (a.priority || 0) - (b.priority || 0));
+            }
+          });
+        }
+      });
+    }
 
     // Send the active categories in the response
     res.status(200).json({
@@ -450,7 +463,7 @@ const deletecategory = async (req, res) => {
 
   try {
     // Find the category by its ID
-    const category = await ServiceCategory.findOne({slug:id});
+    const category = await ServiceCategory.findOne({ slug: id });
 
     // Check if the category exists
     if (!category) {
@@ -476,7 +489,7 @@ const deletecategory = async (req, res) => {
     // deleteFile(photoPath);
 
     // Proceed to delete the category
-    const deletedCategory = await ServiceCategory.findOneAndDelete({slug:id});
+    const deletedCategory = await ServiceCategory.findOneAndDelete({ slug: id });
 
     if (!deletedCategory) {
       return res.status(404).json({ message: "Category not found" });
@@ -500,7 +513,7 @@ const deletesubcategory = async (req, res) => {
   const { categoryId, subCategoryId } = req.query;
 
   try {
-    const categoryDoc = await ServiceCategory.findOne({slug:categoryId});
+    const categoryDoc = await ServiceCategory.findOne({ slug: categoryId });
     if (!categoryDoc) {
       return res.status(404).json({ message: "Category not found" });
     }
@@ -552,7 +565,7 @@ const deletesubsubcategory = async (req, res) => {
   const { categoryId, subCategoryId, subSubCategoryId } = req.query;
 
   try {
-    const categoryDoc = await ServiceCategory.findOne({slug:categoryId});
+    const categoryDoc = await ServiceCategory.findOne({ slug: categoryId });
     if (!categoryDoc) {
       return res.status(404).json({ message: "Category not found" });
     }
@@ -593,24 +606,26 @@ const deletesubsubcategory = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
-    const categories = await ServiceCategory.find().lean();
-    
+    const categories = await ServiceCategory.find().sort({ priority: 1 }).lean();
+
     // Transform the data to convert ObjectId format
     const transformedCategories = categories.map(category => {
       // Convert main category ID
       if (category._id && category._id.$oid) {
         category._id = category._id.$oid;
       }
-      
+
       // Convert subcategory IDs
       if (category.subCategories && Array.isArray(category.subCategories)) {
+        category.subCategories.sort((a, b) => (a.priority || 0) - (b.priority || 0));
         category.subCategories = category.subCategories.map(subCat => {
           if (subCat._id && subCat._id.$oid) {
             subCat._id = subCat._id.$oid;
           }
-          
+
           // Convert subsubcategory IDs
           if (subCat.subSubCategory && Array.isArray(subCat.subSubCategory)) {
+            subCat.subSubCategory.sort((a, b) => (a.priority || 0) - (b.priority || 0));
             subCat.subSubCategory = subCat.subSubCategory.map(subSubCat => {
               if (subSubCat._id && subSubCat._id.$oid) {
                 subSubCat._id = subSubCat._id.$oid;
@@ -618,11 +633,11 @@ const getAll = async (req, res) => {
               return subSubCat;
             });
           }
-          
+
           return subCat;
         });
       }
-      
+
       return category;
     });
 
@@ -635,10 +650,10 @@ const getAll = async (req, res) => {
 const getSpecificCategory = async (req, res) => {
   try {
     const { categoryId } = req.query;
-    
+
     // Disable caching for this response
     res.setHeader('Cache-Control', 'no-store, max-age=0');
-    
+
     const categories = await ServiceCategory.findOne({ slug: categoryId })
       .lean() // Get plain JS object
       .setOptions({ overwrite: true }); // Bypass any mongoose cache
@@ -646,7 +661,7 @@ const getSpecificCategory = async (req, res) => {
     if (!categories) {
       return res.status(404).json({ message: "Category not found" });
     }
-    
+
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -1103,7 +1118,7 @@ const getServicesBySlug = async (req, res) => {
       slug: sub.slug,
       photo: sub.photo,
       alt: sub.alt,
-      category:sub.category,
+      category: sub.category,
       imgtitle: sub.imgtitle
     })));
   }
@@ -1115,7 +1130,7 @@ const getServicesBySlug = async (req, res) => {
       slug: subsub.slug,
       photo: subsub.photo,
       alt: subsub.alt,
-      category:subsub.category,
+      category: subsub.category,
       imgtitle: subsub.imgtitle
     })));
   }

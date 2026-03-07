@@ -300,7 +300,7 @@ const ServiceCategoryForm = () => {
             className="quill"
             maxLength={500}
             minLength={10}
-      
+
           />
         </div>
         <div className="mb-4">
@@ -314,7 +314,7 @@ const ServiceCategoryForm = () => {
             className="w-full p-2 border rounded focus:outline-none"
             maxLength={30}
             minLength={3}
-            
+
           ></input>
         </div>
         <div className="mb-8">
@@ -489,8 +489,6 @@ const ServiceCategoryForm = () => {
             type="number"
             id="priority"
             min={0}
-            max={1}
-            step={0.01}
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
             className="w-full p-2 border rounded focus:outline-none"
