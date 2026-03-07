@@ -1,0 +1,1 @@
+import{j as e}from"./index-BHQc9ePt-1772882949928.js";function s({imageUrl:l}){return e.jsx("div",{className:"relative w-full h-[30vh] lg:h-[250px]",children:e.jsx("img",{src:l,alt:"Banner",className:"w-full h-full object-cover"})})}export{s as B};
