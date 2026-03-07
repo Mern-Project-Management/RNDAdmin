@@ -84,14 +84,6 @@ const menuData = [
         ]
       },
       {
-        title: "Menu",
-        icon: Menu,
-        children: [
-          { title: "Menu List", icon: List, url: "/menu-listing-table" },
-          { title: "Add New", icon: PlusSquare, url: "/menu-listing-form" },
-        ]
-      },
-      {
         title: "Blog",
         icon: Newspaper,
         children: [
@@ -208,19 +200,14 @@ const menuData = [
           { title: "Add New", icon: PlusSquare, url: "/whatsUpInfo-form" }
         ]
       },
-      // {
-      //   title: "Events",
-      //   icon: Handshake,
-      //   children: [
-      //     { title: "List", icon: List, url: "/events" },
-      //   ]
-      // },
       {
         title: "Meta Info",
         icon: KeyRound,
         children: [
           { title: "Meta List", icon: List, url: "/meta-table" },
           { title: "Meta Form", icon: List, url: "/meta-form" },
+          { title: "Menu List", icon: List, url: "/menu-listing-table" },
+          { title: "Add Menu", icon: PlusSquare, url: "/menu-listing-form" },
         ]
       },
 
