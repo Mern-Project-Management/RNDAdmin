@@ -8,6 +8,9 @@ const JobApplicationSchema = new mongoose.Schema({
   contactNo: { type: String, required: true },
   postAppliedFor: { type: String, required: true },
   resumeFile: { type: String, required: true }
+}, {
+  timestamps: true,
+  collection: 'careerapplications'
 });
 
 module.exports = mongoose.model('JobApplication', JobApplicationSchema);

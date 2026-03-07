@@ -3,7 +3,7 @@ const Career = require('../model/career');
 const { default: axios } = require('axios');
 const nodemailer = require('nodemailer');
 
-const   submitApplication = async (req, res) => {
+const submitApplication = async (req, res) => {
   try {
     const { name, address, email, contactNo, postAppliedFor, url } = req.body;
 
@@ -406,7 +406,7 @@ const updateApplication = async (req, res) => {
       if (application && application.resumeFile) {
         try {
           // Correctly construct the path to the old resume file
-          const oldResumePath = `resumes/${application.resumeFile}`;
+          const oldResumePath = path.join(__dirname, '../uploads/documents', application.resumeFile);
           if (fs.existsSync(oldResumePath)) {
             fs.unlinkSync(oldResumePath);
           }
@@ -460,7 +460,7 @@ const deleteApplication = async (req, res) => {
     // Delete resume file from storage
     if (application.resumeFile) {
       try {
-        const resumePath = `resumes/${application.resumeFile}`;
+        const resumePath = path.join(__dirname, '../uploads/documents', application.resumeFile);
         if (fs.existsSync(resumePath)) {
           fs.unlinkSync(resumePath);
         }

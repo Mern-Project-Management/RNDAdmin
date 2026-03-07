@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import EventTable from "./Event-Table"
 import EventCharts from "./Events-Chart"
-import { BarChart3 } from "lucide-react"
+import { BarChart3, Activity, FileText, Users, Clock } from "lucide-react"
 import axios from "axios"
 
 export default function TrackingInfo() {
@@ -48,11 +48,11 @@ export default function TrackingInfo() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <main className="min-h-screen bg-white p-4 md:p-8">
         <div className="max-w-7xl mx-auto flex items-center justify-center h-96">
           <div className="text-center">
-            <div className="w-12 h-12 rounded-full border-4 border-gray-300 border-t-red-500 animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600 font-medium">Loading analytics data...</p>
+            <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-indigo-600 animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600 font-medium italic">Gathering event insights...</p>
           </div>
         </div>
       </main>
@@ -81,41 +81,82 @@ export default function TrackingInfo() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto p-4 md:p-8">
+    <main className="min-h-screen bg-white">
+      <div className="p-1 mx-auto">
         {/* Header */}
-        <div className="mb-10">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-gray-200 rounded-lg">
-              <BarChart3 className="w-6 h-6 text-gray-700" />
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-6 pb-3 border-b border-gray-200">
+            Event Analytics
+          </h1>
+        </div>
+
+        {/* Metric Cards - Matching Dashboard style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {/* Total Events Card */}
+          <div className="bg-emerald-500 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
+            <div className="text-4xl font-bold mb-2">{analytics?.totalEvents || 0}</div>
+            <div className="text-lg">Total Events</div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1zM8 11a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2zm9-11a1 1 0 011 1v10a1 1 0 01-1 1h-1V4h1z" />
+              </svg>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900">
-              Event Analytics
-            </h1>
           </div>
-          <p className="text-gray-600 text-lg ml-11">
-            Track and analyze user interactions across your application
-          </p>
+
+          {/* Unique Pages Card - Using Total Chemicals Icon (Amber) */}
+          <div className="bg-amber-500 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
+            <div className="text-4xl font-bold mb-2">
+              {analytics?.eventsByPage ? Object.keys(analytics.eventsByPage).length : 0}
+            </div>
+            <div className="text-lg">Unique Pages</div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Unique Users Card - Using Total Customers Icon (Purple) */}
+          <div className="bg-indigo-600 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
+            <div className="text-4xl font-bold mb-2">{analytics?.uniqueUsers || 0}</div>
+            <div className="text-lg">Unique Users</div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Unique Sessions Card - Using Total Inquiries Icon (Blue) */}
+          <div className="bg-cyan-500 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
+            <div className="text-4xl font-bold mb-2">{analytics?.uniqueSessions || 0}</div>
+            <div className="text-lg">Unique Sessions</div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Tabs Container */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
           {/* Tab Navigation */}
           <div className="flex border-b border-gray-200 bg-gray-50">
             <button
               onClick={() => setActiveTab("table")}
-              className={`flex-1 px-6 py-4 font-semibold text-sm transition-all duration-300 ${activeTab === "table"
-                ? "text-red-600 border-b-2 border-red-500 bg-white"
-                : "text-gray-600 hover:text-gray-900"
+              className={`flex-1 px-6 py-4 font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === "table"
+                ? "text-indigo-600 border-b-2 border-indigo-600 bg-white"
+                : "text-gray-500 hover:text-indigo-600 hover:bg-gray-100"
                 }`}
             >
               📊 Table View
             </button>
             <button
               onClick={() => setActiveTab("charts")}
-              className={`flex-1 px-6 py-4 font-semibold text-sm transition-all duration-300 ${activeTab === "charts"
-                ? "text-red-600 border-b-2 border-red-500 bg-white"
-                : "text-gray-600 hover:text-gray-900"
+              className={`flex-1 px-6 py-4 font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === "charts"
+                ? "text-indigo-600 border-b-2 border-indigo-600 bg-white"
+                : "text-gray-500 hover:text-indigo-600 hover:bg-gray-100"
                 }`}
             >
               📈 Analytics View

@@ -89,11 +89,14 @@ router.get('/view/:filename', (req, res) => {
 // Add PDF download route
 router.get('/pdf/download/:filename', (req, res) => {
   const { filename } = req.params;
-  const filePath = path.join(__dirname, '../uploads/images', filename);
+  let filePath = path.join(__dirname, '../uploads/images', filename);
 
   // Verify file exists
   if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ message: 'File not found' });
+    filePath = path.join(__dirname, '../uploads/documents', filename);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ message: 'File not found' });
+    }
   }
 
   res.download(filePath, (err) => {
@@ -114,7 +117,11 @@ router.get('/pdf/view/:filename', (req, res) => {
     // If not, check in catalogs directory
     filePath = path.join(__dirname, '../uploads/catalogs', filename);
     if (!fs.existsSync(filePath)) {
-      return res.status(404).json({ message: 'File not found' });
+      // Check in documents directory
+      filePath = path.join(__dirname, '../uploads/documents', filename);
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ message: 'File not found' });
+      }
     }
   }
 

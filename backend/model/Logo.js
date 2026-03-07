@@ -4,44 +4,28 @@ const logoSchema = new mongoose.Schema(
   {
     headerLogo: {
       type: String,
-     
+
     },
     headerLogoName: {
       type: String,
-     
+
     },
     headerLogoAltName: {
-        type: String,
-       
-      },
+      type: String,
+
+    },
     favIcon: {
       type: String,
-     
+
     },
     favIconName: {
       type: String,
-     
+
     },
     favIconAltName: {
-        type: String,
-       
-    },
-    footerLogo: {
       type: String,
-     
+
     },
-    footerLogoName: {
-      type: String,
-     
-    },
-    footerLogoAltName: {
-      type: String,
-     
-    },
-    tagline: {
-      type: String,
-     
-      },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

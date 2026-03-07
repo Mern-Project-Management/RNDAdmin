@@ -119,20 +119,20 @@ export default function EventTable({ data: initialData }) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-1">Event Details</h2>
-        <p className="text-gray-600">Complete list of all tracked events with detailed information</p>
+      <div className="mb-4">
+        <h2 className="text-lg font-bold text-gray-800 mb-1">Event Logs</h2>
+        <p className="text-gray-500 text-sm">Detailed log of all tracked visitor interactions and clicks</p>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto border border-gray-200 rounded-xl">
+      <div className="overflow-x-auto border border-gray-100 rounded-md">
         <table className="w-full">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               <th className="px-6 py-4 text-left">
                 <button
                   onClick={() => handleSort("timestamp")}
-                  className="flex items-center gap-2 font-semibold text-gray-900 hover:text-red-600 transition-colors"
+                  className="flex items-center gap-2 font-semibold text-gray-700 hover:text-indigo-600 transition-colors"
                 >
                   Timestamp
                   <SortIcon column="timestamp" />
@@ -141,7 +141,7 @@ export default function EventTable({ data: initialData }) {
               <th className="px-6 py-4 text-left">
                 <button
                   onClick={() => handleSort("page")}
-                  className="flex items-center gap-2 font-semibold text-gray-900 hover:text-red-600 transition-colors"
+                  className="flex items-center gap-2 font-semibold text-gray-700 hover:text-indigo-600 transition-colors"
                 >
                   Page
                   <SortIcon column="page" />
@@ -150,7 +150,7 @@ export default function EventTable({ data: initialData }) {
               <th className="px-6 py-4 text-left">
                 <button
                   onClick={() => handleSort("buttonName")}
-                  className="flex items-center gap-2 font-semibold text-gray-900 hover:text-red-600 transition-colors"
+                  className="flex items-center gap-2 font-semibold text-gray-700 hover:text-purple-700 transition-colors"
                 >
                   Button Name
                   <SortIcon column="buttonName" />
@@ -159,7 +159,7 @@ export default function EventTable({ data: initialData }) {
               <th className="px-6 py-4 text-left">
                 <button
                   onClick={() => handleSort("ipAddress")}
-                  className="flex items-center gap-2 font-semibold text-gray-900 hover:text-red-600 transition-colors"
+                  className="flex items-center gap-2 font-semibold text-gray-700 hover:text-purple-700 transition-colors"
                 >
                   IP Address
                   <SortIcon column="ipAddress" />
@@ -174,8 +174,8 @@ export default function EventTable({ data: initialData }) {
               <tr
                 key={event._id}
                 className={`border-b border-gray-200 transition-colors ${idx % 2 === 0
-                    ? "bg-white hover:bg-gray-50"
-                    : "bg-gray-50 hover:bg-gray-100"
+                  ? "bg-white hover:bg-gray-50"
+                  : "bg-gray-50 hover:bg-gray-100"
                   }`}
               >
                 <td className="px-6 py-4 text-sm text-gray-700 font-medium">
@@ -186,7 +186,7 @@ export default function EventTable({ data: initialData }) {
                     href={"https://apurvachemicals.com" + event.page}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-red-600 hover:text-red-700 font-medium hover:underline"
+                    className="text-indigo-600 hover:text-indigo-800 font-medium hover:underline"
                     title={event.page}
                   >
                     {truncateUrl(event.page)}
@@ -195,8 +195,8 @@ export default function EventTable({ data: initialData }) {
                 <td className="px-6 py-4 text-sm text-gray-900 font-medium" title={event.buttonName}>
                   {truncateUrl(event.buttonName)}
                 </td>
-                <td className="px-6 py-4 text-sm font-mono text-gray-600">{event.ipAddress}</td>
-                <td className="px-6 py-4 text-right font-bold text-red-600 text-lg">
+                <td className="px-6 py-4 text-sm font-mono text-gray-500">{event.ipAddress}</td>
+                <td className="px-6 py-4 text-right font-bold text-emerald-600 text-lg">
                   {event.repetitionCount}
                 </td>
                 <td className="px-6 py-4 text-center">
@@ -251,8 +251,8 @@ export default function EventTable({ data: initialData }) {
                   key={page}
                   onClick={() => setCurrentPage(page)}
                   className={`w-9 h-9 rounded-lg text-sm font-semibold transition-all ${currentPage === page
-                      ? "bg-red-600 text-white shadow-lg"
-                      : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                    ? "bg-indigo-600 text-white shadow-lg"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                 >
                   {page}

@@ -22,11 +22,7 @@ const addLogo = async (req, res) => {
             headerLogoAltName: req.body.headerLogoAltName || '',
             favIcon: req.files.favIcon[0].filename,
             favIconName: req.body.favIconName || '',
-            favIconAltName: req.body.favIconAltName || '',
-            footerLogo: req.files.footerLogo ? req.files.footerLogo[0].filename : '',
-            footerLogoName: req.body.footerLogoName || '',
-            footerLogoAltName: req.body.footerLogoAltName || '',
-            tagline: req.body.tagline || ''
+            favIconAltName: req.body.favIconAltName || ''
         });
 
         res.status(201).json({ success: true, data: logo, message: 'Logo added successfully' });
@@ -46,7 +42,7 @@ const updateLogo = async (req, res) => {
             // If no logo exists, create a new one
             logo = new Logo({});
         }
-       
+
         if (!isNew) {
             const oldHeaderLogo = logo.headerLogo;
             const oldFavIcon = logo.favIcon;
@@ -65,20 +61,15 @@ const updateLogo = async (req, res) => {
             // If a new file is uploaded, delete the old one.
             if (req.files?.headerLogo) deleteFile(oldHeaderLogo);
             if (req.files?.favIcon) deleteFile(oldFavIcon);
-            if (req.files?.footerLogo) deleteFile(logo.footerLogo);
         }
 
         // Assign new values from the request, falling back to existing values
         logo.headerLogo = req.files?.headerLogo ? req.files.headerLogo[0].filename : logo.headerLogo;
         logo.favIcon = req.files?.favIcon ? req.files.favIcon[0].filename : logo.favIcon;
-        logo.footerLogo = req.files?.footerLogo ? req.files.footerLogo[0].filename : logo.footerLogo;
         logo.headerLogoName = req.body.headerLogoName ?? logo.headerLogoName;
-        logo.tagline = req.body.tagline ?? logo.tagline;
         logo.headerLogoAltName = req.body.headerLogoAltName ?? logo.headerLogoAltName;
         logo.favIconName = req.body.favIconName ?? logo.favIconName;
         logo.favIconAltName = req.body.favIconAltName ?? logo.favIconAltName;
-        logo.footerLogoName = req.body.footerLogoName ?? logo.footerLogoName;
-        logo.footerLogoAltName = req.body.footerLogoAltName ?? logo.footerLogoAltName;
 
         await logo.save();
 
@@ -122,7 +113,6 @@ const deleteLogo = async (req, res) => {
 
         deleteFile(logo.headerLogo);
         deleteFile(logo.favIcon);
-
         res.status(200).json({ success: true, message: 'Logo deleted successfully' });
 
     } catch (error) {
@@ -136,5 +126,5 @@ module.exports = {
     getLogo,
 
     deleteLogo
-    
+
 };

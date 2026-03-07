@@ -10,16 +10,16 @@ export default function EventCharts({ data, analytics }) {
 
   const pageData = analytics?.eventsByPage
     ? Object.entries(analytics.eventsByPage)
-        .map(([name, value]) => ({ name: name.substring(0, 30), fullName: name, value }))
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 8)
+      .map(([name, value]) => ({ name: name.substring(0, 30), fullName: name, value }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 8)
     : []
 
   const buttonData = analytics?.eventsByButton
     ? Object.entries(analytics.eventsByButton)
-        .map(([name, value]) => ({ name, value }))
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 6)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 6)
     : []
 
   // Timeline Data (events over time)
@@ -45,7 +45,7 @@ export default function EventCharts({ data, analytics }) {
   const eventTypeChartOptions = {
     chart: { type: "pie" },
     labels: eventTypeData.map((d) => d.name),
-    colors: ["#3b82f6", "#ef4444", "#10b981", "#f59e0b", "#8b5cf6"],
+    colors: ["#6366f1", "#4f46e5", "#10b981", "#f59e0b", "#06b6d4"],
     responsive: [{ breakpoint: 480, options: { chart: { width: 300 }, legend: { position: "bottom" } } }],
   }
 
@@ -73,7 +73,7 @@ export default function EventCharts({ data, analytics }) {
     plotOptions: { bar: { horizontal: true, columnWidth: "55%" } },
     dataLabels: { enabled: false },
     xaxis: { categories: buttonData.map((d) => d.name) },
-    colors: ["#ef4444"],
+    colors: ["#6366f1"],
   }
 
   const timelineChartOptions = {
@@ -96,16 +96,16 @@ export default function EventCharts({ data, analytics }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Event Type Distribution */}
-      <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Event Type Distribution</h3>
-        <p className="text-sm text-muted-foreground mb-4">Breakdown of events by type</p>
+      <div className="bg-white rounded-md shadow-lg p-6 border border-gray-100">
+        <h3 className="text-base font-bold text-gray-800 mb-1">Event Type Distribution</h3>
+        <p className="text-xs text-gray-500 mb-4">Breakdown of events by category</p>
         <Chart options={eventTypeChartOptions} series={eventTypeData.map((d) => d.value)} type="pie" height={300} />
       </div>
 
       {/* Page Distribution */}
-      <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Top Pages</h3>
-        <p className="text-sm text-muted-foreground mb-4">Most visited pages</p>
+      <div className="bg-white rounded-md shadow-lg p-6 border border-gray-100">
+        <h3 className="text-base font-bold text-gray-800 mb-1">Top Pages</h3>
+        <p className="text-xs text-gray-500 mb-4">Most visited routes on the website</p>
         <Chart
           options={pageChartOptions}
           series={[{ name: "Events", data: pageData.map((d) => d.value) }]}
@@ -115,9 +115,9 @@ export default function EventCharts({ data, analytics }) {
       </div>
 
       {/* Button Name Distribution */}
-      <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Top Buttons Clicked</h3>
-        <p className="text-sm text-muted-foreground mb-4">Most interacted buttons</p>
+      <div className="bg-white rounded-md shadow-lg p-6 border border-gray-100">
+        <h3 className="text-base font-bold text-gray-800 mb-1">Top Buttons Clicked</h3>
+        <p className="text-xs text-gray-500 mb-4">Most frequently engaged interface elements</p>
         <Chart
           options={buttonChartOptions}
           series={[{ name: "Clicks", data: buttonData.map((d) => d.value) }]}
@@ -127,9 +127,9 @@ export default function EventCharts({ data, analytics }) {
       </div>
 
       {/* Timeline */}
-      <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Event Timeline</h3>
-        <p className="text-sm text-muted-foreground mb-4">Cumulative events over time</p>
+      <div className="bg-white rounded-md shadow-lg p-6 border border-gray-100">
+        <h3 className="text-base font-bold text-gray-800 mb-1">Event Timeline</h3>
+        <p className="text-xs text-gray-500 mb-4">Growth of events over the current period</p>
         <Chart
           options={timelineChartOptions}
           series={[{ name: "Cumulative Events", data: timelineData.map((d) => d.count) }]}
@@ -139,9 +139,9 @@ export default function EventCharts({ data, analytics }) {
       </div>
 
       {/* IP Address Distribution */}
-      <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Top IP Addresses</h3>
-        <p className="text-sm text-muted-foreground mb-4">Most active visitors</p>
+      <div className="bg-white rounded-md shadow-lg p-6 border border-gray-100">
+        <h3 className="text-base font-bold text-gray-800 mb-1">Top IP Addresses</h3>
+        <p className="text-xs text-gray-500 mb-4">Locations with highest activity</p>
         <Chart
           options={ipChartOptions}
           series={[{ name: "Events", data: ipData.map((d) => d.value) }]}
@@ -150,34 +150,6 @@ export default function EventCharts({ data, analytics }) {
         />
       </div>
 
-      {/* Summary Stats */}
-      <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Summary Statistics</h3>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center pb-3 border-b border-border">
-            <span className="text-muted-foreground">Total Events</span>
-            <span className="font-semibold text-lg text-foreground">{analytics?.totalEvents || 0}</span>
-          </div>
-          <div className="flex justify-between items-center pb-3 border-b border-border">
-            <span className="text-muted-foreground">Unique Event Types</span>
-            <span className="font-semibold text-lg text-foreground">{eventTypeData.length}</span>
-          </div>
-          <div className="flex justify-between items-center pb-3 border-b border-border">
-            <span className="text-muted-foreground">Unique Pages</span>
-            <span className="font-semibold text-lg text-foreground">
-              {analytics?.eventsByPage ? Object.keys(analytics.eventsByPage).length : 0}
-            </span>
-          </div>
-          <div className="flex justify-between items-center pb-3 border-b border-border">
-            <span className="text-muted-foreground">Unique Users</span>
-            <span className="font-semibold text-lg text-foreground">{analytics?.uniqueUsers || 0}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Unique Sessions</span>
-            <span className="font-semibold text-lg text-foreground">{analytics?.uniqueSessions || 0}</span>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
