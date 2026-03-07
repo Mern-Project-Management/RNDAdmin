@@ -12,9 +12,9 @@ const modules = {
     [{ 'size': ['small', false, 'large', 'huge'] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'color': [] }, { 'background': [] }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'indent': '-1' }, { 'indent': '+1' }],
     [{ 'align': [] }], // This adds left, center, right, justify alignment
     ['blockquote', 'code-block'],
     ['link', 'image', 'video'],
@@ -52,7 +52,7 @@ const ServiceSec1Form = () => {
     alt: '',
     imgTitle: ''
   });
-  
+
   const [selectedLevel, setSelectedLevel] = useState('category');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -63,7 +63,7 @@ const ServiceSec1Form = () => {
 
   useEffect(() => {
     fetchCategories();
-    
+
     if (id) {
       setIsEditMode(true);
       fetchDataById(id);
@@ -104,15 +104,15 @@ const ServiceSec1Form = () => {
       setLoading(true);
       const response = await fetch(`/api/servicesec1/${dataId}`);
       const data = await response.json();
-      
+
       if (data.success && data.data) {
         const fetchedData = data.data;
-        
+
         // Handle nested category objects from API response
         const categoryId = (fetchedData.categoryId && typeof fetchedData.categoryId === 'object' ? fetchedData.categoryId._id : fetchedData.categoryId) || '';
         const subCategoryId = (fetchedData.subCategoryId && typeof fetchedData.subCategoryId === 'object' ? fetchedData.subCategoryId._id : fetchedData.subCategoryId) || '';
         const subSubCategoryId = (fetchedData.subSubCategoryId && typeof fetchedData.subSubCategoryId === 'object' ? fetchedData.subSubCategoryId._id : fetchedData.subSubCategoryId) || '';
-        
+
         setFormData({
           categoryId,
           subCategoryId,
@@ -124,7 +124,7 @@ const ServiceSec1Form = () => {
           alt: fetchedData.alt || '',
           imgTitle: fetchedData.imgTitle || ''
         });
-        
+
         if (subSubCategoryId) {
           setSelectedLevel('subsubcategory');
         } else if (subCategoryId) {
@@ -132,7 +132,7 @@ const ServiceSec1Form = () => {
         } else {
           setSelectedLevel('category');
         }
-        
+
         setMessage({ type: 'info', text: 'Data loaded for editing' });
       } else {
         setMessage({ type: 'error', text: 'Data not found' });
@@ -148,12 +148,12 @@ const ServiceSec1Form = () => {
 
   const loadSubCategoriesForEdit = (data) => {
     if (data.categoryId) {
-      const category = categories.find(cat => cat._id === data.categoryId);
+      const category = categories.find(cat => String(cat._id) === String(data.categoryId));
       if (category) {
         setSubCategories(category.subCategories || []);
-        
+
         if (data.subCategoryId) {
-          const subCategory = category.subCategories?.find(sub => sub._id === data.subCategoryId);
+          const subCategory = category.subCategories?.find(sub => String(sub._id) === String(data.subCategoryId));
           if (subCategory) {
             setSubSubCategories(subCategory.subSubCategory || []);
           }
@@ -164,8 +164,8 @@ const ServiceSec1Form = () => {
 
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value;
-    const selectedCategory = categories.find(cat => cat._id === categoryId);
-    
+    const selectedCategory = categories.find(cat => String(cat._id) === String(categoryId));
+
     setFormData({
       ...formData,
       categoryId,
@@ -178,15 +178,15 @@ const ServiceSec1Form = () => {
       alt: isEditMode ? formData.alt : '',
       imgTitle: isEditMode ? formData.imgTitle : ''
     });
-    
+
     setSubCategories(selectedCategory?.subCategories || []);
     setSubSubCategories([]);
   };
 
   const handleSubCategoryChange = (e) => {
     const subCategoryId = e.target.value;
-    const selectedSubCategory = subCategories.find(sub => sub._id === subCategoryId);
-    
+    const selectedSubCategory = subCategories.find(sub => String(sub._id) === String(subCategoryId));
+
     setFormData({
       ...formData,
       subCategoryId,
@@ -198,7 +198,7 @@ const ServiceSec1Form = () => {
       alt: isEditMode ? formData.alt : '',
       imgTitle: isEditMode ? formData.imgTitle : ''
     });
-    
+
     setSubSubCategories(selectedSubCategory?.subSubCategory || []);
   };
 
@@ -227,14 +227,14 @@ const ServiceSec1Form = () => {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
-      
+
       // Create preview URL for the selected file
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
-      
+
       // Store filename in formData
       setFormData(prev => ({
         ...prev,
@@ -275,7 +275,7 @@ const ServiceSec1Form = () => {
       }
 
       const url = id ? `/api/servicesec1/${id}` : '/api/servicesec1';
-      
+
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -287,11 +287,11 @@ const ServiceSec1Form = () => {
       const data = await response.json();
 
       if (data.success) {
-        setMessage({ 
-          type: 'success', 
-          text: id ? 'Data updated successfully!' : 'Data created successfully!' 
+        setMessage({
+          type: 'success',
+          text: id ? 'Data updated successfully!' : 'Data created successfully!'
         });
-        
+
         setTimeout(() => {
           navigate('/serviceSec1-table');
         }, 1000);
@@ -310,7 +310,7 @@ const ServiceSec1Form = () => {
       setMessage({ type: 'warning', text: 'Cannot change level in edit mode' });
       return;
     }
-    
+
     setSelectedLevel(level);
     setFormData({
       ...formData,
@@ -332,20 +332,19 @@ const ServiceSec1Form = () => {
       <h2 className="text-3xl font-bold mb-6 text-gray-800">
         {isEditMode ? 'Edit Service Section 1' : 'Add Service Section 1'}
       </h2>
-      
+
       {isLoadingCategories && (
         <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
           <p className="text-blue-800">Loading categories...</p>
         </div>
       )}
-      
+
       {message.text && (
-        <div className={`mb-4 p-4 rounded ${
-          message.type === 'success' ? 'bg-green-100 text-green-700' :
-          message.type === 'error' ? 'bg-red-100 text-red-700' :
-          message.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
-          'bg-blue-100 text-blue-700'
-        }`}>
+        <div className={`mb-4 p-4 rounded ${message.type === 'success' ? 'bg-green-100 text-green-700' :
+            message.type === 'error' ? 'bg-red-100 text-red-700' :
+              message.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
+                'bg-blue-100 text-blue-700'
+          }`}>
           {message.text}
         </div>
       )}
@@ -365,33 +364,30 @@ const ServiceSec1Form = () => {
             <button
               onClick={() => handleLevelChange('category')}
               disabled={isEditMode}
-              className={`px-4 py-2 rounded font-medium transition ${
-                selectedLevel === 'category'
+              className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'category'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Category
             </button>
             <button
               onClick={() => handleLevelChange('subcategory')}
               disabled={isEditMode}
-              className={`px-4 py-2 rounded font-medium transition ${
-                selectedLevel === 'subcategory'
+              className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'subcategory'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Sub Category
             </button>
             <button
               onClick={() => handleLevelChange('subsubcategory')}
               disabled={isEditMode}
-              className={`px-4 py-2 rounded font-medium transition ${
-                selectedLevel === 'subsubcategory'
+              className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'subsubcategory'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Sub-Sub Category
             </button>
@@ -455,7 +451,7 @@ const ServiceSec1Form = () => {
 
         <div className="border-t pt-6">
           <h3 className="text-xl font-semibold mb-4 text-gray-800">Content Information</h3>
-          
+
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -489,20 +485,20 @@ const ServiceSec1Form = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Details
               </label>
-                <ReactQuill
+              <ReactQuill
                 theme='snow'
-                  value={formData.details}
-                  onChange={(value) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      details: value,
-                    }))
-                  }
-                   modules={modules}
-  formats={formats}
-                  placeholder="Enter detailed description"
-                  className="bg-white rounded-lg"
-                />
+                value={formData.details}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    details: value,
+                  }))
+                }
+                modules={modules}
+                formats={formats}
+                placeholder="Enter detailed description"
+                className="bg-white rounded-lg"
+              />
             </div>
 
             <div>
@@ -518,14 +514,14 @@ const ServiceSec1Form = () => {
               {isEditMode && formData.photo && !selectedFile && (
                 <p className="text-sm text-gray-500 mt-1">Current file: {formData.photo}</p>
               )}
-              
+
               {imagePreview && (
                 <div className="mt-4 relative">
                   <p className="text-sm font-semibold text-gray-700 mb-2">Image Preview:</p>
                   <div className="relative inline-block">
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
                       className="max-w-sm max-h-64 rounded-lg border-2 border-gray-300 shadow-md object-contain"
                     />
                     <button
