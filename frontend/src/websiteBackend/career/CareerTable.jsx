@@ -74,12 +74,6 @@ const CareerTable = () => {
             key: 'email',
         },
         {
-            title: 'Post Applied For',
-            dataIndex: 'postAppliedFor',
-            key: 'postAppliedFor',
-            sorter: (a, b) => a.postAppliedFor.localeCompare(b.postAppliedFor),
-        },
-        {
             title: 'Resume',
             key: 'resume',
             render: (_, record) => (
