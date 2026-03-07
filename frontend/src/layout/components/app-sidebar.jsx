@@ -55,8 +55,8 @@ const menuData = [
     children: [
       { title: "List", icon: List, url: "/inquiry-list" },
       { title: "Add New", icon: PlusSquare, url: "/add-inquiry" },
-      { title: "Inquiry Sources", icon: List, url: "source-table" },
-      { title: "Inquiry Status", icon: List, url: "status-table" },
+      { title: "Inquiry Sources", icon: List, url: "/source-table" },
+      { title: "Inquiry Status", icon: List, url: "/status-table" },
 
     ]
   },

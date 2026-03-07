@@ -9,7 +9,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 
-export const StatusTable = () => {
+const StatusTable = () => {
   const { data: statusesResponse, isLoading, isError } = useGetAllStatusesQuery();
   const [deleteStatus] = useDeleteStatusMutation(); // Hook for delete mutation
   const [statusToEdit, setStatusToEdit] = useState(null); // Track the status being edited
@@ -50,7 +50,7 @@ export const StatusTable = () => {
           <StatusForm closeModal={handleCloseModal} />
         </Dialog>
       </div>
-      
+
       <table className="table-auto border-collapse border border-gray-300 w-1/2 text-left">
         <thead>
           <tr>
@@ -63,14 +63,14 @@ export const StatusTable = () => {
             <tr key={status._id}>
               <td className="border border-gray-300 px-4 py-2">{status.status}</td>
               <td className="border border-gray-300 px-4 py-2">
-                <FiEdit 
-                  className="inline-block mx-2 cursor-pointer text-blue-500" 
-                  title="Edit" 
+                <FiEdit
+                  className="inline-block mx-2 cursor-pointer text-blue-500"
+                  title="Edit"
                   onClick={() => handleEdit(status)}  // Trigger edit when clicked
                 />
-                <FiTrash 
-                  className="inline-block mx-2 cursor-pointer text-red-500" 
-                  title="Delete" 
+                <FiTrash
+                  className="inline-block mx-2 cursor-pointer text-red-500"
+                  title="Delete"
                   onClick={() => handleDelete(status._id)} // Trigger delete on click
                 />
               </td>
@@ -87,3 +87,5 @@ export const StatusTable = () => {
     </div>
   );
 };
+
+export default StatusTable;

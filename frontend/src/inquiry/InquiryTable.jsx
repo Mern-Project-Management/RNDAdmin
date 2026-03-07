@@ -23,6 +23,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useGetInquiriesQuery } from "@/slice/inquiry/inquiry";
 import { Link, Links } from "react-router-dom";
 import { useGetAllStatusesQuery } from "@/slice/status/status";
+import { useGetAllSourcesQuery } from "@/slice/source/source";
 import { Checkbox } from "@/components/ui/checkbox";
 import EmailForm from "@/email/emailForm/EmailForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -46,7 +47,8 @@ export default function InquiryList() {
     const [data, setData] = useState(inquiryData);
     const [deleteInquiry] = useDeleteInquiryMutation();
     const { data: statuses, isLoading: statusesLoading } = useGetAllStatusesQuery();
-    console.log(statuses)
+    const { data: sources, isLoading: sourcesLoading } = useGetAllSourcesQuery();
+    // console.log(statuses)
     // State for filters
     const [companyNameFilter, setCompanyNameFilter] = useState("");
     const [statusFilter, setStatusFilter] = useState(null);
@@ -183,6 +185,8 @@ export default function InquiryList() {
                         <TableHead className="w-12"></TableHead>
                         <TableHead className="lg:w-[100px] w-[50px] sticky left-0 bg-background z-50">Date</TableHead>
                         <TableHead className="text-left">Info</TableHead>
+                        <TableHead className="text-left">Status</TableHead>
+                        <TableHead className="text-left">Source</TableHead>
                         <TableHead className="text-left">Page</TableHead>
                         {/* <TableHead className="text-left">Email</TableHead> */}
                         <TableHead className="text-left">Message</TableHead>
@@ -195,28 +199,19 @@ export default function InquiryList() {
                         <TableHead>
                             <Input
                                 placeholder="Search Info"
-                                className="w-[200px]"
+                                className="w-[180px]"
                                 value={nameFilter || ""}
                                 onChange={(e) => setNameFilter(e.target.value)}
                             />
                         </TableHead>
-                        <TableHead></TableHead>
-                        {/* <TableHead>
-                            <Input
-                                placeholder="Email"
-                                className="w-[200px]"
-                                value={emailFilter}
-                                onChange={(e) => setEmailFilter(e.target.value)}
-                            />
-                        </TableHead> */}
                         <TableHead>
                             <Select
                                 value={statusFilter || "reset"}
                                 onValueChange={(value) => setStatusFilter(value === "reset" ? null : value)}
                             >
-                                {/* <SelectTrigger className="w-[160px]">
+                                <SelectTrigger className="w-[130px]">
                                     <SelectValue placeholder="Status" />
-                                </SelectTrigger> */}
+                                </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="reset">All Statuses</SelectItem>
                                     {statuses?.data?.map((status) => (
@@ -227,6 +222,26 @@ export default function InquiryList() {
                                 </SelectContent>
                             </Select>
                         </TableHead>
+                        <TableHead>
+                            <Select
+                                value={sourceFilter || "reset"}
+                                onValueChange={(value) => setSourceFilter(value === "reset" ? null : value)}
+                            >
+                                <SelectTrigger className="w-[130px]">
+                                    <SelectValue placeholder="Source" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="reset">All Sources</SelectItem>
+                                    {sources?.data?.map((source) => (
+                                        <SelectItem key={source._id} value={source.source}>
+                                            {source.source}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </TableHead>
+                        <TableHead></TableHead>
+                        <TableHead></TableHead>
                         <TableHead></TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -254,6 +269,12 @@ export default function InquiryList() {
                                     </div>
                                 </div>
                             </TableCell>
+                            <TableCell>
+                                <span className="text-xs font-medium px-2 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 italic">
+                                    {item.status}
+                                </span>
+                            </TableCell>
+                            <TableCell>{item.source}</TableCell>
                             <TableCell>
                                 <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">
                                     {formatUrl(item.url)}

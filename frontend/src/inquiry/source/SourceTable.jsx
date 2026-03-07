@@ -3,10 +3,10 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useGetAllSourcesQuery, useDeleteSourceMutation, useUpdateSourceMutation } from '@/slice/source/source';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
-import { FiEdit, FiTrash } from 'react-icons/fi'; 
+import { FiEdit, FiTrash } from 'react-icons/fi';
 import { SourceForm } from './AddSource';
 
-export const SourceTable = () => {
+const SourceTable = () => {
   const { data: sourcesResponse, isLoading, isError } = useGetAllSourcesQuery();
   const [deleteSource] = useDeleteSourceMutation();
   const [updateSource] = useUpdateSourceMutation();
@@ -81,11 +81,13 @@ export const SourceTable = () => {
 
       {/* Edit Modal - now controlled by isEditModalOpen */}
       <Dialog open={isEditModalOpen} onOpenChange={handleCloseModal}>
-        <SourceForm 
-          closeModal={handleCloseModal} 
-          sourceToEdit={sourceToEdit} 
+        <SourceForm
+          closeModal={handleCloseModal}
+          sourceToEdit={sourceToEdit}
         />
       </Dialog>
     </div>
   );
 };
+
+export default SourceTable;
