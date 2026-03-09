@@ -2,10 +2,10 @@ const { default: mongoose } = require("mongoose");
 const FAQ = require("../model/fqa");
 const ServiceCategory = require('../model/serviceCategory');
 
-const replaceSlugWithId  = async (req, res) => {
+const replaceSlugWithId = async (req, res) => {
   try {
     const faqs = await FAQ.find({});
-    
+
     let successCount = 0;
     let skipCount = 0;
     const errors = [];
@@ -111,25 +111,39 @@ const replaceSlugWithId  = async (req, res) => {
 
 const insertFAQ = async (req, res) => {
   try {
+    const {
+      question, answer, status,
+      serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId,
+      industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId
+    } = req.body;
 
-    const { question, answer, status, serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId, industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId } = req.body;
-
+    // Helper to convert empty strings to undefined to avoid Mongoose ObjectId casting errors
+    const cleanId = (id) => (id && id.trim() !== "") ? id : undefined;
 
     const faq = new FAQ({
-      question, answer, status, serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId, industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId
-    })
+      question,
+      answer,
+      status,
+      serviceparentCategoryId: cleanId(serviceparentCategoryId),
+      servicesubCategoryId: cleanId(servicesubCategoryId),
+      servicesubSubCategoryId: cleanId(servicesubSubCategoryId),
+      industryparentCategoryId: cleanId(industryparentCategoryId),
+      industrysubCategoryId: cleanId(industrysubCategoryId),
+      industrysubSubCategoryId: cleanId(industrysubSubCategoryId)
+    });
 
     await faq.save();
 
-    return res.status(201).send(
-      {
-        message: "your FAQ send successfully",
-        faq: faq
-      }
-    )
+    return res.status(201).json({
+      message: "your FAQ send successfully",
+      faq: faq
+    });
   } catch (error) {
-
-    res.status(400).send(error);
+    console.error("Error in insertFAQ:", error);
+    res.status(400).json({
+      message: error.message,
+      error: error
+    });
   }
 }
 
@@ -199,21 +213,31 @@ const getFAQ = async (req, res) => {
 };
 
 const updateFAQ = async (req, res) => {
-  const { id } = req.query; // Assuming id is passed as a query parameter
+  const { id } = req.query;
   const updateFields = req.body;
 
-
   try {
-    const existingFaq = await FAQ.findById(id)
+    const existingFaq = await FAQ.findById(id);
     if (!existingFaq) {
-      return res.status(404).send("FAQ not found");
+      return res.status(404).json({ message: "FAQ not found" });
     }
 
-    // Find FAQ by ID and update
+    // Clean up empty strings for ObjectId fields in updateFields if they exist
+    const categoryFields = [
+      'serviceparentCategoryId', 'servicesubCategoryId', 'servicesubSubCategoryId',
+      'industryparentCategoryId', 'industrysubCategoryId', 'industrysubSubCategoryId'
+    ];
+
+    categoryFields.forEach(field => {
+      if (updateFields[field] === "") {
+        updateFields[field] = null; // Use null for Mongoose to unset or set it as null
+      }
+    });
+
     const updatedFAQ = await FAQ.findByIdAndUpdate(
       id,
       updateFields,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!updatedFAQ) {
@@ -222,8 +246,8 @@ const updateFAQ = async (req, res) => {
 
     res.status(200).json({ message: 'FAQ updated successfully', data: updatedFAQ });
   } catch (error) {
-
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error in updateFAQ:", error);
+    res.status(500).json({ error: 'Server error', message: error.message });
   }
 };
 

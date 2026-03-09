@@ -8,7 +8,7 @@ const FAQForm = () => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [status, setStatus] = useState("active");
-  
+
   // Service category state
   const [serviceCategories, setServiceCategories] = useState([]);
   const [serviceparentCategoryId, setServiceParentCategoryId] = useState("");
@@ -73,7 +73,7 @@ const FAQForm = () => {
 
   // Render options for the parent, sub, and sub-sub categories
   const renderCategoryOptions = (category) => (
-    <option key={category._id} value={category.slug}>
+    <option key={category._id} value={category._id}>
       {category.category}
     </option>
   );
@@ -100,11 +100,11 @@ const FAQForm = () => {
   };
 
   // Find categories recursively
-  const findCategoryById = (categories, slug) => {
+  const findCategoryById = (categories, id) => {
     for (const category of categories) {
-      if (category.slug === slug) return category;
+      if (category._id === id) return category;
       if (category.subCategories) {
-        const subCategory = findCategoryById(category.subCategories, slug);
+        const subCategory = findCategoryById(category.subCategories, id);
         if (subCategory) return subCategory;
       }
     }
@@ -113,12 +113,12 @@ const FAQForm = () => {
 
   // Get subcategories and sub-subcategories for services
   const subServiceCategories = serviceparentCategoryId ? findCategoryById(serviceCategories, serviceparentCategoryId)?.subCategories || [] : [];
-  const subSubServiceCategories = (serviceparentCategoryId && servicesubCategoryId) ? findCategoryById(serviceCategories, serviceparentCategoryId)?.subCategories.find(sub => sub.slug === servicesubCategoryId)?.subSubCategory || [] : [];
+  const subSubServiceCategories = (serviceparentCategoryId && servicesubCategoryId) ? findCategoryById(serviceCategories, serviceparentCategoryId)?.subCategories.find(sub => sub._id === servicesubCategoryId)?.subSubCategory || [] : [];
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
       <h1 className="text-xl font-bold font-serif text-gray-700 uppercase text-center">Add FAQ</h1>
-      
+
       {/* Service Categories */}
       <div className="mb-4">
         <label htmlFor="serviceParentCategory" className="block font-semibold mb-2">

@@ -58,10 +58,10 @@ const filesToCleanup = new Set();
 // Schedule cleanup every 5 minutes
 setInterval(() => {
   if (filesToCleanup.size === 0) return;
-  
+
   const now = Date.now();
   const maxAge = 5 * 60 * 1000; // 5 minutes
-  
+
   for (const item of filesToCleanup) {
     if (now - item.timestamp > maxAge) {
       fs.unlink(item.path, (err) => {
@@ -80,14 +80,14 @@ const processLogoImage = async (filePath) => {
   }
 
   const webpPath = filePath.replace(/\.[^/.]+$/, '.webp');
-  
+
   try {
     await sharp(filePath)
       .resize(5000, 5000, {
         fit: 'inside',
         withoutEnlargement: true
       })
-      .webp({ 
+      .webp({
         quality: 80,
         effort: 6
       })
@@ -116,6 +116,10 @@ const uploadPhoto = (req, res, next) => {
   ])(req, res, async function (err) {
     if (err) {
       return res.status(400).send({ error: err.message });
+    }
+
+    if (!req.files) {
+      return next();
     }
 
     // Collect all photo files: both from 'photo' field and any 'cards[x][photo]'
@@ -170,9 +174,9 @@ const uploadPhoto = (req, res, next) => {
       next();
     } catch (error) {
       console.error('Error in upload middleware:', error);
-      res.status(500).send({ 
+      res.status(500).send({
         error: 'Error processing uploaded files',
-        details: error.message 
+        details: error.message
       });
     }
   });
