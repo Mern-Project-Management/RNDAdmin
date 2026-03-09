@@ -270,11 +270,19 @@ export default function InquiryList() {
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <span className="text-xs font-medium px-2 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 italic">
-                                    {item.status}
-                                </span>
+                                {item.status ? (
+                                    <span className="text-xs font-medium px-2 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 italic">
+                                        {item.status}
+                                    </span>
+                                ) : (
+                                    <span className="text-xs font-medium px-2 py-1 rounded bg-gray-50 text-gray-400 border border-gray-200 italic">
+                                        Pending
+                                    </span>
+                                )}
                             </TableCell>
-                            <TableCell>{item.source}</TableCell>
+                            <TableCell>
+                                {item.source ? item.source : <span className="text-gray-400 text-sm italic">Not set</span>}
+                            </TableCell>
                             <TableCell>
                                 <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">
                                     {formatUrl(item.url)}

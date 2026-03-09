@@ -4,10 +4,10 @@ import { useGetAllStatusesQuery, useDeleteStatusMutation } from '@/slice/status/
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { StatusForm } from './AddStatus';
-import {
-  Dialog,
-  DialogTrigger
-} from '@/components/ui/dialog';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Table, Breadcrumb, Popconfirm, Space } from 'antd';
+import { HomeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const StatusTable = () => {
   const { data: statusesResponse, isLoading, isError } = useGetAllStatusesQuery();
@@ -33,57 +33,89 @@ const StatusTable = () => {
     setStatusToEdit(null);  // Clear the statusToEdit when modal is closed
   };
 
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      width: '15%',
+      render: (_, record) => (
+        <Space>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleEdit(record)}
+            className="w-8 h-8 rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+          >
+            <EditOutlined />
+          </Button>
+          <Popconfirm
+            title="Delete Status"
+            description="Are you sure you want to delete this status?"
+            onConfirm={() => handleDelete(record._id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              className="w-8 h-8 rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+            >
+              <DeleteOutlined />
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching statuses.</div>;
 
   return (
-    <div className="overflow-x-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">Status List</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Status
-            </Button>
-          </DialogTrigger>
-          <StatusForm closeModal={handleCloseModal} />
-        </Dialog>
+    <div className="p-6">
+      <Breadcrumb className='mb-6'>
+        <Breadcrumb.Item>
+          <Link to="/dashboard">
+            <HomeOutlined /> Dashboard
+          </Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Inquiry Management</Breadcrumb.Item>
+        <Breadcrumb.Item>Status List</Breadcrumb.Item>
+      </Breadcrumb>
+
+      <div className="bg-white rounded-lg shadow mt-4 p-6 w-full max-w-5xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Status List</h1>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                <Plus className="h-4 w-4" />
+                Add Status
+              </Button>
+            </DialogTrigger>
+            <StatusForm closeModal={handleCloseModal} />
+          </Dialog>
+        </div>
+
+        <Table
+          columns={columns}
+          dataSource={statuses}
+          rowKey="_id"
+          pagination={{ pageSize: 10 }}
+          className="border border-gray-100 rounded-md"
+        />
+
+        {statusToEdit && (
+          <Dialog open={true} onOpenChange={handleCloseModal}>
+            <StatusForm closeModal={handleCloseModal} statusToEdit={statusToEdit} />
+          </Dialog>
+        )}
       </div>
-
-      <table className="table-auto border-collapse border border-gray-300 w-1/2 text-left">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">Name</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {statuses?.map((status) => (
-            <tr key={status._id}>
-              <td className="border border-gray-300 px-4 py-2">{status.status}</td>
-              <td className="border border-gray-300 px-4 py-2">
-                <FiEdit
-                  className="inline-block mx-2 cursor-pointer text-blue-500"
-                  title="Edit"
-                  onClick={() => handleEdit(status)}  // Trigger edit when clicked
-                />
-                <FiTrash
-                  className="inline-block mx-2 cursor-pointer text-red-500"
-                  title="Delete"
-                  onClick={() => handleDelete(status._id)} // Trigger delete on click
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {statusToEdit && (
-        <Dialog open={true} onOpenChange={handleCloseModal}>
-          <StatusForm closeModal={handleCloseModal} statusToEdit={statusToEdit} />
-        </Dialog>
-      )}
     </div>
   );
 };

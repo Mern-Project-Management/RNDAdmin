@@ -25,73 +25,91 @@ const AddCounter = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-lg mx-auto bg-white shadow-md rounded">
-      <h1 className="text-xl font-bold font-serif text-gray-700 uppercase text-center mb-4">
-        Add Counter
-      </h1>
+    <div className="p-6 bg-gray-50 min-h-screen flex justify-center items-start pt-10">
+      <div className="w-full max-w-7xl bg-white rounded-lg shadow-md p-8">
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">
+          Add Counter
+        </h1>
 
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none"
-          required
-          placeholder="e.g. Happy Clients"
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                required
+                placeholder="e.g. Happy Clients"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Count</label>
+              <input
+                type="text"
+                value={count}
+                onChange={(e) => setCount(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                required
+                placeholder="e.g. 150"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Sign</label>
+              <input
+                type="text"
+                value={sign}
+                onChange={(e) => setSign(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="e.g. +"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Icon (Class Name)</label>
+              <input
+                type="text"
+                value={icon}
+                onChange={(e) => setIcon(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="e.g. fa fa-user"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={() => navigate('/counter')}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              Add Counter
+            </button>
+          </div>
+        </form>
       </div>
-
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">Count</label>
-        <input
-          type="text"
-          value={count}
-          onChange={(e) => setCount(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none"
-          required
-          placeholder="e.g. 150"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">Sign</label>
-        <input
-          type="text"
-          value={sign}
-          onChange={(e) => setSign(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none"
-          placeholder="e.g. +"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">Icon (Class Name)</label>
-        <input
-          type="text"
-          value={icon}
-          onChange={(e) => setIcon(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none"
-          placeholder="e.g. fa fa-user"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">Status</label>
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none"
-        >
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-      </div>
-
-      <button type="submit" className="w-full bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600">
-        Add Counter
-      </button>
-    </form>
+    </div>
   );
 };
 
