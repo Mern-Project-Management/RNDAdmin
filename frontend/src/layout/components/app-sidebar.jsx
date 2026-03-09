@@ -120,7 +120,7 @@ const menuData = [
         icon: UsersRoundIcon,
         children: [
           { title: "Core Value List", icon: List, url: "/core-value-table" },
-          { title: "Add New", icon: PlusSquare, url: "/core-value-form" },
+          { title: "Add New", icon: PlusSquare, url: "/add-core-value" },
         ]
       },
       {

@@ -22,10 +22,10 @@ const AddCoreValue = () => {
         return;
       }
 
-      formData.append('title', values.title);
-      formData.append('imgName', values.imgName);
-      formData.append('altName', values.altName);
-      formData.append('details', values.details);
+      formData.append('title', values.title?.trim() || '');
+      formData.append('imgName', values.imgName?.trim() || '');
+      formData.append('altName', values.altName?.trim() || '');
+      formData.append('details', values.details?.trim() || '');
 
       await createCoreValue(formData).unwrap();
       message.success('Core Value created successfully');
@@ -71,7 +71,7 @@ const AddCoreValue = () => {
       <div className='p-6'>
         <h1 className="text-2xl font-bold mb-6">Add New Core Value</h1>
         <Form form={form} layout="vertical" onFinish={onFinish}>
-          <Form.Item name="image" label="Image" rules={[{ required: true, message: 'Please upload an image!' }]}>
+          <Form.Item name="image" label="Image" rules={[{ required: true, message: 'Please upload an image!' }]} valuePropName="fileList" getValueFromEvent={(e) => e && e.fileList}>
             <Upload maxCount={1} listType="picture" beforeUpload={() => false} onChange={handleImageChange}>
               <Button icon={<UploadOutlined />}>Upload Image</Button>
             </Upload>
