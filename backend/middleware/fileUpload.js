@@ -107,20 +107,26 @@ const processLogoImage = async (filePath) => {
 
 // Middleware to handle all photo uploads (both 'photo' and 'cards[x][photo]')
 const uploadPhoto = (req, res, next) => {
-  upload.fields([
-    { name: 'catalogue', maxCount: 1 },
-    { name: 'photo', maxCount: 10 },           // increased a bit for flexibility
-    { name: 'resume', maxCount: 1 },
-    // Allow dynamic card photo fields — Multer supports wildcards via regex or multiple definitions
-    // But easier: just let any field starting with 'cards[' go to temp and process later
-  ])(req, res, async function (err) {
+  upload.any()(req, res, async function (err) {
     if (err) {
       return res.status(400).send({ error: err.message });
     }
 
-    if (!req.files) {
+    if (!req.files || req.files.length === 0) {
       return next();
     }
+
+    // Convert req.files (array from upload.any()) to an object (matching upload.fields format)
+    // for backward compatibility with controllers.
+    const filesArray = req.files;
+    const filesObject = {};
+    filesArray.forEach(file => {
+      if (!filesObject[file.fieldname]) {
+        filesObject[file.fieldname] = [];
+      }
+      filesObject[file.fieldname].push(file);
+    });
+    req.files = filesObject;
 
     // Collect all photo files: both from 'photo' field and any 'cards[x][photo]'
     const photoFiles = [];
@@ -131,7 +137,7 @@ const uploadPhoto = (req, res, next) => {
 
     // Find all fields that start with 'cards[' and end with '[photo]'
     Object.keys(req.files).forEach(fieldName => {
-      if (fieldName.startsWith('cards[') && fieldName.endsWith('][photo]')) {
+      if (fieldName.startsWith('cards[') && (fieldName.endsWith('][photo]') || fieldName.includes('[photo]'))) {
         photoFiles.push(...req.files[fieldName]);
       }
     });

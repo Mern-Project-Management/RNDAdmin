@@ -44,11 +44,11 @@ const ServiceSec3Form = () => {
     fetchCategories();
   }, []);
 
-useEffect(() => {
-  if (isEditMode && id && categories.length > 0) {
-    fetchDataForEdit(id);
-  }
-}, [id, categories]);
+  useEffect(() => {
+    if (isEditMode && id && categories.length > 0) {
+      fetchDataForEdit(id);
+    }
+  }, [id, categories]);
 
   const fetchCategories = async () => {
     try {
@@ -64,72 +64,72 @@ useEffect(() => {
     }
   };
 
-const loadSubCategoriesForEdit = (data, categoriesList) => {
-  if (data.categoryId) {
-    const category = categoriesList.find(cat => cat._id === data.categoryId);
-    if (category) {
-      const subCats = category.subCategories || [];
-      setSubCategories(subCats);
-      console.log('Sub categories loaded:', subCats);
+  const loadSubCategoriesForEdit = (data, categoriesList) => {
+    if (data.categoryId) {
+      const category = categoriesList.find(cat => cat._id === data.categoryId);
+      if (category) {
+        const subCats = category.subCategories || [];
+        setSubCategories(subCats);
+        console.log('Sub categories loaded:', subCats);
 
-      if (data.subCategoryId) {
-        const subCategory = subCats.find(sub => sub._id === data.subCategoryId);
-        if (subCategory) {
-          const subSubCats = subCategory.subSubCategory || [];
-          setSubSubCategories(subSubCats);
-          console.log('Sub-sub categories loaded:', subSubCats);
-        } else {
-          console.warn('Sub category not found with ID:', data.subCategoryId);
+        if (data.subCategoryId) {
+          const subCategory = subCats.find(sub => sub._id === data.subCategoryId);
+          if (subCategory) {
+            const subSubCats = subCategory.subSubCategory || [];
+            setSubSubCategories(subSubCats);
+            console.log('Sub-sub categories loaded:', subSubCats);
+          } else {
+            console.warn('Sub category not found with ID:', data.subCategoryId);
+          }
         }
+      } else {
+        console.warn('Category not found with ID:', data.categoryId);
       }
-    } else {
-      console.warn('Category not found with ID:', data.categoryId);
     }
-  }
-};
-const fetchDataForEdit = async (dataId) => {
-  try {
-    setLoading(true);
+  };
+  const fetchDataForEdit = async (dataId) => {
+    try {
+      setLoading(true);
 
-    // Fetch both in parallel
-    const [editRes, catRes] = await Promise.all([
-      axios.get(`/api/serviceSec3/${dataId}`),
-      categories.length > 0
-        ? Promise.resolve({ data: categories })
-        : axios.get('/api/services/getAll').then(r => ({
+      // Fetch both in parallel
+      const [editRes, catRes] = await Promise.all([
+        axios.get(`/api/serviceSec3/${dataId}`),
+        categories.length > 0
+          ? Promise.resolve({ data: categories })
+          : axios.get('/api/services/getAll').then(r => ({
             data: Array.isArray(r.data) ? r.data : r.data.data || []
           }))
-    ]);
+      ]);
 
-    const item = editRes.data.data;
-    const categoriesList = catRes.data;
-    
-    console.log('Fetched item for edit:', item);
-    console.log('Fetched categories for edit:', categoriesList);
-    
-    // Handle nested category objects from API response
-    const tempData = {
-      categoryId: (item.categoryId && typeof item.categoryId === 'object' ? item.categoryId._id : item.categoryId) || '',
-      subCategoryId: (item.subCategoryId && typeof item.subCategoryId === 'object' ? item.subCategoryId._id : item.subCategoryId) || '',
-      subSubCategoryId: (item.subSubCategoryId && typeof item.subSubCategoryId === 'object' ? item.subSubCategoryId._id : item.subSubCategoryId) || '',
-    };
+      const item = editRes.data.data;
+      const categoriesList = catRes.data;
 
-    console.log('Extracted IDs:', tempData);
-    console.log('Heading:', item.heading);
-    console.log('Subheading:', item.subheading);
-    console.log('Details:', item.details);
-    console.log('Cards:', item.cards);
+      console.log('Fetched item for edit:', item);
+      console.log('Fetched categories for edit:', categoriesList);
 
-    // Build the complete form data
-    const newFormData = {
-      heading: item.heading ? String(item.heading).trim() : '',
-      subheading: item.subheading ? String(item.subheading).trim() : '',
-      details: item.details ? String(item.details).trim() : '',
-      categoryId: tempData.categoryId,
-      subCategoryId: tempData.subCategoryId,
-      subSubCategoryId: tempData.subSubCategoryId,
-      cards: item.cards && Array.isArray(item.cards) && item.cards.length > 0
-        ? item.cards.map(card => ({
+      // Handle nested category objects from API response
+      const tempData = {
+        categoryId: (item.categoryId && typeof item.categoryId === 'object' ? item.categoryId._id : item.categoryId) || '',
+        subCategoryId: (item.subCategoryId && typeof item.subCategoryId === 'object' ? item.subCategoryId._id : item.subCategoryId) || '',
+        subSubCategoryId: (item.subSubCategoryId && typeof item.subSubCategoryId === 'object' ? item.subSubCategoryId._id : item.subSubCategoryId) || '',
+      };
+
+      console.log('Extracted IDs:', tempData);
+      console.log('Heading:', item.heading);
+      console.log('Subheading:', item.subheading);
+      console.log('Details:', item.details);
+      console.log('Cards:', item.cards);
+
+      // Build the complete form data
+      const newFormData = {
+        heading: item.heading ? String(item.heading).trim() : '',
+        subheading: item.subheading ? String(item.subheading).trim() : '',
+        details: item.details ? String(item.details).trim() : '',
+        categoryId: tempData.categoryId,
+        subCategoryId: tempData.subCategoryId,
+        subSubCategoryId: tempData.subSubCategoryId,
+        cards: item.cards && Array.isArray(item.cards) && item.cards.length > 0
+          ? item.cards.map(card => ({
             title: card.title ? String(card.title).trim() : '',
             subTitle: card.subTitle ? String(card.subTitle).trim() : '',
             description: card.description ? String(card.description).trim() : '',
@@ -138,47 +138,47 @@ const fetchDataForEdit = async (dataId) => {
             alt: card.alt ? String(card.alt).trim() : '',
             imgTitle: card.imgTitle ? String(card.imgTitle).trim() : '',
           }))
-        : [{ title: '', subTitle: '', description: '', photo: null, currentPhoto: '', alt: '', imgTitle: '' }],
-    };
+          : [{ title: '', subTitle: '', description: '', photo: null, currentPhoto: '', alt: '', imgTitle: '' }],
+      };
 
-    console.log('Setting form data to:', newFormData);
-    setFormData(newFormData);
+      console.log('Setting form data to:', newFormData);
+      setFormData(newFormData);
 
-    // Set categories if not already loaded
-    if (categories.length === 0) {
-      setCategories(categoriesList);
+      // Set categories if not already loaded
+      if (categories.length === 0) {
+        setCategories(categoriesList);
+      }
+
+      // ✅ Pass categoriesList directly — no stale closure issue
+      loadSubCategoriesForEdit(tempData, categoriesList);
+
+      if (tempData.subSubCategoryId) setSelectedLevel('subsubcategory');
+      else if (tempData.subCategoryId) setSelectedLevel('subcategory');
+      else setSelectedLevel('category');
+
+      // Mark form as ready to display
+      setIsFormReady(true);
+
+    } catch (err) {
+      console.error('Error loading data for edit:', err);
+      setMessage({ type: 'error', text: 'Failed to load data' });
+      setTimeout(() => navigate('/serviceSec3-table'), 2000);
+    } finally {
+      setLoading(false);
     }
-
-    // ✅ Pass categoriesList directly — no stale closure issue
-    loadSubCategoriesForEdit(tempData, categoriesList);
-
-    if (tempData.subSubCategoryId) setSelectedLevel('subsubcategory');
-    else if (tempData.subCategoryId) setSelectedLevel('subcategory');
-    else setSelectedLevel('category');
-
-    // Mark form as ready to display
-    setIsFormReady(true);
-
-  } catch (err) {
-    console.error('Error loading data for edit:', err);
-    setMessage({ type: 'error', text: 'Failed to load data' });
-    setTimeout(() => navigate('/serviceSec3-table'), 2000);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value;
     const selectedCategory = categories.find(cat => cat._id === categoryId);
-    
+
     setFormData({
       ...formData,
       categoryId,
       subCategoryId: '',
       subSubCategoryId: '',
     });
-    
+
     setSubCategories(selectedCategory?.subCategories || []);
     setSubSubCategories([]);
   };
@@ -186,13 +186,13 @@ const fetchDataForEdit = async (dataId) => {
   const handleSubCategoryChange = (e) => {
     const subCategoryId = e.target.value;
     const selectedSubCategory = subCategories.find(sub => sub._id === subCategoryId);
-    
+
     setFormData({
       ...formData,
       subCategoryId,
       subSubCategoryId: '',
     });
-    
+
     setSubSubCategories(selectedSubCategory?.subSubCategory || []);
   };
 
@@ -208,7 +208,7 @@ const fetchDataForEdit = async (dataId) => {
       setMessage({ type: 'warning', text: 'Cannot change level in edit mode' });
       return;
     }
-    
+
     setSelectedLevel(level);
     setFormData({
       ...formData,
@@ -263,7 +263,7 @@ const fetchDataForEdit = async (dataId) => {
     data.append('subheading', formData.subheading);
     data.append('details', formData.details);
     data.append('categoryId', formData.categoryId);
-    
+
     if (selectedLevel === 'subcategory' && formData.subCategoryId) {
       data.append('subCategoryId', formData.subCategoryId);
     } else if (selectedLevel === 'subsubcategory' && formData.subSubCategoryId) {
@@ -281,9 +281,9 @@ const fetchDataForEdit = async (dataId) => {
     }));
     data.append('cards', JSON.stringify(cardsForSubmit));
 
-    formData.cards.forEach((card) => {
+    formData.cards.forEach((card, index) => {
       if (card.photo) {
-        data.append('photo', card.photo);
+        data.append(`cards[${index}][photo]`, card.photo);
       }
     });
 
@@ -321,12 +321,11 @@ const fetchDataForEdit = async (dataId) => {
       )}
 
       {message.text && (
-        <div className={`mb-4 p-4 rounded ${
-          message.type === 'success' ? 'bg-green-100 text-green-700' :
-          message.type === 'error' ? 'bg-red-100 text-red-700' :
-          message.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
-          'bg-blue-100 text-blue-700'
-        }`}>
+        <div className={`mb-4 p-4 rounded ${message.type === 'success' ? 'bg-green-100 text-green-700' :
+            message.type === 'error' ? 'bg-red-100 text-red-700' :
+              message.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
+                'bg-blue-100 text-blue-700'
+          }`}>
           {message.text}
         </div>
       )}
@@ -343,295 +342,292 @@ const fetchDataForEdit = async (dataId) => {
         </div>
       ) : (
         <div className="space-y-6" style={{ opacity: (loading && isEditMode) ? 0.5 : 1, pointerEvents: (loading && isEditMode) ? 'none' : 'auto' }}>
-        {/* Level Selection */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <label className="block text-sm font-semibold text-gray-700 mb-3">
-            Select Level {isEditMode && <span className="text-xs text-gray-500">(Locked in edit mode)</span>}
-          </label>
-          <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => handleLevelChange('category')}
-              disabled={isEditMode}
-              className={`px-4 py-2 rounded font-medium transition ${
-                selectedLevel === 'category'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              Category
-            </button>
-            <button
-              type="button"
-              onClick={() => handleLevelChange('subcategory')}
-              disabled={isEditMode}
-              className={`px-4 py-2 rounded font-medium transition ${
-                selectedLevel === 'subcategory'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              Sub Category
-            </button>
-            <button
-              type="button"
-              onClick={() => handleLevelChange('subsubcategory')}
-              disabled={isEditMode}
-              className={`px-4 py-2 rounded font-medium transition ${
-                selectedLevel === 'subsubcategory'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              Sub-Sub Category
-            </button>
+          {/* Level Selection */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Select Level {isEditMode && <span className="text-xs text-gray-500">(Locked in edit mode)</span>}
+            </label>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() => handleLevelChange('category')}
+                disabled={isEditMode}
+                className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'category'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                Category
+              </button>
+              <button
+                type="button"
+                onClick={() => handleLevelChange('subcategory')}
+                disabled={isEditMode}
+                className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'subcategory'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                Sub Category
+              </button>
+              <button
+                type="button"
+                onClick={() => handleLevelChange('subsubcategory')}
+                disabled={isEditMode}
+                className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'subsubcategory'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                Sub-Sub Category
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Category Dropdowns */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Category *
-          </label>
-          <select
-            value={formData.categoryId}
-            onChange={handleCategoryChange}
-            disabled={isLoadingCategories}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-          >
-            <option value="">Select Category</option>
-            {categories.map(cat => (
-              <option key={cat._id} value={cat._id}>{cat.category}</option>
-            ))}
-          </select>
-        </div>
-
-        {(selectedLevel === 'subcategory' || selectedLevel === 'subsubcategory') && (
+          {/* Category Dropdowns */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Sub Category *
+              Category *
             </label>
             <select
-              value={formData.subCategoryId}
-              onChange={handleSubCategoryChange}
-              disabled={!formData.categoryId}
+              value={formData.categoryId}
+              onChange={handleCategoryChange}
+              disabled={isLoadingCategories}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
             >
-              <option value="">Select Sub Category</option>
-              {subCategories.map(sub => (
-                <option key={sub._id} value={sub._id}>{sub.category}</option>
+              <option value="">Select Category</option>
+              {categories.map(cat => (
+                <option key={cat._id} value={cat._id}>{cat.category}</option>
               ))}
             </select>
           </div>
-        )}
 
-        {selectedLevel === 'subsubcategory' && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Sub-Sub Category *
-            </label>
-            <select
-              value={formData.subSubCategoryId}
-              onChange={handleSubSubCategoryChange}
-              disabled={!formData.subCategoryId}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-            >
-              <option value="">Select Sub-Sub Category</option>
-              {subSubCategories.map(subsub => (
-                <option key={subsub._id} value={subsub._id}>{subsub.category}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* Main Content Fields */}
-        <div className="border-t pt-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Content Information</h3>
-          
-          <div className="space-y-4">
+          {(selectedLevel === 'subcategory' || selectedLevel === 'subsubcategory') && (
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Heading
+                Sub Category *
               </label>
-              <input
-                type="text"
-                value={formData.heading}
-                onChange={(e) => setFormData({ ...formData, heading: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter heading"
-              />
+              <select
+                value={formData.subCategoryId}
+                onChange={handleSubCategoryChange}
+                disabled={!formData.categoryId}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+              >
+                <option value="">Select Sub Category</option>
+                {subCategories.map(sub => (
+                  <option key={sub._id} value={sub._id}>{sub.category}</option>
+                ))}
+              </select>
             </div>
+          )}
 
+          {selectedLevel === 'subsubcategory' && (
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Subheading
+                Sub-Sub Category *
               </label>
-              <input
-                type="text"
-                value={formData.subheading}
-                onChange={(e) => setFormData({ ...formData, subheading: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter subheading"
-              />
+              <select
+                value={formData.subSubCategoryId}
+                onChange={handleSubSubCategoryChange}
+                disabled={!formData.subCategoryId}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+              >
+                <option value="">Select Sub-Sub Category</option>
+                {subSubCategories.map(subsub => (
+                  <option key={subsub._id} value={subsub._id}>{subsub.category}</option>
+                ))}
+              </select>
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Details
-              </label>
-              <ReactQuill
-                value={formData.details}
-                onChange={(value) => setFormData({ ...formData, details: value })}
-                placeholder="Enter detailed description"
-                className="bg-white rounded-lg"
-              />
+          {/* Main Content Fields */}
+          <div className="border-t pt-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Content Information</h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Heading
+                </label>
+                <input
+                  type="text"
+                  value={formData.heading}
+                  onChange={(e) => setFormData({ ...formData, heading: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter heading"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Subheading
+                </label>
+                <input
+                  type="text"
+                  value={formData.subheading}
+                  onChange={(e) => setFormData({ ...formData, subheading: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter subheading"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Details
+                </label>
+                <ReactQuill
+                  value={formData.details}
+                  onChange={(value) => setFormData({ ...formData, details: value })}
+                  placeholder="Enter detailed description"
+                  className="bg-white rounded-lg"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Cards Section */}
-        <div className="border-t pt-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">Service Cards</h3>
-            <button
-              type="button"
-              onClick={addCard}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
-            >
-              + Add Card
-            </button>
-          </div>
+          {/* Cards Section */}
+          <div className="border-t pt-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold text-gray-800">Service Cards</h3>
+              <button
+                type="button"
+                onClick={addCard}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
+              >
+                + Add Card
+              </button>
+            </div>
 
-          <div className="space-y-6">
-            {formData.cards.map((card, index) => (
-              <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-6 relative">
-                {formData.cards.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeCard(index)}
-                    className="absolute top-4 right-4 text-red-600 hover:text-red-800 text-xl font-bold"
-                  >
-                    ×
-                  </button>
-                )}
+            <div className="space-y-6">
+              {formData.cards.map((card, index) => (
+                <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-6 relative">
+                  {formData.cards.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeCard(index)}
+                      className="absolute top-4 right-4 text-red-600 hover:text-red-800 text-xl font-bold"
+                    >
+                      ×
+                    </button>
+                  )}
 
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Card Title *
-                      </label>
-                      <input
-                        type="text"
-                        value={card.title}
-                        onChange={(e) => handleCardChange(index, 'title', e.target.value)}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter card title"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Sub Title
-                      </label>
-                      <input
-                        type="text"
-                        value={card.subTitle}
-                        onChange={(e) => handleCardChange(index, 'subTitle', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter subtitle"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Description
-                    </label>
-                    <textarea
-                      value={card.description}
-                      onChange={(e) => handleCardChange(index, 'description', e.target.value)}
-                      rows="3"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter description"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Card Photo
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleCardPhotoChange(index, e.target.files[0])}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    {card.currentPhoto && (
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500 mb-2">Current: {card.currentPhoto}</p>
-                        <img
-                          src={`/api/image/download/${card.currentPhoto}`}
-                          alt="Current"
-                          className="h-32 rounded-lg object-cover"
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Card Title *
+                        </label>
+                        <input
+                          type="text"
+                          value={card.title}
+                          onChange={(e) => handleCardChange(index, 'title', e.target.value)}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter card title"
                         />
                       </div>
-                    )}
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Sub Title
+                        </label>
+                        <input
+                          type="text"
+                          value={card.subTitle}
+                          onChange={(e) => handleCardChange(index, 'subTitle', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter subtitle"
+                        />
+                      </div>
+                    </div>
+
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Alt Text
+                        Description
                       </label>
-                      <input
-                        type="text"
-                        value={card.alt}
-                        onChange={(e) => handleCardChange(index, 'alt', e.target.value)}
+                      <textarea
+                        value={card.description}
+                        onChange={(e) => handleCardChange(index, 'description', e.target.value)}
+                        rows="3"
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter alt text"
+                        placeholder="Enter description"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Image Title
+                        Card Photo
                       </label>
                       <input
-                        type="text"
-                        value={card.imgTitle}
-                        onChange={(e) => handleCardChange(index, 'imgTitle', e.target.value)}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleCardPhotoChange(index, e.target.files[0])}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter image title"
                       />
+                      {card.currentPhoto && (
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-500 mb-2">Current: {card.currentPhoto}</p>
+                          <img
+                            src={`/api/image/download/${card.currentPhoto}`}
+                            alt="Current"
+                            className="h-32 rounded-lg object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Alt Text
+                        </label>
+                        <input
+                          type="text"
+                          value={card.alt}
+                          onChange={(e) => handleCardChange(index, 'alt', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter alt text"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Image Title
+                        </label>
+                        <input
+                          type="text"
+                          value={card.imgTitle}
+                          onChange={(e) => handleCardChange(index, 'imgTitle', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter image title"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex gap-4 pt-4">
+            <button
+              type="button"
+              onClick={() => navigate('/serviceSec3-table')}
+              className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={saving || !formData.categoryId}
+              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+            >
+              {saving ? 'Saving...' : isEditMode ? 'Update Data' : 'Create Data'}
+            </button>
           </div>
         </div>
-
-        {/* Submit Buttons */}
-        <div className="flex gap-4 pt-4">
-          <button
-            type="button"
-            onClick={() => navigate('/serviceSec3-table')}
-            className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={saving || !formData.categoryId}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
-          >
-            {saving ? 'Saving...' : isEditMode ? 'Update Data' : 'Create Data'}
-          </button>
-        </div>
-      </div>
       )}
     </div>
   );

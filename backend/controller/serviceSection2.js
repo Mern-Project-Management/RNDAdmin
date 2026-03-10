@@ -30,19 +30,28 @@ const processCards = (cards, files) => {
     parsedCards = cards;
   }
 
-  const uploadedPhotos = files?.['photo'] || [];
-  if (uploadedPhotos.length > 5) {
-    throw new Error('Maximum 5 photos allowed');
-  }
+  return parsedCards.map((card, index) => {
+    let finalPhoto = card.photo || ''; // Default to existing photo
 
-  return parsedCards.map((card, index) => ({
-    title: card.title || '',
-    subTitle: card.subTitle || '',
-    description: card.description || '',
-    photo: uploadedPhotos[index]?.filename || card.photo || '',
-    alt: card.alt || '',
-    imgTitle: card.imgTitle || '',
-  }));
+    // 1. Check for specific field name: cards[index][photo]
+    const specificField = `cards[${index}][photo]`;
+    if (files?.[specificField] && files[specificField][0]) {
+      finalPhoto = files[specificField][0].filename;
+    }
+    // 2. Fallback to 'photo' array
+    else if (files?.['photo'] && files['photo'][index]) {
+      finalPhoto = files['photo'][index].filename;
+    }
+
+    return {
+      title: card.title || '',
+      subTitle: card.subTitle || '',
+      description: card.description || '',
+      photo: finalPhoto,
+      alt: card.alt || '',
+      imgTitle: card.imgTitle || '',
+    };
+  });
 };
 
 // CREATE or UPDATE (Upsert based on category levels)
@@ -199,7 +208,7 @@ exports.getSec2ById = async (req, res) => {
     }
 
     const sec2 = await ServiceSec2.findById(id)
-      .populate('categoryId','category')
+      .populate('categoryId', 'category')
       .populate('subCategoryId')
       .populate('subSubCategoryId');
 

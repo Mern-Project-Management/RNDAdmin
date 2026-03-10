@@ -278,9 +278,9 @@ const ServiceSec2Form = () => {
     }));
     data.append('cards', JSON.stringify(cardsForSubmit));
 
-    formData.cards.forEach((card) => {
+    formData.cards.forEach((card, index) => {
       if (card.photo) {
-        data.append('photo', card.photo);
+        data.append(`cards[${index}][photo]`, card.photo);
       }
     });
 
