@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const [dataCount, setDataCount] = useState({
-    customerCount: 0,
-    supplierCount: 0,
-    chemicalCount: 0,
+    blogCount: 0,
+    clientCount: 0,
+    jobCount: 0,
     inquiryCount: 0,
   });
 
@@ -16,7 +16,7 @@ const Dashboard = () => {
         const response = await axios.get('/api/count/dataCount');
        console.log(response)
         // Assuming the response is structured like:
-        // { customerCount, supplierCount, chemicalCount, inquiryCount }
+        // { blogCount, clientCount, jobCount, inquiryCount }
         setDataCount(response.data);
       } catch (error) {
         console.error('Error fetching data count:', error);
@@ -43,35 +43,41 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Total Chemicals Card */}
+        {/* Total Blogs Card */}
         <div className="bg-amber-500 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
-          <div className="text-4xl font-bold mb-2">{dataCount.chemicalCount}</div>
-          <div className="text-lg">Total Chemicals</div>
+          <div className="text-4xl font-bold mb-2">{dataCount.blogCount}</div>
+          <div className="text-lg">Total Blogs</div>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
             <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2zM5 4v14h14V8h-5V3H5z" />
+              <path d="M7 8h5M7 12h10M7 16h10" />
             </svg>
           </div>
         </div>
 
-        {/* Total Suppliers Card */}
+        {/* Total Clients Card */}
         <div className="bg-purple-600 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
-          <div className="text-4xl font-bold mb-2">{dataCount.supplierCount}</div>
-          <div className="text-lg">Total Suppliers</div>
+          <div className="text-4xl font-bold mb-2">{dataCount.clientCount}</div>
+          <div className="text-lg">Total Clients</div>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
             <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1zM8 11a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2zm9-11a1 1 0 011 1v10a1 1 0 01-1 1h-1V4h1z" />
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87" />
+              <path d="M16 3.13a4 4 0 010 7.75" />
             </svg>
           </div>
         </div>
 
-        {/* Total Customers Card */}
+        {/* Job Applications Card */}
         <div className="bg-blue-500 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
-          <div className="text-4xl font-bold mb-2">{dataCount.customerCount}</div>
-          <div className="text-lg">Total Customers</div>
+          <div className="text-4xl font-bold mb-2">{dataCount.jobCount}</div>
+          <div className="text-lg">Job Applications</div>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
             <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              <path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745V20a2 2 0 002 2h14a2 2 0 002-2v-6.745zM16 8V5a3 3 0 00-6 0v3h6z" />
+              <path d="M9 8h6V5a3 3 0 00-6 0v3z" />
+              <path d="M20 8H4v5.255A23.931 23.931 0 0012 15c3.183 0 6.22-.62 9-1.745V8z" />
             </svg>
           </div>
         </div>

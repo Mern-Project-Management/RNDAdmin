@@ -1,19 +1,19 @@
-const Customer = require("../model/customer");
-const Supplier = require("../model/supplier");
-const Chemical = require("../model/chemical");
+const Blog = require("../model/blog");
+const Clients = require("../model/client");
+const JobApplication = require("../model/career");
 const Inquiry = require("../model/inquiry")
 const getDataCount = async (req, res) => {
   try {
     // Count the number of documents in each collection
-    const customerCount = await Customer.countDocuments({});
-    const supplierCount = await Supplier.countDocuments({});
-    const chemicalCount = await Chemical.countDocuments({});
+    const blogCount = await Blog.countDocuments({});
+    const clientCount = await Clients.countDocuments({});
+    const jobCount = await JobApplication.countDocuments({});
     const inquiryCount = await Inquiry.countDocuments({})
     // Return the counts in a structured response
     return res.status(200).json({
-      customerCount,
-      supplierCount,
-      chemicalCount,
+      blogCount,
+      clientCount,
+      jobCount,
       inquiryCount
     });
   } catch (error) {
