@@ -37,7 +37,7 @@ exports.createBanner = async (req, res) => {
         console.error('Error creating banner:', err);
         res.status(400).json({ message: err.message });
     }
-}; 
+};
 
 // Get all banners
 exports.getAllBanners = async (req, res) => {
@@ -124,7 +124,7 @@ exports.deleteBanner = async (req, res) => {
     try {
         const { id } = req.query;
         const banner = await Banner.findById(id);
-        
+
         if (!banner) {
             return res.status(404).json({ message: "Banner not found" });
         }

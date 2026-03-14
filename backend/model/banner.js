@@ -1,45 +1,45 @@
-    const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const bannerSchema = new mongoose.Schema({
-    pageSlug: { 
+    pageSlug: {
         type: String,
-        required: true 
+        required: true
     },
-    image: { 
+    image: {
         type: String,
-        required: true 
+        required: true
     },
-    imgName: { 
+    imgName: {
         type: String,
-        required: true 
+        required: true
     },
-    altName: { 
+    altName: {
         type: String,
-        required: true 
+        required: true
     },
-    title: { 
+    title: {
         type: [String],
-       default: [] 
+        default: []
     },
-    details: { 
+    details: {
         type: String,
-       default: "" 
+        default: ""
     },
-    heading: { 
+    heading: {
         type: [String],
-       default: [] 
+        default: []
     },
-    subheading: { 
+    subheading: {
         type: String,
-       default: "" 
+        default: ""
     },
-    description: { 
+    description: {
         type: String,
-       default: "" 
+        default: ""
     },
-    marqueeText: { 
+    marqueeText: {
         type: [String],
-       default: [] 
+        default: []
     },
     link: [{
         name: { type: String, trim: true },

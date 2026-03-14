@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, message, Upload, Select, Breadcrumb } from 'antd';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useGetBannerByIdQuery, useUpdateBannerMutation } from '../../slice/banner/banner';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { UploadOutlined, HomeOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 const { Option } = Select;
-const { TextArea } = Input;
 
 const EditBannerForm = () => {
     const { id } = useParams();
@@ -43,13 +40,10 @@ const EditBannerForm = () => {
     useEffect(() => {
         if (banner) {
             form.setFieldsValue({
-                title: banner.title || [],
                 altName: banner.altName,
-                details: banner.details,
                 imgName: banner.imgName,
                 pageSlug: banner.pageSlug || '',
                 heading: banner.heading || [],
-                subheading: banner.subheading,
                 description: banner.description,
                 marqueeText: banner.marqueeText,
                 link: banner.link || [],
@@ -70,10 +64,6 @@ const EditBannerForm = () => {
 
     const onFinish = async (values) => {
         try {
-            if (!values.title || values.title.length === 0) {
-                message.error('Title is required');
-                return;
-            }
             if (!values.altName?.trim()) {
                 message.error('Alt Name is required');
                 return;
@@ -92,14 +82,12 @@ const EditBannerForm = () => {
                 formData.append('imgName', values.imgName || banner.imgName);
             }
 
-            formData.append('title', JSON.stringify(values.title));
             formData.append('altName', values.altName.trim());
-            formData.append('details', values.details?.trim() || '');
             formData.append('pageSlug', values.pageSlug);
             formData.append('heading', JSON.stringify(values.heading || []));
-            formData.append('subheading', values.subheading || '');
             formData.append('description', values.description || '');
             formData.append('marqueeText', JSON.stringify(values.marqueeText || []));
+            formData.append('link', JSON.stringify(values.link || []));
 
             await updateBanner({
                 id,
@@ -137,13 +125,10 @@ const EditBannerForm = () => {
                     layout="vertical"
                     onFinish={onFinish}
                     initialValues={{
-                        title: banner?.title || [],
                         altName: banner?.altName || '',
-                        details: banner?.details || '',
                         imgName: banner?.imgName || '',
                         pageSlug: banner?.pageSlug || '',
                         heading: banner?.heading || [],
-                        subheading: banner?.subheading || '',
                         description: banner?.description || '',
                         marqueeText: banner?.marqueeText || [],
                         image: banner?.image
@@ -204,40 +189,6 @@ const EditBannerForm = () => {
                         <Input disabled={imageChanged} />
                     </Form.Item>
 
-                    <Form.List name="title">
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map((field, index) => (
-                                    <Form.Item
-                                        label={index === 0 ? 'Title' : ''}
-                                        required={false}
-                                        key={field.key}
-                                    >
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <Form.Item
-                                                {...field}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[{ required: true, whitespace: true, message: "Please input title or delete this field." }]}
-                                                noStyle
-                                            >
-                                                <Input placeholder="Title" />
-                                            </Form.Item>
-                                            <MinusCircleOutlined
-                                                className="dynamic-delete-button"
-                                                onClick={() => remove(field.name)}
-                                            />
-                                        </div>
-                                    </Form.Item>
-                                ))}
-                                <Form.Item label={fields.length === 0 ? 'Title' : ''}>
-                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                        Add Title
-                                    </Button>
-                                </Form.Item>
-                            </>
-                        )}
-                    </Form.List>
-
                     <Form.Item
                         name="altName"
                         label="Alt Name"
@@ -279,13 +230,6 @@ const EditBannerForm = () => {
                         )}
                     </Form.List>
 
-                    <Form.Item
-                        name="subheading"
-                        label="Subheading"
-                    >
-                        <Input />
-                    </Form.Item>
-
                     <Form.List name="marqueeText">
                         {(fields, { add, remove }) => (
                             <>
@@ -320,18 +264,50 @@ const EditBannerForm = () => {
                     </Form.List>
 
                     <Form.Item name="description" label="Description">
-                        <TextArea rows={4} />
+                        <Input.TextArea rows={4} />
                     </Form.Item>
 
-                    <Form.Item
-                        name="details"
-                        label="Details"
-                        rules={[{ message: 'Please input details!' }]}
-                    >
-                        <ReactQuill theme="snow" />
-                    </Form.Item>
-
-
+                    <Form.List name="link">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map((field, index) => (
+                                    <Form.Item
+                                        label={index === 0 ? 'Links' : ''}
+                                        required={false}
+                                        key={field.key}
+                                    >
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Form.Item
+                                                name={[field.name, 'name']}
+                                                validateTrigger={['onChange', 'onBlur']}
+                                                rules={[{ required: true, whitespace: true, message: 'Please input link name.' }]}
+                                                noStyle
+                                            >
+                                                <Input placeholder="Button Name" style={{ width: '40%' }} />
+                                            </Form.Item>
+                                            <Form.Item
+                                                name={[field.name, 'url']}
+                                                validateTrigger={['onChange', 'onBlur']}
+                                                rules={[{ required: true, whitespace: true, message: 'Please input link URL.' }]}
+                                                noStyle
+                                            >
+                                                <Input placeholder="URL" style={{ width: '55%' }} />
+                                            </Form.Item>
+                                            <MinusCircleOutlined
+                                                className="dynamic-delete-button"
+                                                onClick={() => remove(field.name)}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                ))}
+                                <Form.Item label={fields.length === 0 ? 'Links' : ''}>
+                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                        Add Link
+                                    </Button>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
