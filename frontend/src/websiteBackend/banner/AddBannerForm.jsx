@@ -56,8 +56,7 @@ const AddBannerForm = () => {
       formData.append('heading', JSON.stringify(values.heading || []));
       formData.append('subheading', values.subheading || '');
       formData.append('description', values.description || '');
-      formData.append('marque', values.marque || '');
-      formData.append('link', JSON.stringify(values.link || []));
+      formData.append('marqueeText', JSON.stringify(values.marqueeText || []));
 
       await createBanner(formData);
       message.success('Banner created successfully');
@@ -211,40 +210,35 @@ const AddBannerForm = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item name="marque" label="Marque Text">
-            <Input />
-          </Form.Item>
-
-          <label className="block text-sm font-medium text-gray-700 mb-2">Social Media Links</label>
-          <Form.List name="link">
+          <Form.List name="marqueeText">
             {(fields, { add, remove }) => (
               <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <div key={key} style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'name']}
-                      rules={[{ required: true, message: 'Missing name' }]}
-                      style={{ marginBottom: 0, flex: 1 }}
-                    >
-                      <Input placeholder="Link Name (e.g. Facebook)" />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'url']}
-                      rules={[{ required: true, message: 'Missing url' }]}
-                      style={{ marginBottom: 0, flex: 2 }}
-                    >
-                      <Input placeholder="URL" />
-                    </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
-                  </div>
+                {fields.map((field, index) => (
+                  <Form.Item
+                    label={index === 0 ? 'Marque Text' : ''}
+                    required={false}
+                    key={field.key}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Form.Item
+                        {...field}
+                        validateTrigger={['onChange', 'onBlur']}
+                        noStyle
+                      >
+                        <Input placeholder="Marque Text" />
+                      </Form.Item>
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button"
+                        onClick={() => remove(field.name)}
+                      />
+                    </div>
+                  </Form.Item>
                 ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                    Add Social Link
-                  </Button>
-                </Form.Item>
+                  <Form.Item label={fields.length === 0 ? 'Marquee Text' : ''}>
+                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                      Add Marquee Text
+                    </Button>
+                  </Form.Item>
               </>
             )}
           </Form.List>

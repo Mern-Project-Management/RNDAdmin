@@ -37,9 +37,9 @@ const bannerSchema = new mongoose.Schema({
         type: String,
        default: "" 
     },
-    marque: { 
-        type: String,
-       default: "" 
+    marqueeText: { 
+        type: [String],
+       default: [] 
     },
     link: [{
         name: { type: String, trim: true },

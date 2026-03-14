@@ -61,21 +61,6 @@ const BannerTable = () => {
       width: '15%',
     },
     {
-      title: 'Link',
-      dataIndex: 'link',
-      key: 'link',
-      width: '15%',
-      render: (links) => (
-        <div className="flex flex-col gap-1">
-          {Array.isArray(links) && links.map((link, index) => link.url && (
-            <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline block">
-              {link.name || 'Link'}
-            </a>
-          ))}
-        </div>
-      ),
-    },
-    {
       title: 'Actions',
       key: 'actions',
       width: '10%',

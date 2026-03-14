@@ -27,7 +27,7 @@ exports.createBanner = async (req, res) => {
             heading: parseArrayField(req.body.heading),
             subheading: req.body.subheading,
             description: req.body.description,
-            marque: req.body.marque,
+            marqueeText: parseArrayField(req.body.marqueeText),
             link: parseArrayField(req.body.link)
         });
 
@@ -95,6 +95,10 @@ exports.updateBanner = async (req, res) => {
 
         if (req.body.link) {
             updateData.link = parseArrayField(req.body.link);
+        }
+
+        if (req.body.marqueeText) {
+            updateData.marqueeText = parseArrayField(req.body.marqueeText);
         }
 
         // Handle image update if new image is uploaded
