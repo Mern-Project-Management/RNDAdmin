@@ -233,6 +233,17 @@ const ServiceSec3Form = () => {
     setFormData({ ...formData, cards: newCards });
   };
 
+  const handleRemovePhoto = (index) => {
+    const newCards = [...formData.cards];
+    newCards[index].photo = null;
+    newCards[index].currentPhoto = '';
+    setFormData({ ...formData, cards: newCards });
+    
+    // Clear file input value
+    const fileInput = document.getElementById(`photo-upload-${index}`);
+    if (fileInput) fileInput.value = '';
+  };
+
   const addCard = () => {
     setFormData({
       ...formData,
@@ -559,19 +570,30 @@ const ServiceSec3Form = () => {
                         Card Photo
                       </label>
                       <input
+                        id={`photo-upload-${index}`}
                         type="file"
                         accept="image/*"
                         onChange={(e) => handleCardPhotoChange(index, e.target.files[0])}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
-                      {card.currentPhoto && (
-                        <div className="mt-2">
-                          <p className="text-sm text-gray-500 mb-2">Current: {card.currentPhoto}</p>
+                      {(card.currentPhoto || card.photo) && (
+                        <div className="mt-4 relative inline-block">
+                          <p className="text-sm text-gray-500 mb-2">
+                            {card.photo ? 'New Photo Selected' : `Current: ${card.currentPhoto}`}
+                          </p>
                           <img
-                            src={`/api/image/download/${card.currentPhoto}`}
-                            alt="Current"
-                            className="h-32 rounded-lg object-cover"
+                            src={card.photo ? URL.createObjectURL(card.photo) : `/api/image/download/${card.currentPhoto}`}
+                            alt="Preview"
+                            className="h-32 border border-gray-200 rounded-lg object-cover"
                           />
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePhoto(index)}
+                            className="absolute top-8 right-[-10px] bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 focus:outline-none shadow"
+                            title="Remove Photo"
+                          >
+                            ✕
+                          </button>
                         </div>
                       )}
                     </div>

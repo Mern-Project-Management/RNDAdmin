@@ -101,6 +101,12 @@ exports.updateSec3 = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Fetch existing document to find old images
+    const existingSec3 = await ServiceSec3.findById(id);
+    if (!existingSec3) {
+      return res.status(404).json({ error: 'Service Section 3 not found' });
+    }
+
     const {
       heading,
       subheading,
@@ -112,6 +118,14 @@ exports.updateSec3 = async (req, res) => {
     } = req.body;
 
     const processedCards = processCards(cards, req.files);
+
+    // Identify and delete old photos that have been replaced
+    const newPhotos = processedCards.map(c => c.photo).filter(Boolean);
+    existingSec3.cards.forEach(oldCard => {
+      if (oldCard.photo && !newPhotos.includes(oldCard.photo)) {
+        deleteFile(oldCard.photo);
+      }
+    });
 
     const updateData = {
       heading,
@@ -129,12 +143,8 @@ exports.updateSec3 = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    if (!sec3) {
-      return res.status(404).json({ error: 'Service Section 2 not found' });
-    }
-
     res.status(200).json({
-      message: 'Service Section 2 updated successfully',
+      message: 'Service Section 3 updated successfully',
       data: sec3,
     });
   } catch (error) {
