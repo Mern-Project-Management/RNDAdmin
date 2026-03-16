@@ -69,11 +69,24 @@ const createMessage = async (req, res) => {
             throw new Error("Follow Up email template not found in dashboard.");
           }
 
-          // 5. Replace Placeholders in Template
-          // Note: message is the follow-up update message from req.body
-          const emailBody = followUpTemplate.body
+          // 5. Replace Placeholders in Template and wrap in branded container
+          const rawBody = followUpTemplate.body
             .replace("[First Name]", inquiry.firstName || "Customer")
             .replace("[Message]", message.replace(/\n/g, '<br/>'));
+
+          const emailBody = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+              <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+                <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+              </div>
+              <div style="padding: 30px; line-height: 1.6; color: #333;">
+                ${rawBody}
+              </div>
+              <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 12px; color: #777; border-top: 1px solid #eee;">
+                &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+              </div>
+            </div>
+          `;
 
           // 6. Send Email
           await transporter.sendMail({

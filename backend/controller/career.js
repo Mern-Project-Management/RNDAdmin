@@ -216,9 +216,8 @@ const submitApplication = async (req, res) => {
     <div class="email-container">
 
         <!-- Branded Header -->
-        <div class="header">
-            <!-- <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1764672964886.webp" alt="RND Technosoft"> -->
-            <h1>RND Technosoft</h1>
+        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+            <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft" style="height: 50px;">
         </div>
 
         <!-- Subheader -->
@@ -304,14 +303,28 @@ const submitApplication = async (req, res) => {
 
     // **Send Email to Applicant**
     if (email) {
+      const rawBody = applicantTemplate.body.replace("[Applicant's Name]", name)
+        .replace("[Job/Position Name]", postAppliedFor)
+        .replace("[Company Name]", "RND Technosoft")
+        .replace("[Contact Email]", "vbrs@gmail.com");
+
       const applicantMailOptions = {
-        from: `"Your Business Name" <${smtpConfig.name}>`,
+        from: `"RND Technosoft" <${smtpConfig.name}>`,
         to: email,
         subject: applicantTemplate.subject,
-        html: applicantTemplate.body.replace("[Applicant's Name]", name)
-          .replace("[Job/Position Name]", postAppliedFor)
-          .replace("[Company Name]", "VBRS Chemicals")
-          .replace("[Contact Email]", "vbrs@gmail.com"),
+        html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+          <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+            <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+          </div>
+          <div style="padding: 30px; line-height: 1.6; color: #333;">
+            ${rawBody}
+          </div>
+          <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 11px; color: #888;">
+            &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+          </div>
+        </div>
+        `,
       };
 
       await transporter.sendMail(applicantMailOptions);

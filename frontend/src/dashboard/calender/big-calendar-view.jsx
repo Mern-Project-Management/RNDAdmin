@@ -89,7 +89,7 @@ const BigCalendarView = () => {
   }
 
   return (
-    <div className="h-screen p-4">
+    <div className="flex flex-col h-full">
       <CalendarControls
         onToday={() => handleNavigate(new Date())}
         filter={filter}
@@ -97,31 +97,36 @@ const BigCalendarView = () => {
         view={view}
         onViewChange={setView}
       />
-      {isLoading ? (
-        <div>Loading follow-ups...</div>
-      ) : (
-        <Calendar
-        localizer={localizer}
-        events={filteredEvents}
-        startAccessor="start"
-        endAccessor="end"
-        className="h-[calc(100vh-100px)]" // Using Tailwind's arbitrary value feature
-        view={view}
-        onView={setView}
-        date={date}
-        onNavigate={handleNavigate}
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleSelectEvent}
-        selectable
-        eventPropGetter={(event) => ({
-          className: 'custom-event',
-          style: {
-            backgroundColor: event.inquiryDetails?.status === 'completed' ? '#4CAF50' : '#2196F3',
-          },
-        })}
-      />
-      
-      )}
+      <div className="flex-grow">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full text-gray-400 italic">Loading follow-ups...</div>
+        ) : (
+          <Calendar
+          localizer={localizer}
+          events={filteredEvents}
+          startAccessor="start"
+          endAccessor="end"
+          className="h-[500px] lg:h-[600px]" // Dynamic height for better fit
+          view={view}
+          onView={setView}
+          date={date}
+          onNavigate={handleNavigate}
+          onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          selectable
+          eventPropGetter={(event) => ({
+            className: 'custom-event',
+            style: {
+              backgroundColor: event.inquiryDetails?.status === 'Completed' ? '#10b981' : '#3b82f6', // Emerald and Blue
+              borderRadius: '4px',
+              border: 'none',
+              fontSize: '11px',
+            },
+          })}
+        />
+        
+        )}
+      </div>
       <EventModal
         isOpen={isModalOpen}
         onClose={() => {

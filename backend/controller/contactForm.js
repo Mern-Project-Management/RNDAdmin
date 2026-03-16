@@ -84,28 +84,41 @@ exports.submitContact = async (req, res) => {
 
     const transporter = nodemailer.createTransport(transportConfig);
 
+    const logoImageUrl = "https://rndtechnosoft.com/api/logo/download/rndlogo.png";
+
     // Send email notification to Admin (Owner)
     const ownerEmail = smtpConfig.name; // Fallback to SMTP user email
     if (ownerEmail) {
         const ownerMailOptions = {
-            from: `"Your Business Name" <${smtpConfig.name}>`,
+            from: `"RND Technosoft" <${smtpConfig.name}>`,
             to: ownerEmail,
             subject: 'New Contact Form Submission',
             replyTo: email,
             html: `
-            <div style="font-family: Arial, Helvetica, sans-serif; padding: 20px;">
-                <h2>New Contact Form Submission</h2>
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+              <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+                <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+              </div>
+              <div style="padding: 25px; line-height: 1.6; color: #333;">
+                <h2 style="color: #ff573c; margin-top: 0;">New Contact Form Submission</h2>
                 <p>A new contact form was submitted. Details:</p>
-                <ul>
-                    <li>Name: ${firstName} ${lastName}</li>
-                    <li>Organisation: ${organisation || '—'}</li>
-                    <li>Department: ${department || '—'}</li>
-                    <li>Address: ${address || '—'}</li>
-                    <li>Phone: ${phone || '—'}</li>
-                    <li>Email: ${email}</li>
-                    <li>Callback Required: ${needCallback ? 'Yes' : 'No'}</li>
-                </ul>
-                <p>Message: <br/>${message ? message.replace(/\n/g, '<br>') : '—'}</p>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr><td style="padding: 8px 0; font-weight: bold; width: 35%;">Name:</td><td>${firstName} ${lastName}</td></tr>
+                    <tr><td style="padding: 8px 0; font-weight: bold;">Organisation:</td><td>${organisation || '—'}</td></tr>
+                    <tr><td style="padding: 8px 0; font-weight: bold;">Department:</td><td>${department || '—'}</td></tr>
+                    <tr><td style="padding: 8px 0; font-weight: bold;">Address:</td><td>${address || '—'}</td></tr>
+                    <tr><td style="padding: 8px 0; font-weight: bold;">Phone:</td><td>${phone || '—'}</td></tr>
+                    <tr><td style="padding: 8px 0; font-weight: bold;">Email:</td><td>${email}</td></tr>
+                    <tr><td style="padding: 8px 0; font-weight: bold;">Callback Required:</td><td>${needCallback ? 'Yes' : 'No'}</td></tr>
+                </table>
+                <p style="margin-top: 20px; font-weight: bold;">Message:</p>
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 4px; border-left: 4px solid #ff573c; font-style: italic;">
+                    ${message ? message.replace(/\n/g, '<br>') : '—'}
+                </div>
+              </div>
+              <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 11px; color: #888;">
+                &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+              </div>
             </div>
             `,
         };
@@ -114,11 +127,24 @@ exports.submitContact = async (req, res) => {
 
     // Send email notification to Customer
     if (email) {
+        const rawBody = customerTemplate.body.replace("[First Name]", firstName || "Customer");
         const customerMailOptions = {
             from: `"RND Technosoft" <${smtpConfig.name}>`,
             to: email,
             subject: customerTemplate.subject,
-            html: customerTemplate.body.replace("[First Name]", firstName || "Customer"),
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+              <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+                <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+              </div>
+              <div style="padding: 30px; line-height: 1.6; color: #333;">
+                ${rawBody}
+              </div>
+              <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 11px; color: #888;">
+                &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+              </div>
+            </div>
+            `,
         };
         await transporter.sendMail(customerMailOptions);
     }

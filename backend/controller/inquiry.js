@@ -206,9 +206,8 @@ console.log("Inquiry Data:", inquiryData);
 <body>
     <div class="email-container">
         <!-- Branded Header -->
-        <div class="header">
-            <!-- <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1764672964886.webp" alt="RND Technosoft"> -->
-            <h1>RND Technosoft</h1>
+        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+            <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft" style="height: 50px;">
         </div>
 
         <!-- Main Content -->
@@ -301,11 +300,24 @@ console.log("Inquiry Data:", inquiryData);
 
         // **Send Email to Customer**
         if (inquiryData.email) {
+            const rawBody = customerTemplate.body.replace("[First Name]", inquiryData.firstName || "Customer");
             const customerMailOptions = {
                 from: `"RND Technosoft" <${smtpConfig.name}>`,
                 to: inquiryData.email,
                 subject: customerTemplate.subject,
-                html: customerTemplate.body.replace("[First Name]", inquiryData.firstName || "Customer"),
+                html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+                  <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+                    <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+                  </div>
+                  <div style="padding: 30px; line-height: 1.6; color: #333;">
+                    ${rawBody}
+                  </div>
+                  <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 11px; color: #888;">
+                    &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+                  </div>
+                </div>
+                `,
             };
 
             await transporter.sendMail(customerMailOptions);

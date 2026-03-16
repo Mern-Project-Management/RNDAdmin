@@ -27,11 +27,11 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="p-1  mx-auto">
+    <div className="w-full">
       <div>
         <h1 className="text-xl font-semibold text-purple-800 mb-4 pb-1 border-b border-purple-800">Dashboard</h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Total Inquiries Card */}
         <div className="bg-emerald-500 text-white p-6 rounded-md shadow-lg relative overflow-hidden">
           <div className="text-4xl font-bold mb-2">{dataCount.inquiryCount}</div>
