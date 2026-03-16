@@ -46,7 +46,7 @@ const submitApplication = async (req, res) => {
     await application.save();
 
     // Fetch SMTP Configuration
-    const { data: smtpResponse } = await axios.get("https://admin.chemtom.com/api/smtp/get");
+    const { data: smtpResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/smtp/get");
     const smtpConfig = smtpResponse.data?.[0];
 
     if (!smtpConfig || !smtpConfig.host) {
@@ -54,7 +54,7 @@ const submitApplication = async (req, res) => {
     }
 
     // Fetch Email Templates
-    const { data: emailTemplateResponse } = await axios.get("https://admin.chemtom.com/api/template/get");
+    const { data: emailTemplateResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/template/get");
     const emailTemplates = emailTemplateResponse.data;
 
     if (!emailTemplates || emailTemplates.length === 0) {
@@ -88,7 +88,7 @@ const submitApplication = async (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Application - Chemtom</title>
+    <title>New Application - RND Technosoft</title>
     <style>
         body {
             margin: 0;
@@ -215,9 +215,10 @@ const submitApplication = async (req, res) => {
 <body>
     <div class="email-container">
 
-        <!-- Chemtom Branded Header -->
+        <!-- Branded Header -->
         <div class="header">
-            <img src="https://admin.chemtom.com/api/logo/download/headerLogo_1764672964886.webp" alt="Chemtom - Apurva Chemicals PVT LTD">
+            <!-- <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1764672964886.webp" alt="RND Technosoft"> -->
+            <h1>RND Technosoft</h1>
         </div>
 
         <!-- Subheader -->
@@ -228,7 +229,7 @@ const submitApplication = async (req, res) => {
         <!-- Main Content -->
         <div class="content">
             <p class="intro-text">
-                A new job application has been submitted through the Chemtom careers portal. Please review the candidate details below.
+                A new job application has been submitted through the careers portal. Please review the candidate details below.
             </p>
 
             <!-- Applicant Details Table -->
@@ -276,9 +277,9 @@ const submitApplication = async (req, res) => {
 
         <!-- Footer -->
         <div class="footer">
-            <p>This is an automated notification from Chemtom HR System.</p>
+            <p>This is an automated notification from RND Technosoft HR System.</p>
             <p>Please do not reply to this email.</p>
-            <p>&copy; ${new Date().getFullYear()} Chemtom. All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.</p>
         </div>
     </div>
 </body>
@@ -288,7 +289,7 @@ const submitApplication = async (req, res) => {
     // **Send Email to Owner**
     if (ownerEmail) {
       const ownerMailOptions = {
-        from: `"Chemtom" <${smtpConfig.name}>`,
+        from: `"RND Technosoft" <${smtpConfig.name}>`,
         to: ownerEmail,
         subject: "New Application Received",
         html: ownerEmailBody,

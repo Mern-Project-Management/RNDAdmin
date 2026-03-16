@@ -20,7 +20,7 @@ console.log('New Inquiry Saved:', newInquiry);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Inquiry - Chemtom</title>
+    <title>New Inquiry - RND Technosoft</title>
     <style>
         body {
             margin: 0;
@@ -148,10 +148,10 @@ console.log('New Inquiry Saved:', newInquiry);
 <body>
     <div class="email-container">
 
-        <!-- Chemtom Branded Header -->
+        <!-- Branded Header -->
         <div class="header">
-            <img src="https://admin.chemtom.com/api/logo/download/headerLogo_1764672964886.webp" alt="Chemtom - Apurva Chemicals PVT LTD">
-           
+            <!-- <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1764672964886.webp" alt="RND Technosoft"> -->
+           <h1>RND Technosoft</h1>
         </div>
 
         <!-- Subheader -->
@@ -162,7 +162,7 @@ console.log('New Inquiry Saved:', newInquiry);
         <!-- Main Content -->
         <div class="content">
             <p class="intro-text">
-                A new customer inquiry has been submitted through the Chemtom website. Please review and respond at the earliest.
+                A new customer inquiry has been submitted through the RND Technosoft website. Please review and respond at the earliest.
             </p>
 
             <!-- Customer Details Table -->
@@ -206,7 +206,7 @@ console.log('New Inquiry Saved:', newInquiry);
 
         <!-- Footer -->
         <div class="footer">
-            <p>This is an automated notification from Chemtom Contact System.</p>
+            <p>This is an automated notification from RND Technosoft Contact System.</p>
             <p>Please do not reply to this email.</p>
         </div>
     </div>

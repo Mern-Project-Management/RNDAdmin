@@ -42,7 +42,7 @@ console.log("Inquiry Data:", inquiryData);
         console.log("Owner Email:", inquiryData.ownerEmail || "Not provided");
 
         // Fetch SMTP Configuration
-        const { data: smtpResponse } = await axios.get("https://admin.chemtom.com/api/smtp/get");
+        const { data: smtpResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/smtp/get");
         const smtpConfig = smtpResponse.data?.[0];
 
         if (!smtpConfig || !smtpConfig.host) {
@@ -50,7 +50,7 @@ console.log("Inquiry Data:", inquiryData);
         }
 
         // Fetch Email Templates
-        const { data: emailTemplateResponse } = await axios.get("https://admin.chemtom.com/api/template/get");
+        const { data: emailTemplateResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/template/get");
         const emailTemplates = emailTemplateResponse.data;
 
         if (!emailTemplates || emailTemplates.length === 0) {
@@ -84,7 +84,7 @@ console.log("Inquiry Data:", inquiryData);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Inquiry - Chemtom</title>
+    <title>New Inquiry - RND Technosoft</title>
     <style>
         body {
             margin: 0;
@@ -191,15 +191,16 @@ console.log("Inquiry Data:", inquiryData);
 </head>
 <body>
     <div class="email-container">
-        <!-- Chemtom Branded Header -->
+        <!-- Branded Header -->
         <div class="header">
-            <img src="https://admin.chemtom.com/api/logo/download/headerLogo_1764672964886.webp" alt="Chemtom - Apurva Chemicals PVT LTD">
+            <!-- <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1764672964886.webp" alt="RND Technosoft"> -->
+            <h1>RND Technosoft</h1>
         </div>
 
         <!-- Main Content -->
         <div class="content">
             <p class="intro-text">
-                A new customer inquiry has been submitted through the Chemtom website. Please review and respond at the earliest.
+                A new customer inquiry has been submitted through the website. Please review and respond at the earliest.
             </p>
 
             <!-- Customer Details Table -->
@@ -259,9 +260,9 @@ console.log("Inquiry Data:", inquiryData);
 
         <!-- Footer -->
         <div class="footer">
-            <p>This is an automated notification from Chemtom Contact System.</p>
+            <p>This is an automated notification from RND Technosoft Contact System.</p>
             <p>Please do not reply to this email.</p>
-            <p>&copy; ${new Date().getFullYear()} Chemtom. All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.</p>
         </div>
     </div>
 </body>
@@ -287,7 +288,7 @@ console.log("Inquiry Data:", inquiryData);
         // **Send Email to Customer**
         if (inquiryData.email) {
             const customerMailOptions = {
-                from: `"Chemtom" <${smtpConfig.name}>`,
+                from: `"RND Technosoft" <${smtpConfig.name}>`,
                 to: inquiryData.email,
                 subject: customerTemplate.subject,
                 html: customerTemplate.body.replace("[First Name]", inquiryData.firstName || "Customer"),
