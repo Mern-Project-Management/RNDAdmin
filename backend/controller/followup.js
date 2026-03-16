@@ -1,9 +1,12 @@
 const Message = require('../model/followUp');
-const Inquiry = require('../model/inquiry')
+const Inquiry = require('../model/inquiry');
+const axios = require('axios');
+const nodemailer = require('nodemailer');
+
 // Create a new message
 const createMessage = async (req, res) => {
   try {
-    const { message, date,status, inquiryId } = req.body;
+    const { message, date, status, inquiryId } = req.body;
 
     // Ensure the inquiryId is provided
     if (!inquiryId) {
@@ -21,6 +24,94 @@ const createMessage = async (req, res) => {
     });
 
     await newMessage.save();
+
+    // --- Email Sending Logic Start ---
+    try {
+      // 1. Fetch the associated Inquiry details
+      const inquiry = await Inquiry.findById(inquiryId);
+      if (inquiry && inquiry.email) {
+        
+        // 2. Fetch SMTP Configuration from Dashboard
+        const { data: smtpResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/smtp/get");
+        const smtpConfig = smtpResponse.data?.[0];
+
+        if (smtpConfig && smtpConfig.host) {
+          const isSSL = smtpConfig.isSSL === true || smtpConfig.isSSL === 'true';
+          // Prioritize .env credentials, fallback to dashboard
+          const smtpUser = process.env.EMAIL_USER || smtpConfig.name;
+          const smtpPass = process.env.EMAIL_PASS || smtpConfig.password;
+          const smtpHost = process.env.EMAIL_HOST || smtpConfig.host;
+          
+          const transportConfig = {
+            auth: { user: smtpUser, pass: smtpPass },
+          };
+
+          if (smtpHost.includes('gmail.com') || (smtpUser && smtpUser.includes('@gmail.com'))) {
+            transportConfig.service = 'gmail';
+          } else {
+            transportConfig.host = smtpHost;
+            transportConfig.port = smtpConfig.port ? parseInt(smtpConfig.port) : (isSSL ? 465 : 587);
+            transportConfig.secure = isSSL;
+          }
+
+          // 3. Create Transporter
+          const transporter = nodemailer.createTransport(transportConfig);
+
+          const logoImageUrl = "https://rndtechnosoft.com/api/logo/download/rndlogo.png";
+
+          // 4. Professional Follow-up Email Content
+          const followUpHtml = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }
+                .header { text-align: center; margin-bottom: 20px; }
+                .content { background-color: #f9f9f9; padding: 20px; border-radius: 5px; }
+                .footer { margin-top: 20px; font-size: 12px; color: #777; text-align: center; }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <div class="header">
+                  <img src="${logoImageUrl}" alt="RND Technosoft" style="width: 120px;"/>
+                  <h2 style="color: #2c3e50;">Follow-up Regarding Your Inquiry</h2>
+                </div>
+                <div class="content">
+                  <p>Dear ${inquiry.firstName || 'Customer'},</p>
+                  <p>We are reaching out to provide an update regarding your recent inquiry with RND Technosoft.</p>
+                  <div style="background: #fff; padding: 15px; border-left: 4px solid #fad815; margin: 15px 0;">
+                    <strong>Update:</strong><br/>
+                    ${message.replace(/\n/g, '<br/>')}
+                  </div>
+                  <p>If you have any further questions or require more details, please feel free to reply to this email.</p>
+                  <p>Best regards,<br/><b>The RND Technosoft Team</b></p>
+                </div>
+                <div class="footer">
+                  <p>This is an automated follow-up notification. Please contact us at info@rndtechnosoft.com for support.</p>
+                </div>
+              </div>
+            </body>
+            </html>
+          `;
+
+          // 5. Send Email
+          await transporter.sendMail({
+            from: `"RND Technosoft" <${smtpConfig.name}>`,
+            to: inquiry.email,
+            subject: "Update Regarding Your Inquiry - RND Technosoft",
+            html: followUpHtml,
+          });
+
+          console.log("Follow-up email sent successfully to:", inquiry.email);
+        }
+      }
+    } catch (emailErr) {
+      console.error("Error sending follow-up email:", emailErr.message);
+      // We don't fail the response if email fails, as the follow-up log is already saved.
+    }
+    // --- Email Sending Logic End ---
 
     res.status(201).json({
       success: true,

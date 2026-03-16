@@ -67,15 +67,29 @@ console.log("Inquiry Data:", inquiryData);
         const ownerEmail = inquiryData.ownerEmail || smtpConfig.name; // Fallback to SMTP user email
 
         // **Create Email Transporter**
-          const transporter = nodemailer.createTransport({
-             host: smtpConfig.host,
-             port: smtpConfig.port || 465,
-             secure: smtpConfig.isSSL,
-             auth: {
-               user: smtpConfig.name,
-               pass: smtpConfig.password,
-             },
-           });
+        const isSSL = smtpConfig.isSSL === true || smtpConfig.isSSL === 'true';
+        const port = smtpConfig.port ? parseInt(smtpConfig.port) : (isSSL ? 465 : 587);
+
+        // Prioritize .env credentials, fallback to dashboard
+        const smtpUser = process.env.EMAIL_USER || smtpConfig.name;
+        const smtpPass = process.env.EMAIL_PASS || smtpConfig.password;
+        const smtpHost = process.env.EMAIL_HOST || smtpConfig.host;
+
+        const transportConfig = {
+            host: smtpHost,
+            port: port,
+            secure: isSSL,
+            auth: {
+                user: smtpUser,
+                pass: smtpPass,
+            },
+        };
+
+        if (smtpHost.includes('gmail.com') || (smtpUser && smtpUser.includes('@gmail.com'))) {
+            transportConfig.service = 'gmail';
+        }
+
+        const transporter = nodemailer.createTransport(transportConfig);
 
         // **Owner Email Template**
         const ownerEmailBody = `

@@ -60,15 +60,29 @@ exports.submitContact = async (req, res) => {
     }
 
     // **Create Email Transporter**
-    const transporter = nodemailer.createTransport({
-        host: smtpConfig.host,
-        port: smtpConfig.port || 465,
-        secure: smtpConfig.isSSL,
+    const isSSL = smtpConfig.isSSL === true || smtpConfig.isSSL === 'true';
+    const port = smtpConfig.port ? parseInt(smtpConfig.port) : (isSSL ? 465 : 587);
+    
+    // Prioritize .env credentials, fallback to dashboard
+    const smtpUser = process.env.EMAIL_USER || smtpConfig.name;
+    const smtpPass = process.env.EMAIL_PASS || smtpConfig.password;
+    const smtpHost = process.env.EMAIL_HOST || smtpConfig.host;
+
+    const transportConfig = {
+        host: smtpHost,
+        port: port,
+        secure: isSSL,
         auth: {
-        user: smtpConfig.name,
-        pass: smtpConfig.password,
+            user: smtpUser,
+            pass: smtpPass,
         },
-    });
+    };
+
+    if (smtpHost.includes('gmail.com') || (smtpUser && smtpUser.includes('@gmail.com'))) {
+        transportConfig.service = 'gmail';
+    }
+
+    const transporter = nodemailer.createTransport(transportConfig);
 
     // Send email notification to Admin (Owner)
     const ownerEmail = smtpConfig.name; // Fallback to SMTP user email
