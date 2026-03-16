@@ -74,6 +74,12 @@ const AboutUsTable = () => {
       width: '10%',
     },
     {
+      title: 'Slug',
+      dataIndex: 'slug',
+      key: 'slug',
+      width: '10%',
+    },
+    {
       title: 'Short Description',
       dataIndex: 'shortDescription',
       key: 'shortDescription',
