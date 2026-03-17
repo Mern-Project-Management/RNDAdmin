@@ -10,7 +10,7 @@ const MAX_PDF_SIZE = 100 * 1024 * 1024; // 100MB for PDFs
 // Set storage engine
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        let dir = 'uploads/images';
+        let dir = path.join(__dirname, '../uploads/images');
 
         // Choose directory based on file type
         if (file.mimetype === 'application/pdf') {

@@ -24,7 +24,29 @@ app.use(compression({ threshold: 1024 }));
 app.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
   const { w = 1200, q = 80, device = 'desktop' } = req.query;
-  const imagePath = path.join(__dirname, 'uploads', filename);
+  
+  let imagePath = path.join(__dirname, 'uploads', 'images', filename);
+
+  // Fallback chain for different directory naming conventions
+  if (!fs.existsSync(imagePath)) {
+    // Check singular 'image' directory
+    const singularPath = path.join(__dirname, 'uploads', 'image', filename);
+    if (fs.existsSync(singularPath)) {
+      imagePath = singularPath;
+    } else {
+      // Check nested 'images/images' directory
+      const nestedPath = path.join(__dirname, 'uploads', 'images', 'images', filename);
+      if (fs.existsSync(nestedPath)) {
+        imagePath = nestedPath;
+      } else {
+        // Check legacy root 'uploads' (not recommended but for safety)
+        const rootPath = path.join(__dirname, 'uploads', filename);
+        if (fs.existsSync(rootPath)) {
+          imagePath = rootPath;
+        }
+      }
+    }
+  }
 
   try {
     if (!fs.existsSync(imagePath)) return res.status(404).send('Image not found');

@@ -16,7 +16,23 @@ const cache = new NodeCache({
 router.get('/download/:filename', async (req, res) => {
   const { filename } = req.params;
   const { w = 1200, q = 80 } = req.query;
-  const originalPath = path.join(__dirname, '../uploads/images', filename);
+  let originalPath = path.join(__dirname, '../uploads/images', filename);
+  
+  // Fallback chain for different directory naming conventions
+  if (!fs.existsSync(originalPath)) {
+    // Check for singular 'image' directory
+    const singularPath = path.join(__dirname, '../uploads/image', filename);
+    if (fs.existsSync(singularPath)) {
+      originalPath = singularPath;
+    } else {
+      // Check for nested 'images/images' directory
+      const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
+      if (fs.existsSync(nestedPath)) {
+        originalPath = nestedPath;
+      }
+    }
+  }
+
   const ext = path.extname(filename).toLowerCase();
 
   const startTime = Date.now();
@@ -32,7 +48,22 @@ router.get('/download/:filename', async (req, res) => {
       return res.sendFile(originalPath);
     }
 
-    const filePath = path.join(__dirname, '../uploads/images', `${filename.split('.')[0]}-${w}.webp`);
+    let filePath = path.join(__dirname, '../uploads/images', `${filename.split('.')[0]}-${w}.webp`);
+    
+    // Fallback chain for pre-generated webp files
+    if (!fs.existsSync(filePath)) {
+      // Check singular 'image' directory
+      const singularFilePath = path.join(__dirname, '../uploads/image', `${filename.split('.')[0]}-${w}.webp`);
+      if (fs.existsSync(singularFilePath)) {
+        filePath = singularFilePath;
+      } else {
+        // Check nested 'images/images' directory
+        const nestedFilePath = path.join(__dirname, '../uploads/images/images', `${filename.split('.')[0]}-${w}.webp`);
+        if (fs.existsSync(nestedFilePath)) {
+          filePath = nestedFilePath;
+        }
+      }
+    }
 
     // Serve pre-generated file if it exists
     if (fs.existsSync(filePath)) {
@@ -73,7 +104,15 @@ router.get('/download/:filename', async (req, res) => {
 });
 router.get('/view/:filename', (req, res) => {
   const { filename } = req.params;
-  const filePath = path.join(__dirname, '../uploads/images', filename);
+  let filePath = path.join(__dirname, '../uploads/images', filename);
+
+  // Fallback for nested 'images/images' directory
+  if (!fs.existsSync(filePath)) {
+    const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
+    if (fs.existsSync(nestedPath)) {
+      filePath = nestedPath;
+    }
+  }
 
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', 'inline'); // Set to 'inline' to view in browser
@@ -93,9 +132,15 @@ router.get('/pdf/download/:filename', (req, res) => {
 
   // Verify file exists
   if (!fs.existsSync(filePath)) {
-    filePath = path.join(__dirname, '../uploads/documents', filename);
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).json({ message: 'File not found' });
+    // Check nested directory
+    const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
+    if (fs.existsSync(nestedPath)) {
+      filePath = nestedPath;
+    } else {
+      filePath = path.join(__dirname, '../uploads/documents', filename);
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ message: 'File not found' });
+      }
     }
   }
 
@@ -114,13 +159,19 @@ router.get('/pdf/view/:filename', (req, res) => {
 
   // Check if file exists in images directory
   if (!fs.existsSync(filePath)) {
-    // If not, check in catalogs directory
-    filePath = path.join(__dirname, '../uploads/catalogs', filename);
-    if (!fs.existsSync(filePath)) {
-      // Check in documents directory
-      filePath = path.join(__dirname, '../uploads/documents', filename);
+    // Check nested directory
+    const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
+    if (fs.existsSync(nestedPath)) {
+      filePath = nestedPath;
+    } else {
+      // If not, check in catalogs directory
+      filePath = path.join(__dirname, '../uploads/catalogs', filename);
       if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ message: 'File not found' });
+        // Check in documents directory
+        filePath = path.join(__dirname, '../uploads/documents', filename);
+        if (!fs.existsSync(filePath)) {
+          return res.status(404).json({ message: 'File not found' });
+        }
       }
     }
   }
