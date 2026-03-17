@@ -98,7 +98,7 @@ export default function EditFollowUpModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[700px]" overlayClassName="bg-black/10 backdrop-blur-none">
         <DialogHeader>
           <DialogTitle>Edit Follow Up</DialogTitle>
         </DialogHeader>
@@ -135,7 +135,7 @@ export default function EditFollowUpModal({
                   ...editedFollowUp, 
                   message: e.target.value
                 })}
-                className="col-span-3"
+                className="col-span-3 min-h-[150px]"
               />
             </div>
             

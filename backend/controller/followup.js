@@ -25,87 +25,89 @@ const createMessage = async (req, res) => {
 
     await newMessage.save();
 
-    // --- Email Sending Logic Start ---
-    try {
-      // 1. Fetch the associated Inquiry details
-      const inquiry = await Inquiry.findById(inquiryId);
-      if (inquiry && inquiry.email) {
-        
-        // 2. Fetch SMTP Configuration from Dashboard
-        const { data: smtpResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/smtp/get");
-        const smtpConfig = smtpResponse.data?.[0];
-
-        if (smtpConfig && smtpConfig.host) {
-          const isSSL = smtpConfig.isSSL === true || smtpConfig.isSSL === 'true';
-          // Prioritize .env credentials, fallback to dashboard
-          const smtpUser = process.env.EMAIL_USER || smtpConfig.name;
-          const smtpPass = process.env.EMAIL_PASS || smtpConfig.password;
-          const smtpHost = process.env.EMAIL_HOST || smtpConfig.host;
+    // --- Email Sending Logic Start (Asynchronous) ---
+    (async () => {
+      try {
+        // 1. Fetch the associated Inquiry details
+        const inquiry = await Inquiry.findById(inquiryId);
+        if (inquiry && inquiry.email) {
           
-          const transportConfig = {
-            auth: { user: smtpUser, pass: smtpPass },
-          };
+          // 2. Fetch SMTP Configuration from Dashboard
+          const { data: smtpResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/smtp/get");
+          const smtpConfig = smtpResponse.data?.[0];
 
-          if (smtpHost.includes('gmail.com') || (smtpUser && smtpUser.includes('@gmail.com'))) {
-            transportConfig.service = 'gmail';
-          } else {
-            transportConfig.host = smtpHost;
-            transportConfig.port = smtpConfig.port ? parseInt(smtpConfig.port) : (isSSL ? 465 : 587);
-            transportConfig.secure = isSSL;
+          if (smtpConfig && smtpConfig.host) {
+            const isSSL = smtpConfig.isSSL === true || smtpConfig.isSSL === 'true';
+            // Prioritize .env credentials, fallback to dashboard
+            const smtpUser = process.env.EMAIL_USER || smtpConfig.name;
+            const smtpPass = process.env.EMAIL_PASS || smtpConfig.password;
+            const smtpHost = process.env.EMAIL_HOST || smtpConfig.host;
+            
+            const transportConfig = {
+              auth: { user: smtpUser, pass: smtpPass },
+            };
+
+            if (smtpHost.includes('gmail.com') || (smtpUser && smtpUser.includes('@gmail.com'))) {
+              transportConfig.service = 'gmail';
+            } else {
+              transportConfig.host = smtpHost;
+              transportConfig.port = smtpConfig.port ? parseInt(smtpConfig.port) : (isSSL ? 465 : 587);
+              transportConfig.secure = isSSL;
+            }
+
+            // 3. Create Transporter
+            const transporter = nodemailer.createTransport(transportConfig);
+
+            const logoImageUrl = "https://rndtechnosoft.com/api/logo/download/rndlogo.png";
+
+            // 4. Fetch Email Templates from Dashboard
+            const { data: emailTemplateResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/template/get");
+            const emailTemplates = emailTemplateResponse.data;
+
+            const followUpTemplate = emailTemplates?.find(t => t.name === "Follow Up");
+            
+            if (!followUpTemplate) {
+              console.error("Follow Up email template not found in dashboard.");
+              return;
+            }
+
+            // 5. Replace Placeholders in Template and wrap in branded container
+            const rawBody = followUpTemplate.body
+              .replace("[First Name]", inquiry.firstName || "Customer")
+              .replace("[Message]", message.replace(/\n/g, '<br/>'));
+
+            const emailBody = `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+                <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #f7c600;">
+                  <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+                </div>
+                <div style="padding: 30px; line-height: 1.6; color: #333;">
+                  ${rawBody}
+                </div>
+                <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 12px; color: #777; border-top: 1px solid #eee;">
+                  &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+                </div>
+              </div>
+            `;
+
+            // 6. Send Email
+            await transporter.sendMail({
+              from: `"RND Technosoft" <${smtpConfig.name}>`,
+              to: inquiry.email,
+              subject: followUpTemplate.subject || "Update Regarding Your Inquiry - RND Technosoft",
+              html: emailBody,
+            });
+
+            console.log("Follow-up email sent successfully to:", inquiry.email);
           }
-
-          // 3. Create Transporter
-          const transporter = nodemailer.createTransport(transportConfig);
-
-          const logoImageUrl = "https://rndtechnosoft.com/api/logo/download/rndlogo.png";
-
-          // 4. Fetch Email Templates from Dashboard
-          const { data: emailTemplateResponse } = await axios.get("https://www.admin.rndtechnosoft.com/api/template/get");
-          const emailTemplates = emailTemplateResponse.data;
-
-          const followUpTemplate = emailTemplates?.find(t => t.name === "Follow Up");
-          
-          if (!followUpTemplate) {
-            throw new Error("Follow Up email template not found in dashboard.");
-          }
-
-          // 5. Replace Placeholders in Template and wrap in branded container
-          const rawBody = followUpTemplate.body
-            .replace("[First Name]", inquiry.firstName || "Customer")
-            .replace("[Message]", message.replace(/\n/g, '<br/>'));
-
-          const emailBody = `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-              <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #f7c600;">
-                <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
-              </div>
-              <div style="padding: 30px; line-height: 1.6; color: #333;">
-                ${rawBody}
-              </div>
-              <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 12px; color: #777; border-top: 1px solid #eee;">
-                &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
-              </div>
-            </div>
-          `;
-
-          // 6. Send Email
-          await transporter.sendMail({
-            from: `"RND Technosoft" <${smtpConfig.name}>`,
-            to: inquiry.email,
-            subject: followUpTemplate.subject || "Update Regarding Your Inquiry - RND Technosoft",
-            html: emailBody,
-          });
-
-          console.log("Follow-up email sent successfully to:", inquiry.email);
         }
+      } catch (emailErr) {
+        console.error("Error in asynchronous follow-up email sending:", emailErr.message);
       }
-    } catch (emailErr) {
-      console.error("Error sending follow-up email:", emailErr.message);
-      // We don't fail the response if email fails, as the follow-up log is already saved.
-    }
+    })();
     // --- Email Sending Logic End ---
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: newMessage,
     });
