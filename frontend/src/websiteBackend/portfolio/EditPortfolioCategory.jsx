@@ -515,7 +515,7 @@ const EditPortfolioCategory = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+        <button type="submit" className="bg-[#304a8a] text-white py-2 px-4 rounded hover:bg-[#25396b] transition duration-200">
           Update Category
         </button>
       </form>

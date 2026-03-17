@@ -308,14 +308,16 @@ const deletePortfolio = async (req, res) => {
 
     const portfolio = await Portfolio.findOne({ _id: slugs });
 
-    portfolio.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '../images', filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      } else {
-        console.warn(`File not found: ${filename}`);
-      }
-    });
+    if (portfolio && portfolio.photo) {
+      portfolio.photo.forEach(filename => {
+        const filePath = path.join(__dirname, '../uploads/images', filename);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        } else {
+          console.warn(`File not found: ${filename}`);
+        }
+      });
+    }
 
     const deletedPortfolio = await Portfolio.findOneAndDelete({ _id: slugs });
 
@@ -329,6 +331,35 @@ const deletePortfolio = async (req, res) => {
     res.status(400).send(error);
   }
 }
+
+const deleteMultiplePortfolios = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: "No IDs provided for deletion" });
+    }
+
+    const portfolios = await Portfolio.find({ _id: { $in: ids } });
+
+    portfolios.forEach(portfolio => {
+      if (portfolio.photo && portfolio.photo.length > 0) {
+        portfolio.photo.forEach(filename => {
+          const filePath = path.join(__dirname, '../uploads/images', filename);
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+        });
+      }
+    });
+
+    await Portfolio.deleteMany({ _id: { $in: ids } });
+
+    res.status(200).json({ message: `${ids.length} portfolios deleted successfully` });
+  } catch (error) {
+    console.error("Error in bulk delete portfolios:", error);
+    res.status(500).json({ message: "Error in bulk delete", error: error.message });
+  }
+};
 
 
 const getPortfolioById = async (req, res) => {
@@ -726,4 +757,4 @@ const simpleSearchPortfolio = async (req, res) => {
   }
 };
 
-module.exports = { searchPortfolio, simpleSearchPortfolio, getPortfolioByServiceSlug, getPortfolioFront, getPortfolioBySlug, insertPortfolio, getPortfolio, updatePortfolio, deletePortfolio, getPortfolioById, countPortfolio, deletePhotoAndAltText, getCategoryPortfolio, getSubcategoryPortfolio, getSubSubcategoryPortfolio };
+module.exports = { searchPortfolio, simpleSearchPortfolio, getPortfolioByServiceSlug, getPortfolioFront, getPortfolioBySlug, insertPortfolio, getPortfolio, updatePortfolio, deletePortfolio, deleteMultiplePortfolios, getPortfolioById, countPortfolio, deletePhotoAndAltText, getCategoryPortfolio, getSubcategoryPortfolio, getSubSubcategoryPortfolio };

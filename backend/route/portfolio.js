@@ -7,7 +7,7 @@ const { uploadPhoto } = require("../middleware/fileUpload");
 const { requireAuth } = require("../middleware/authmiddleware");
 const { uploadfiles } = require("../middleware/files");
 const { uploadLogo } = require("../middleware/logoUpload");
-const { searchPortfolio, simpleSearchPortfolio, getPortfolioByServiceSlug,insertPortfolio,getPortfolioFront,getPortfolioBySlug, getPortfolio, updatePortfolio,deletePortfolio, getPortfolioById,countPortfolio, deletePhotoAndAltText,getCategoryPortfolio,getSubcategoryPortfolio} = require("../controller/portfolio");
+const { searchPortfolio, simpleSearchPortfolio, getPortfolioByServiceSlug,insertPortfolio,getPortfolioFront,getPortfolioBySlug, getPortfolio, updatePortfolio,deletePortfolio, deleteMultiplePortfolios, getPortfolioById,countPortfolio, deletePhotoAndAltText,getCategoryPortfolio,getSubcategoryPortfolio} = require("../controller/portfolio");
 
 router.post("/insertPortfolio", requireAuth, uploadPhoto, insertPortfolio);
 router.get("/getPortfolio", requireAuth, getPortfolio);
@@ -18,6 +18,7 @@ router.get("/getPortfolioFront", getPortfolioFront);
 router.get("/getPortfolioBySlug", getPortfolioBySlug);
 router.put("/updatePortfolio", requireAuth, uploadPhoto, updatePortfolio);
 router.delete("/deletePortfolio", requireAuth, deletePortfolio);
+router.post("/deleteMultiplePortfolios", requireAuth, deleteMultiplePortfolios);
 router.get("/getPortfolioById", requireAuth, getPortfolioById);
 router.get("/countPortfolio", requireAuth, countPortfolio); 
 router.delete("/:slugs/image/:imageFilename/:index",requireAuth,deletePhotoAndAltText);
