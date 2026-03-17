@@ -5,9 +5,9 @@ const axios = require('axios');
 const nodemailer = require('nodemailer');
 
 const startReminderService = () => {
-  // Schedule a task to run every day at 10:00 AM
-  // 0 10 * * *
-  cron.schedule('0 10 * * *', async () => {
+  // Schedule a task to run every day at 12:48 PM for branding test
+  // 48 12 * * *
+  cron.schedule('48 12 * * *', async () => {
     console.log('Running daily follow-up email reminder job...');
     await sendTodayReminders();
   });
@@ -83,7 +83,7 @@ const sendTodayReminders = async () => {
 
                 const emailBody = `
                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-                        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
+                        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #f7c600;">
                             <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
                         </div>
                         <div style="padding: 30px; line-height: 1.6; color: #333;">

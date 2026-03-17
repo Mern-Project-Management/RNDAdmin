@@ -53,14 +53,14 @@ console.log('New Inquiry Saved:', newInquiry);
             letter-spacing: 0.8px;
         }
         .subheader {
-            background-color: #fff8f5;
+            background-color: #fffdf0;
             padding: 22px;
             text-align: center;
-            border-bottom: 3px solid #ffe8e0;
+            border-bottom: 3px solid #fff4b3;
         }
         .subheader h3 {
             margin: 0;
-            color: #e64a19;
+            color: #f7c600;
             font-size: 24px;
             font-weight: 600;
         }
@@ -101,7 +101,7 @@ console.log('New Inquiry Saved:', newInquiry);
         }
         .message-box {
             background-color: #f9f9f9;
-            border-left: 5px solid #ff8c67;
+            border-left: 5px solid #f7c600;
             padding: 20px;
             border-radius: 6px;
             margin: 25px 0;
@@ -115,11 +115,11 @@ console.log('New Inquiry Saved:', newInquiry);
             margin: 32px 0;
         }
         .action-text {
-            background-color: #fff2ed;
-            border-left: 5px solid #ff573c;
+            background-color: #fffdf0;
+            border-left: 5px solid #f7c600;
             padding: 18px;
             border-radius: 6px;
-            color: #d84315;
+            color: #f7c600;
             font-weight: 600;
             font-size: 15px;
         }
@@ -140,7 +140,7 @@ console.log('New Inquiry Saved:', newInquiry);
             border-top: 1px solid #dee2e6;
         }
         .footer a {
-            color: #ff573c;
+            color: #f7c600;
             text-decoration: none;
         }
     </style>
@@ -173,7 +173,7 @@ console.log('New Inquiry Saved:', newInquiry);
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><a href="mailto:${newInquiry.email}" style="color:#ff573c; text-decoration:none;">${newInquiry.email || '—'}</a></td>
+                    <td><a href="mailto:${newInquiry.email}" style="color:#f7c600; text-decoration:none;">${newInquiry.email || '—'}</a></td>
                 </tr>
                 <tr>
                     <td>Phone:</td>

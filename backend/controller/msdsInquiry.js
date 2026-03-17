@@ -80,7 +80,7 @@ Message: ${message || '—'}
         }
         .subheader h3 {
             margin: 0;
-            color: #ff573c;
+            color: #f7c600;
             font-size: 20px;
             font-weight: 600;
         }
@@ -113,7 +113,7 @@ Message: ${message || '—'}
             color: #212529;
         }
         .request-type {
-            background-color: #fff5f3;
+            background-color: #fffdf0;
             border-left: 4px solid #f5f5f5;
             padding: 15px;
             margin: 20px 0;
@@ -121,7 +121,7 @@ Message: ${message || '—'}
         }
         .request-type p {
             margin: 0;
-            color: #ff573c;
+            color: #f7c600;
             font-weight: 600;
             font-size: 14px;
         }
@@ -316,7 +316,7 @@ ${companyName}
               <div style="background-color: #ffffff; padding: 30px;">
                 <p>Dear ${name},</p>
                 <p>Thank you for reaching out to us! We appreciate your inquiry and are excited to assist you. Our team has received your request and will get back to you within 24–48 hours with the information you need.</p>
-                <p>In the meantime, if you have any specific questions or require further details, feel free to reply to this email or contact us at <a href="mailto:info@rndtechnosoft.com" style="color: #ff573c; text-decoration: none;">info@rndtechnosoft.com</a>. You can also visit our Help Center for quick answers.</p>
+                <p>In the meantime, if you have any specific questions or require further details, feel free to reply to this email or contact us at <a href="mailto:info@rndtechnosoft.com" style="color: #f7c600; text-decoration: none;">info@rndtechnosoft.com</a>. You can also visit our Help Center for quick answers.</p>
                 <p>We look forward to assisting you!</p>
                 <p style="margin-top: 30px; margin-bottom: 0;">Best regards,</p>
                 <p style="margin-top: 5px; font-weight: 600;">Customer Support Team</p>
@@ -324,7 +324,7 @@ ${companyName}
                 <div style="margin-top: 20px; font-size: 14px; color: #555;">
                     <p style="margin: 5px 0;">📧 <a href="mailto:info@rndtechnosoft.com" style="color: #555; text-decoration: none;">info@rndtechnosoft.com</a></p>
                     <p style="margin: 5px 0;">📞 +91-730 494 5823</p>
-                    <p style="margin: 5px 0;">🌐 <a href="https://www.rndtechnosoft.com" style="color: #ff573c; text-decoration: none;">www.rndtechnosoft.com</a></p>
+                    <p style="margin: 5px 0;">🌐 <a href="https://www.rndtechnosoft.com" style="color: #f7c600; text-decoration: none;">www.rndtechnosoft.com</a></p>
                 </div>
               </div>
               <div style="background-color: #f8f9fa; padding: 20px; text-align: center; color: #6c757d; font-size: 13px; border-top: 1px solid #dee2e6;">
