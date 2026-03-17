@@ -32,8 +32,13 @@ const CareerTable = () => {
     };
 
     const handleDownload = async (filePath) => {
+        if (!filePath) {
+            message.warning('No resume file attached to this application');
+            return;
+        }
         try {
-            const filename = filePath.split('/').pop();
+            // If it's a full URL or path, get just the filename
+            const filename = filePath.includes('/') ? filePath.split('/').pop() : filePath;
             const response = await fetch(`/api/image/pdf/download/${filename}`);
 
             if (!response.ok) {
@@ -76,12 +81,22 @@ const CareerTable = () => {
         {
             title: 'Resume',
             key: 'resume',
-            render: (_, record) => (
-                <DownloadOutlined
-                    onClick={() => handleDownload(record.resumeFile)}
-                    className="text-blue-600 cursor-pointer"
-                />
-            ),
+            render: (_, record) => {
+                // Fallback logic: check all known fields that might store the resume
+                const resumePath = record.resumeFile || record.resumeUrl || record.resumeName || record.url;
+                const hasResume = resumePath && (
+                    resumePath.toLowerCase().endsWith('.pdf') || 
+                    resumePath.toLowerCase().endsWith('.doc') || 
+                    resumePath.toLowerCase().endsWith('.docx')
+                );
+
+                return hasResume ? (
+                    <DownloadOutlined
+                        onClick={() => handleDownload(resumePath)}
+                        className="text-blue-600 cursor-pointer"
+                    />
+                ) : <span className="text-gray-400 italic">No Resume</span>;
+            },
         },
         {
             title: 'Applied Date',
@@ -124,7 +139,7 @@ const CareerTable = () => {
             <div className="flex justify-between items-center mb-5">
                 <h2 className="text-2xl font-semibold">Career List</h2>
                 <button
-                    onClick={() => navigate('/career/add')}
+                    onClick={() => navigate('/career/application/add')}
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
                 >
                     <PlusOutlined />

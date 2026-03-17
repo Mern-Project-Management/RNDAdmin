@@ -390,6 +390,8 @@ function App() {
 
             // Career Management Routes
             { path: 'career-table', element: <Suspense fallback={<LoadingFallback />}><CareerTable /></Suspense> },
+            { path: 'career/application/add', element: <Suspense fallback={<LoadingFallback />}><CareerAdminForm /></Suspense> },
+            { path: 'career/edit/:id', element: <Suspense fallback={<LoadingFallback />}><CareerAdminForm /></Suspense> },
             { path: 'JobApplication', element: <Suspense fallback={<LoadingFallback />}><CareerOptionTable /></Suspense> },
             { path: 'career/add', element: <Suspense fallback={<LoadingFallback />}><CareerOptionForm /></Suspense> },
             { path: 'careeroption/editCareerOption/:id', element: <Suspense fallback={<LoadingFallback />}><EditCareerOptionForm /></Suspense> },

@@ -128,18 +128,38 @@ router.get('/view/:filename', (req, res) => {
 // Add PDF download route
 router.get('/pdf/download/:filename', (req, res) => {
   const { filename } = req.params;
-  let filePath = path.join(__dirname, '../uploads/images', filename);
+  let filePath = path.join(__dirname, '../uploads/documents', filename);
 
-  // Verify file exists
+  // Fallback chain for PDFs/Documents
   if (!fs.existsSync(filePath)) {
-    // Check nested directory
-    const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
-    if (fs.existsSync(nestedPath)) {
-      filePath = nestedPath;
+    // Check 'images' directory
+    const imagesPath = path.join(__dirname, '../uploads/images', filename);
+    if (fs.existsSync(imagesPath)) {
+      filePath = imagesPath;
     } else {
-      filePath = path.join(__dirname, '../uploads/documents', filename);
-      if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ message: 'File not found' });
+      // Check singular 'image' directory
+      const singularPath = path.join(__dirname, '../uploads/image', filename);
+      if (fs.existsSync(singularPath)) {
+        filePath = singularPath;
+      } else {
+        // Check nested directory
+        const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
+        if (fs.existsSync(nestedPath)) {
+          filePath = nestedPath;
+        } else {
+          // Check RNDNext public uploads (visitor site path)
+          const nextPath = path.join(__dirname, '../../../RNDNext/public/uploads/resumes', filename);
+          const nextRootPath = path.join(__dirname, '../../../RNDNext/public/uploads', filename);
+          
+          if (fs.existsSync(nextPath)) {
+            filePath = nextPath;
+          } else if (fs.existsSync(nextRootPath)) {
+            filePath = nextRootPath;
+          } else {
+            console.log(`PDF not found: ${filename} in any directory (checked RNDAdmin and RNDNext)`);
+            return res.status(404).json({ message: 'File not found' });
+          }
+        }
       }
     }
   }
@@ -155,22 +175,42 @@ router.get('/pdf/download/:filename', (req, res) => {
 // Add PDF view route
 router.get('/pdf/view/:filename', (req, res) => {
   const { filename } = req.params;
-  let filePath = path.join(__dirname, '../uploads/images', filename);
+  let filePath = path.join(__dirname, '../uploads/documents', filename);
 
-  // Check if file exists in images directory
+  // Check if file exists in documents directory
   if (!fs.existsSync(filePath)) {
-    // Check nested directory
-    const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
-    if (fs.existsSync(nestedPath)) {
-      filePath = nestedPath;
+    // Check images directory
+    const imagesPath = path.join(__dirname, '../uploads/images', filename);
+    if (fs.existsSync(imagesPath)) {
+      filePath = imagesPath;
     } else {
-      // If not, check in catalogs directory
-      filePath = path.join(__dirname, '../uploads/catalogs', filename);
-      if (!fs.existsSync(filePath)) {
-        // Check in documents directory
-        filePath = path.join(__dirname, '../uploads/documents', filename);
-        if (!fs.existsSync(filePath)) {
-          return res.status(404).json({ message: 'File not found' });
+      // Check singular image directory
+      const singularPath = path.join(__dirname, '../uploads/image', filename);
+      if (fs.existsSync(singularPath)) {
+        filePath = singularPath;
+      } else {
+        // Check nested directory
+        const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
+        if (fs.existsSync(nestedPath)) {
+          filePath = nestedPath;
+        } else {
+          // Check in catalogs directory
+          const catalogPath = path.join(__dirname, '../uploads/catalogs', filename);
+          if (fs.existsSync(catalogPath)) {
+            filePath = catalogPath;
+          } else {
+            // Check RNDNext public uploads (visitor site path)
+            const nextPath = path.join(__dirname, '../../../RNDNext/public/uploads/resumes', filename);
+            const nextRootPath = path.join(__dirname, '../../../RNDNext/public/uploads', filename);
+
+            if (fs.existsSync(nextPath)) {
+              filePath = nextPath;
+            } else if (fs.existsSync(nextRootPath)) {
+              filePath = nextRootPath;
+            } else {
+              return res.status(404).json({ message: 'File not found' });
+            }
+          }
         }
       }
     }
