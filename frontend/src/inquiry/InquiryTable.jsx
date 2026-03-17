@@ -18,14 +18,13 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown, EllipsisVertical, MoreVertical, Plus } from "lucide-react";
 import FollowUpModal from "./FollowUpModel";
-import { useDeleteInquiryMutation } from "@/slice/inquiry/inquiry";
+import { useDeleteInquiryMutation, useDeleteMultipleInquiriesMutation } from "@/slice/inquiry/inquiry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useGetInquiriesQuery } from "@/slice/inquiry/inquiry";
 import { Link, Links } from "react-router-dom";
 import { useGetAllStatusesQuery } from "@/slice/status/status";
 import { useGetAllSourcesQuery } from "@/slice/source/source";
 import { Checkbox } from "@/components/ui/checkbox";
-import EmailForm from "@/email/emailForm/EmailForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Modal } from "antd";
 
@@ -46,6 +45,7 @@ export default function InquiryList() {
     const [itemsPerPage, setItemsPerPage] = useState(15);
     const [data, setData] = useState(inquiryData);
     const [deleteInquiry] = useDeleteInquiryMutation();
+    const [deleteMultipleInquiries] = useDeleteMultipleInquiriesMutation();
     const { data: statuses, isLoading: statusesLoading } = useGetAllStatusesQuery();
     const { data: sources, isLoading: sourcesLoading } = useGetAllSourcesQuery();
     // console.log(statuses)
@@ -58,7 +58,6 @@ export default function InquiryList() {
     const [mobileFilter, setMobileFilter] = useState("");
     const [cityFilter, setCityFilter] = useState("");
     const [selectedInquiries, setSelectedInquiries] = useState([]);
-    const [showEmailModal, setShowEmailModal] = useState(false);
 
     // Filtering function
     const filteredData = inquiryData.filter(item => {
@@ -75,13 +74,6 @@ export default function InquiryList() {
                 item.phone.toLowerCase().includes(mobileFilter.toLowerCase()))
         );
     });
-
-    // Get selected inquiry emails
-    const selectedInquiryEmails = filteredData
-        ?.filter((inquiry) => selectedInquiries.includes(inquiry._id))
-        ?.map((inquiry) => inquiry.email)
-        ?.join(", ");
-
     const handleDelete = async (inquiryId) => {
         Modal.confirm({
             title: 'Are you sure you want to delete this inquiry?',
@@ -95,6 +87,24 @@ export default function InquiryList() {
                     setData(prevData => prevData.filter(item => item._id !== inquiryId));
                 } catch (error) {
                     console.error("Error deleting inquiry:", error);
+                }
+            },
+        });
+    };
+
+    const handleBulkDelete = async () => {
+        Modal.confirm({
+            title: `Are you sure you want to delete ${selectedInquiries.length} inquiries?`,
+            content: 'This action cannot be undone.',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk: async () => {
+                try {
+                    await deleteMultipleInquiries(selectedInquiries).unwrap();
+                    setSelectedInquiries([]);
+                } catch (error) {
+                    console.error("Error deleting multiple inquiries:", error);
                 }
             },
         });
@@ -130,6 +140,14 @@ export default function InquiryList() {
         );
     };
 
+    const handleSelectAll = (checked) => {
+        if (checked) {
+            setSelectedInquiries(filteredData.map(item => item._id));
+        } else {
+            setSelectedInquiries([]);
+        }
+    };
+
     const formatUrl = (url) => {
         if (!url || url === 'Manual Entry') return 'Manual Entry';
         try {
@@ -143,30 +161,16 @@ export default function InquiryList() {
     return (
         <div className="p-4">
             {selectedInquiries.length > 0 && (
-                <div className="mb-4">
+                <div className="mb-4 flex gap-4">
                     <Button
-                        onClick={() => setShowEmailModal(true)}
-                        className="bg-[#304a8a] hover:bg-purple-700"
+                        variant="destructive"
+                        onClick={handleBulkDelete}
+                        className="bg-red-600 hover:bg-red-700"
                     >
-                        Send Email to Selected ({selectedInquiries.length})
+                        Delete Selected ({selectedInquiries.length})
                     </Button>
                 </div>
             )}
-
-            <Dialog open={showEmailModal} onOpenChange={setShowEmailModal}>
-                <DialogContent className="max-w-4xl">
-                    <DialogHeader>
-                        <DialogTitle>Send Email to Selected Inquiries</DialogTitle>
-                    </DialogHeader>
-                    <EmailForm
-                        defaultTo={selectedInquiryEmails}
-                        onSuccess={() => {
-                            setShowEmailModal(false);
-                            setSelectedInquiries([]);
-                        }}
-                    />
-                </DialogContent>
-            </Dialog>
 
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-xl font-semibold">Inquiry List</h1>
@@ -182,7 +186,12 @@ export default function InquiryList() {
             <Table className="border">
                 <TableHeader>
                     <TableRow className="border-b bg-gray-100">
-                        <TableHead className="w-12"></TableHead>
+                        <TableHead className="w-12">
+                            <Checkbox 
+                                checked={selectedInquiries.length === filteredData.length && filteredData.length > 0}
+                                onCheckedChange={handleSelectAll}
+                            />
+                        </TableHead>
                         <TableHead className="lg:w-[100px] w-[50px] sticky left-0 bg-background z-50">Date</TableHead>
                         <TableHead className="text-left">Info</TableHead>
                         <TableHead className="text-left">Status</TableHead>

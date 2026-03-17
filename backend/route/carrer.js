@@ -5,7 +5,8 @@ const {
   getAllApplications,
   getApplicationById,
   updateApplication,
-  deleteApplication } = require('../controller/career');
+  deleteApplication,
+  deleteMultipleApplications } = require('../controller/career');
 const upload = require('../middleware/chemicalImage'); // If file upload is needed
 
 // Public routes (if needed)
@@ -16,5 +17,6 @@ router.get('/getById', getApplicationById);
 // Protected routes (if authentication is required)
 router.put('/update',  upload, updateApplication);
 router.delete('/delete',  deleteApplication);
+router.post('/delete-multiple', deleteMultipleApplications);
 
 module.exports = router;

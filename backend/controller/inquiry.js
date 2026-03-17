@@ -382,3 +382,20 @@ exports.getTodayInquiries = async (req, res) => {
     }
 };
 
+// Delete multiple inquiries
+exports.deleteMultipleInquiries = async (req, res) => {
+    try {
+        const { ids } = req.body;
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ message: "No IDs provided for deletion" });
+        }
+
+        const result = await Inquiry.deleteMany({ _id: { $in: ids } });
+        res.status(200).json({ 
+            message: `${result.deletedCount} inquiries deleted successfully`,
+            deletedCount: result.deletedCount 
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

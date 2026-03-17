@@ -41,6 +41,15 @@ export const careerApi = createApi({
       }),
       invalidatesTags: ['Career'],
     }),
+
+    deleteMultipleApplications: builder.mutation({
+      query: (ids) => ({
+        url: '/delete-multiple',
+        method: 'POST',
+        body: { ids },
+      }),
+      invalidatesTags: ['Career'],
+    }),
   }),
 });
 
@@ -50,4 +59,5 @@ export const {
   useGetApplicationByIdQuery,
   useUpdateApplicationMutation,
   useDeleteApplicationMutation,
+  useDeleteMultipleApplicationsMutation,
 } = careerApi;

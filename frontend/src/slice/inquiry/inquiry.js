@@ -50,6 +50,15 @@ export const inquiryApi = createApi({
       }),
       invalidatesTags: [{ type: 'Inquiries', id: 'LIST' }],  // Invalidate the 'Inquiries' tag after mutation
     }),
+
+    deleteMultipleInquiries: builder.mutation({
+      query: (ids) => ({
+        url: '/delete-multiple',
+        method: 'POST',
+        body: { ids },
+      }),
+      invalidatesTags: [{ type: 'Inquiries', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -59,4 +68,5 @@ export const {
   useAddInquiryMutation,
   useUpdateInquiryMutation,
   useDeleteInquiryMutation,
+  useDeleteMultipleInquiriesMutation,
 } = inquiryApi;

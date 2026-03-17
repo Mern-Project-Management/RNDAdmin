@@ -498,10 +498,54 @@ const deleteApplication = async (req, res) => {
   }
 };
 
+const deleteMultipleApplications = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No IDs provided for deletion'
+      });
+    }
+
+    // Find all applications to delete their resume files
+    const applications = await Career.find({ _id: { $in: ids } });
+
+    for (const application of applications) {
+      if (application.resumeFile) {
+        try {
+          const resumePath = path.join(__dirname, '../uploads/documents', application.resumeFile);
+          if (fs.existsSync(resumePath)) {
+            fs.unlinkSync(resumePath);
+          }
+        } catch (err) {
+          console.error(`Error deleting resume file for app ${application._id}:`, err);
+        }
+      }
+    }
+
+    const result = await Career.deleteMany({ _id: { $in: ids } });
+
+    res.status(200).json({
+      success: true,
+      message: `${result.deletedCount} applications deleted successfully`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting multiple applications',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   submitApplication,
   getAllApplications,
   getApplicationById,
   updateApplication,
-  deleteApplication
+  deleteApplication,
+  deleteMultipleApplications
 };

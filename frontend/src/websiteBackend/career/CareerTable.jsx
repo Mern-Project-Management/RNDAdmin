@@ -1,13 +1,15 @@
 import React from 'react';
-import { Table, Modal, message } from 'antd';
+import { Table, Modal, message, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllApplicationsQuery, useDeleteApplicationMutation } from '../../slice/career/CareerForm';
+import { useGetAllApplicationsQuery, useDeleteApplicationMutation, useDeleteMultipleApplicationsMutation } from '../../slice/career/CareerForm';
 
 const CareerTable = () => {
     const navigate = useNavigate();
     const { data: applications, isLoading } = useGetAllApplicationsQuery();
     const [deleteApplication] = useDeleteApplicationMutation();
+    const [deleteMultipleApplications] = useDeleteMultipleApplicationsMutation();
+    const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
 
     const handleEdit = (record) => {
         navigate(`/career/edit/${record._id}`);
@@ -29,6 +31,34 @@ const CareerTable = () => {
                 }
             },
         });
+    };
+
+    const handleBulkDelete = () => {
+        Modal.confirm({
+            title: `Are you sure you want to delete ${selectedRowKeys.length} applications?`,
+            content: 'This action cannot be undone.',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk: async () => {
+                try {
+                    await deleteMultipleApplications(selectedRowKeys).unwrap();
+                    message.success('Applications deleted successfully!');
+                    setSelectedRowKeys([]);
+                } catch (error) {
+                    message.error(error.message || 'Something went wrong');
+                }
+            },
+        });
+    };
+
+    const onSelectChange = (newSelectedRowKeys) => {
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
     };
 
     const handleDownload = async (filePath) => {
@@ -137,7 +167,19 @@ const CareerTable = () => {
             </div>
 
             <div className="flex justify-between items-center mb-5">
-                <h2 className="text-2xl font-semibold">Career List</h2>
+                <div className="flex items-center gap-4">
+                    <h2 className="text-2xl font-semibold">Career List</h2>
+                    {selectedRowKeys.length > 0 && (
+                        <Button 
+                            danger 
+                            type="primary" 
+                            icon={<DeleteOutlined />} 
+                            onClick={handleBulkDelete}
+                        >
+                            Delete Selected ({selectedRowKeys.length})
+                        </Button>
+                    )}
+                </div>
                 <button
                     onClick={() => navigate('/career/application/add')}
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
@@ -148,6 +190,7 @@ const CareerTable = () => {
             </div>
 
             <Table
+                rowSelection={rowSelection}
                 columns={columns}
                 dataSource={applications?.data || []}
                 loading={isLoading}

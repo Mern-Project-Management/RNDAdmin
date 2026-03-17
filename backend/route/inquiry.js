@@ -7,5 +7,6 @@ router.get('/getById', contactController.getInquiryById);
 router.post('/add', contactController.createInquiry);
 router.put('/update', contactController.updateInquiry);
 router.delete('/delete', contactController.deleteInquiry);
+router.post('/delete-multiple', contactController.deleteMultipleInquiries);
 router.get('/getTodayInquiries',contactController.getTodayInquiries);
 module.exports = router;
