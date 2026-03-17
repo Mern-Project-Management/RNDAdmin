@@ -168,12 +168,15 @@ mongoose.connect(process.env.DATABASE_URI, {
 
 // Server startup
 const PORT = process.env.PORT || 3028;
+const { startReminderService } = require('./services/reminderService');
+
 app.listen(PORT, () => {
   console.log(`Environment Variables:`, {
     EMAIL_USER: process.env.EMAIL_USER ? 'Set' : 'Not Set',
     EMAIL_PASS: process.env.EMAIL_PASS ? 'Set' : 'Not Set',
   });
   console.log(`Server running on port ${PORT}`);
+  startReminderService(); // Initialize the daily reminder job
   // generateAllSitemaps(); // Generate sitemaps on startup
 });
 
