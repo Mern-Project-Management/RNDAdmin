@@ -5,16 +5,16 @@ const axios = require('axios');
 const nodemailer = require('nodemailer');
 
 const startReminderService = () => {
-  // Schedule a task to run every day at 12:48 PM for branding test
-  // 48 12 * * *
-  cron.schedule('48 12 * * *', async () => {
+  // Schedule a task to run every day at 10:00 AM
+  // 0 10 * * *
+  cron.schedule('0 10 * * *', async () => {
     console.log('Running daily follow-up email reminder job...');
     await sendTodayReminders();
   });
   
   // Also run once on startup to check for today's reminders if needed
   // For safety, let's just keep it on schedule unless requested otherwise.
-  console.log('Reminder service initialized. Scheduled to run daily at 9:00 AM.');
+  console.log('Reminder service initialized. Scheduled to run daily at 10:00 AM.');
 };
 
 const sendTodayReminders = async () => {
