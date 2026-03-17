@@ -20,6 +20,10 @@ const messageSchema = new mongoose.Schema(
       ref: 'inquiry', // The model name to reference
       required: true, // Ensure that an inquiryId is provided
     },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

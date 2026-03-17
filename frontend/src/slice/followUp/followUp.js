@@ -56,6 +56,14 @@ export const followupApi = createApi({
       }),
       invalidatesTags: ['Messages'], // Invalidate all Messages queries to refresh lists
     }),
+    // Mark a message as read
+    markAsRead: builder.mutation({
+      query: (id) => ({
+        url: `/markAsRead?id=${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['Messages'],
+    }),
   }),
 });
 
@@ -69,4 +77,5 @@ export const {
   useCreateMessageMutation,
   useUpdateMessageMutation,
   useDeleteMessageMutation,
+  useMarkAsReadMutation,
 } = followupApi;

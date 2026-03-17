@@ -8,7 +8,7 @@ import {
     useGetAdminProfileQuery,
     useUpdateAdminProfileMutation,
 } from '@/slice/login/adminlogin';
-import { useGetTodayMessagesQuery } from '@/slice/followUp/followUp';
+import { useGetTodayMessagesQuery, useMarkAsReadMutation } from '@/slice/followUp/followUp';
 
 const Navbar = () => {
     const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
@@ -28,12 +28,21 @@ const Navbar = () => {
 
     // Fetch today's messages
     const { data: messagesData, isLoading: isMessagesLoading } = useGetTodayMessagesQuery();
+    const [markAsRead] = useMarkAsReadMutation();
 
     useEffect(() => {
         if (adminProfile) {
             setEditedUserData(adminProfile.admin);
         }
     }, [adminProfile]);
+
+    const handleMarkAsRead = async (id) => {
+        try {
+            await markAsRead(id).unwrap();
+        } catch (error) {
+            console.error('Failed to mark as read:', error);
+        }
+    };
 
     const toggleUserInfo = () => {
         setIsUserInfoOpen(!isUserInfoOpen);
@@ -84,6 +93,7 @@ const Navbar = () => {
                         notifications={messagesData?.data || []}
                         isNotificationsOpen={isNotificationsOpen}
                         toggleNotifications={toggleNotifications}
+                        removeNotification={handleMarkAsRead}
                     />
 
                     {adminProfile && (

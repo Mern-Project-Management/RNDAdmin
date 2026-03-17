@@ -47,19 +47,29 @@ const NotificationsDropdown = ({
                     </div>
                     {notifications.map((notification) => (
                         <div
-                            key={notification.id}
-                            className="flex justify-between items-start p-2 hover:bg-gray-100 rounded"
+                            key={notification._id}
+                            className="flex justify-between items-start p-2 hover:bg-gray-100 rounded border-b border-gray-50 last:border-0"
                         >
-                            <div>
-                                <p className="text-sm text-gray-800">{notification.message}</p>
-                                <p className="text-xs text-gray-500">{notification.time}</p>
+                            <div className="flex-1 pr-2">
+                                <p className="text-sm text-gray-800 line-clamp-2">{notification.message}</p>
+                                <p className="text-[10px] text-gray-400 mt-1">
+                                    {new Date(notification.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </p>
                             </div>
                             <X
-                                className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700"
-                                onClick={() => removeNotification(notification.id)}
+                                className="w-4 h-4 text-gray-400 cursor-pointer hover:text-red-500 transition-colors mt-1"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    removeNotification(notification._id);
+                                }}
                             />
                         </div>
                     ))}
+                    {notifications.length === 0 && (
+                        <div className="p-4 text-center text-gray-400 text-sm italic">
+                            No new notifications
+                        </div>
+                    )}
                 </div>
             )}
         </div>

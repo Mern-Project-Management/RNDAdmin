@@ -8,7 +8,8 @@ const {
   deleteMessage ,
   getMessagesByInquiryId,
   getMessagesCountByInquiryId,
-  getTodayMessages
+  getTodayMessages,
+  markAsRead
 } = require('../controller/followup');
 
 const router = express.Router();
@@ -21,6 +22,9 @@ router.get('/get', getMessages);
 
 //Get todat message 
 router.get('/getTodayMessages', getTodayMessages);
+
+// Mark as read (PUT)
+router.put('/markAsRead', markAsRead);
 
 // Get a single message by ID (GET)
 router.get('/getById', getMessageById);

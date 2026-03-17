@@ -278,12 +278,13 @@ const getTodayMessages = async (req, res) => {
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999); // Set to 11:59:59 PM
 
-    // Fetch messages created today
+    // Fetch messages created today that are unread
     const todayMessages = await Message.find({
       createdAt: {
         $gte: startOfDay,
         $lt: endOfDay,
       },
+      isRead: false,
     })
       .sort({ createdAt: -1 }) // Sort in descending order by creation time
       .populate('inquiryId'); // Populate the inquiryId reference
@@ -299,6 +300,36 @@ const getTodayMessages = async (req, res) => {
     });
   }
 };
+
+const markAsRead = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const updatedMessage = await Message.findByIdAndUpdate(
+      id,
+      { isRead: true },
+      { new: true }
+    );
+
+    if (!updatedMessage) {
+      return res.status(404).json({
+        success: false,
+        message: 'Message not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Message marked as read',
+      data: updatedMessage,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createMessage,
   getMessages,
@@ -307,5 +338,6 @@ module.exports = {
   deleteMessage,
   getMessagesByInquiryId ,
   getMessagesCountByInquiryId,
-  getTodayMessages
+  getTodayMessages,
+  markAsRead
 };
