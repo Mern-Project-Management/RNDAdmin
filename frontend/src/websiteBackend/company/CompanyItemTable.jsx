@@ -80,20 +80,21 @@ const CompanyItemTable = () => {
     ];
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-sm">
-            <div className='flex justify-between items-center mb-6'>
-                <div>
-                    <h1 className='text-2xl font-bold text-gray-800'>Company Dropdown Items</h1>
-                    <p className='text-gray-500'>Manage the items, links, and images for the Company dropdown in the navbar.</p>
+        <div>
+            <div className='flex justify-between p-6 items-center'>
+                <div className='text-2xl font-bold'>
+                    <h1>Company</h1>
                 </div>
-                <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={() => navigate('/add-company-item')}
-                    className='h-10 px-6'
-                >
-                    Add Item
-                </Button>
+                <div>
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => navigate('/add-company-item')}
+                        className='mb-4'
+                    >
+                        Add Company Item
+                    </Button>
+                </div>
             </div>
             <Table
                 columns={columns}

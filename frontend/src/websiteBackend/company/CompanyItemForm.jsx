@@ -101,24 +101,15 @@ const CompanyItemForm = () => {
     }
 
     return (
-        <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+        <>
             <Breadcrumb
-                className='mb-6'
                 items={[
-                    { title: 'Dashboard', onClick: () => navigate('/dashboard'), className: 'cursor-pointer' },
-                    { title: 'Company Items', onClick: () => navigate('/company-item-table'), className: 'cursor-pointer' },
-                    { title: id ? 'Edit Item' : 'Add Item' },
+                    { title: 'Dashboard', onClick: () => navigate('/dashboard') },
+                    { title: 'Company', onClick: () => navigate('/company-item-table') },
+                    { title: id ? 'Edit Company' : 'Create Company' },
                 ]}
+                className='mb-[1rem]'
             />
-            
-            <div className="flex items-center gap-4 mb-8">
-                <Button 
-                    icon={<LeftOutlined />} 
-                    onClick={() => navigate('/company-item-table')}
-                    className="flex items-center justify-center"
-                />
-                <h1 className="text-2xl font-bold text-gray-800">{id ? 'Edit Company Item' : 'Add New Company Item'}</h1>
-            </div>
 
             <Form
                 form={form}
@@ -169,7 +160,7 @@ const CompanyItemForm = () => {
                     </Button>
                 </Form.Item>
             </Form>
-        </div>
+        </>
     );
 };
 
