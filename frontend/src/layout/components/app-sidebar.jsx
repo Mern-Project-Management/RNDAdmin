@@ -116,6 +116,14 @@ const menuData = [
         ]
       },
       {
+        title: "Company Dropdown",
+        icon: LinkIcon,
+        children: [
+          { title: "List", icon: List, url: "/company-item-table" },
+          { title: "Add New", icon: PlusSquare, url: "/add-company-item" },
+        ]
+      },
+      {
         title: "Core Value",
         icon: UsersRoundIcon,
         children: [

@@ -1,0 +1,110 @@
+import React from 'react';
+import { Table, Button, Space, message, Popconfirm } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { useGetAllCompanyItemsQuery, useDeleteCompanyItemMutation } from '../../slice/companyItemSlice';
+import { useNavigate } from 'react-router-dom';
+
+const CompanyItemTable = () => {
+    const navigate = useNavigate();
+    const { data: companyItems, isLoading } = useGetAllCompanyItemsQuery();
+    const [deleteCompanyItem] = useDeleteCompanyItemMutation();
+
+    const handleDelete = async (id) => {
+        try {
+            await deleteCompanyItem(id).unwrap();
+            message.success('Company item deleted successfully');
+        } catch (error) {
+            message.error('Failed to delete company item');
+        }
+    };
+
+    const columns = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            width: '20%',
+        },
+        {
+            title: 'Link',
+            dataIndex: 'link',
+            key: 'link',
+            width: '25%',
+        },
+        {
+            title: 'Order',
+            dataIndex: 'order',
+            key: 'order',
+            width: '10%',
+            sorter: (a, b) => a.order - b.order,
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            width: '15%',
+            render: (image) => (
+                <img
+                    src={`/api/image/download/${image}`}
+                    alt="Company Item"
+                    className='w-[80px] h-[50px] object-cover rounded shadow-sm'
+                />
+            ),
+        },
+        {
+            title: 'Actions',
+            key: 'actions',
+            width: '15%',
+            render: (_, record) => (
+                <Space>
+                    <Button
+                        type="primary"
+                        icon={<EditOutlined />}
+                        onClick={() => navigate(`/edit-company-item/${record._id}`)}
+                    />
+                    <Popconfirm
+                        title="Delete the item"
+                        description="Are you sure to delete this item?"
+                        onConfirm={() => handleDelete(record._id)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button
+                            danger
+                            icon={<DeleteOutlined />}
+                        />
+                    </Popconfirm>
+                </Space>
+            ),
+        },
+    ];
+
+    return (
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+            <div className='flex justify-between items-center mb-6'>
+                <div>
+                    <h1 className='text-2xl font-bold text-gray-800'>Company Dropdown Items</h1>
+                    <p className='text-gray-500'>Manage the items, links, and images for the Company dropdown in the navbar.</p>
+                </div>
+                <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={() => navigate('/add-company-item')}
+                    className='h-10 px-6'
+                >
+                    Add Item
+                </Button>
+            </div>
+            <Table
+                columns={columns}
+                dataSource={companyItems}
+                loading={isLoading}
+                rowKey="_id"
+                pagination={{ pageSize: 10 }}
+                className="border border-gray-100 rounded-lg overflow-hidden"
+            />
+        </div>
+    );
+};
+
+export default CompanyItemTable;

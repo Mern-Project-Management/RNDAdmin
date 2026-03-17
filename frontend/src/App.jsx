@@ -126,6 +126,8 @@ const TermsConditionForm = lazy(() => import('./websiteBackend/privacy/TermsCond
 const CareerInfoForm = lazy(() => import('./websiteBackend/career/CareerInfoForm'));
 const PolicyTable = lazy(() => import('./websiteBackend/policy/PolicyTable'));
 const PolicyForm = lazy(() => import('./websiteBackend/policy/PolicyForm'));
+const CompanyItemTable = lazy(() => import('./websiteBackend/company/CompanyItemTable'));
+const CompanyItemForm = lazy(() => import('./websiteBackend/company/CompanyItemForm'));
 
 // Non-lazy imports
 import useDocumentTitle from './websiteBackend/staticMetaKeyword/DynamicMeta';
@@ -478,6 +480,11 @@ function App() {
 
             // Text Slider Routes
             { path: 'text-slider', element: <Suspense fallback={<LoadingFallback />}><TextSliderCRUD /></Suspense> },
+
+            // Company Dropdown
+            { path: 'company-item-table', element: <Suspense fallback={<LoadingFallback />}><CompanyItemTable /></Suspense> },
+            { path: 'add-company-item', element: <Suspense fallback={<LoadingFallback />}><CompanyItemForm /></Suspense> },
+            { path: 'edit-company-item/:id', element: <Suspense fallback={<LoadingFallback />}><CompanyItemForm /></Suspense> },
 
           ]
         }
