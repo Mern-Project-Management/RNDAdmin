@@ -159,23 +159,33 @@ const EditPortfolio = () => {
         setInitialImgtitle(portfolio.imgtitle && portfolio.imgtitle[0] ? portfolio.imgtitle[0] : "");
       }
 
+      const categoryId = Array.isArray(portfolio.categories) ? portfolio.categories[0] : portfolio.categories;
+      const subCategoryId = Array.isArray(portfolio.subcategories) ? portfolio.subcategories[0] : portfolio.subcategories;
+      const subSubCategoryId = Array.isArray(portfolio.subSubcategories) ? portfolio.subSubcategories[0] : portfolio.subSubcategories;
+
       try {
-        const categoryResponse = await axios.get(`/api/portfolio/getSpecificCategory?categoryId=${portfolio.categories}`, { withCredentials: true });
-        setParentCategoryId(categoryResponse.data.slug);
+        if (categoryId) {
+          const categoryResponse = await axios.get(`/api/portfolio/getSpecificCategory?categoryId=${categoryId}`, { withCredentials: true });
+          setParentCategoryId(categoryResponse.data._id);
+        }
       } catch (error) {
         console.error('Error fetching parent category:', error);
       }
 
       try {
-        const subCategoryResponse = await axios.get(`/api/portfolio/getSpecificSubcategory?categoryId=${portfolio.categories}&subCategoryId=${portfolio.subcategories}`, { withCredentials: true });
-        setSubCategoryId(subCategoryResponse.data.slug);
+        if (categoryId && subCategoryId) {
+          const subCategoryResponse = await axios.get(`/api/portfolio/getSpecificSubcategory?categoryId=${categoryId}&subCategoryId=${subCategoryId}`, { withCredentials: true });
+          setSubCategoryId(subCategoryResponse.data._id);
+        }
       } catch (error) {
         console.error('Error fetching subcategory:', error);
       }
 
       try {
-        const subSubCategoryResponse = await axios.get(`/api/portfolio/getSpecificSubSubcategory?categoryId=${portfolio.categories}&subCategoryId=${portfolio.subcategories}&subSubCategoryId=${portfolio.subSubcategories}`, { withCredentials: true });
-        setSubSubCategoryId(subSubCategoryResponse.data.slug);
+        if (categoryId && subCategoryId && subSubCategoryId) {
+          const subSubCategoryResponse = await axios.get(`/api/portfolio/getSpecificSubSubcategory?categoryId=${categoryId}&subCategoryId=${subCategoryId}&subSubCategoryId=${subSubCategoryId}`, { withCredentials: true });
+          setSubSubCategoryId(subSubCategoryResponse.data._id);
+        }
       } catch (error) {
         console.error('Error fetching sub-subcategory:', error);
       }

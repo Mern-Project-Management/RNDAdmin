@@ -717,14 +717,29 @@ const getAllCategory = async (req, res) => {
 const getSpecificCategory = async (req, res) => {
   try {
     const { categoryId } = req.query;
-    const categories = await PortfolioCategory.findOne({ _id: categoryId });
+    
+    if (!categoryId) {
+      return res.status(400).json({ message: "Category identifier is required" });
+    }
+
+    let categories;
+    // Try finding by _id first if it looks like a valid ObjectId string
+    if (categoryId.match(/^[0-9a-fA-F]{24}$/)) {
+      categories = await PortfolioCategory.findOne({ _id: categoryId });
+    }
+    
+    // If not found by _id or wasn't an ObjectId, try finding by slug
+    if (!categories) {
+      categories = await PortfolioCategory.findOne({ slug: categoryId });
+    }
 
     if (!categories) {
       return res.status(404).json({ message: "Category not found" });
     }
     res.status(200).json(categories);
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error in getSpecificCategory:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -732,16 +747,28 @@ const getSpecificSubcategory = async (req, res) => {
   const { categoryId, subCategoryId } = req.query;
 
   try {
-    // Find the category by ID
-    const category = await PortfolioCategory.findOne({ _id: categoryId });
+    if (!categoryId || !subCategoryId) {
+      return res.status(400).json({ message: "Category and Subcategory identifiers are required" });
+    }
+
+    // Find the category by ID or Slug
+    let category;
+    if (categoryId.match(/^[0-9a-fA-F]{24}$/)) {
+      category = await PortfolioCategory.findOne({ _id: categoryId });
+    }
+    
+    if (!category) {
+      category = await PortfolioCategory.findOne({ slug: categoryId });
+    }
+
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
 
     // Find the specific subcategory within the category
-    // Compare the _id field of each subcategory object
+    // Support finding by both _id and slug
     const subCategory = category.subCategories.find(
-      (sub) => sub._id.toString() === subCategoryId
+      (sub) => sub._id.toString() === subCategoryId || sub.slug === subCategoryId
     );
     
     if (!subCategory) {
@@ -751,7 +778,7 @@ const getSpecificSubcategory = async (req, res) => {
     // Respond with the found subcategory
     res.status(200).json(subCategory);
   } catch (error) {
-    console.error(error);
+    console.error("Error in getSpecificSubcategory:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

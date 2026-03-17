@@ -187,7 +187,7 @@ export default function InquiryList() {
                 <TableHeader>
                     <TableRow className="border-b bg-gray-100">
                         <TableHead className="w-12">
-                            <Checkbox 
+                            <Checkbox
                                 checked={selectedInquiries.length === filteredData.length && filteredData.length > 0}
                                 onCheckedChange={handleSelectAll}
                             />

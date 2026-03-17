@@ -365,7 +365,7 @@ const deleteMultiplePortfolios = async (req, res) => {
 const getPortfolioById = async (req, res) => {
   try {
     const { id } = req.query;
-    const portfolio = await Portfolio.findById(id).populate('categories').populate('subcategories');
+    const portfolio = await Portfolio.findById(id);
    
     if (!portfolio) {
       return res.status(404).json({ message: 'Portfolio not found' });

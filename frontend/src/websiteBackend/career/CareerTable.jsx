@@ -115,8 +115,8 @@ const CareerTable = () => {
                 // Fallback logic: check all known fields that might store the resume
                 const resumePath = record.resumeFile || record.resumeUrl || record.resumeName || record.url;
                 const hasResume = resumePath && (
-                    resumePath.toLowerCase().endsWith('.pdf') || 
-                    resumePath.toLowerCase().endsWith('.doc') || 
+                    resumePath.toLowerCase().endsWith('.pdf') ||
+                    resumePath.toLowerCase().endsWith('.doc') ||
                     resumePath.toLowerCase().endsWith('.docx')
                 );
 
@@ -170,10 +170,10 @@ const CareerTable = () => {
                 <div className="flex items-center gap-4">
                     <h2 className="text-2xl font-semibold">Career List</h2>
                     {selectedRowKeys.length > 0 && (
-                        <Button 
-                            danger 
-                            type="primary" 
-                            icon={<DeleteOutlined />} 
+                        <Button
+                            danger
+                            type="primary"
+                            icon={<DeleteOutlined />}
                             onClick={handleBulkDelete}
                         >
                             Delete Selected ({selectedRowKeys.length})
