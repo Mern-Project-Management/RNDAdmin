@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Card, Breadcrumb, message, Upload } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
-import { 
+import {
     useSubmitApplicationMutation,
     useUpdateApplicationMutation,
     useGetApplicationByIdQuery
@@ -24,28 +24,38 @@ const CareerAdminForm = () => {
 
     // Set form values when editing
     useEffect(() => {
-        if (isEditMode && editData?.data) {
+        const rawData = editData?.data || editData;
+        const dataToSet = Array.isArray(rawData) ? rawData[0] : rawData;
+
+        if (isEditMode && dataToSet) {
             form.setFieldsValue({
-                name: editData.data.name,
-                email: editData.data.email,
-                contactNo: editData.data.contactNo,
-                address: editData.data.address,
-                postAppliedFor: editData.data.postAppliedFor,
+                name: dataToSet.name,
+                email: dataToSet.email,
+                contactNo: dataToSet.contactNo,
+                address: dataToSet.address,
+                postAppliedFor: dataToSet.postAppliedFor,
             });
-            
+
             // Set existing resume file
-            if (editData.data.resumeFile) {
+            if (dataToSet.resumeFile) {
                 setFileList([
                     {
                         uid: '-1',
-                        name: editData.data.resumeFile.split('/').pop(),
+                        name: dataToSet.resumeFile.split('/').pop(),
                         status: 'done',
-                        url: editData.data.resumeFile,
+                        url: dataToSet.resumeFile,
                     }
                 ]);
             }
         }
     }, [editData, form, isEditMode]);
+
+    useEffect(() => {
+        if (!isEditMode) {
+            form.resetFields();
+            setFileList([]);
+        }
+    }, [isEditMode, form]);
 
     const onFinish = async (values) => {
         try {
@@ -68,7 +78,7 @@ const CareerAdminForm = () => {
                 await submitApplication(formData).unwrap();
                 message.success('Application submitted successfully!');
             }
-            navigate('/JobApplication');
+            navigate('/career-table');
         } catch (error) {
             message.error(error.message || 'Something went wrong');
         }
@@ -96,19 +106,19 @@ const CareerAdminForm = () => {
         <div className='p-5'>
             <Breadcrumb
                 items={[
-                    { 
+                    {
                         title: <span onClick={() => navigate('/dashboard')} className='cursor-pointer'>
                             Dashboard
                         </span>
                     },
-                    { 
+                    {
                         title: <span onClick={() => navigate('/career-table')} className='cursor-pointer'>
                             Career Applications
                         </span>
                     },
                     { title: isEditMode ? 'Edit Application' : 'Add Application' }
                 ]}
-               className='mb-4'
+                className='mb-4'
             />
 
             <Card title={isEditMode ? 'Edit Application' : 'Add New Application'}>
@@ -174,9 +184,9 @@ const CareerAdminForm = () => {
                         name="resumeFile"
                         label="Resume"
                         rules={[
-                            { 
-                                required: !isEditMode && !fileList.length, 
-                                message: 'Please upload resume' 
+                            {
+                                required: !isEditMode && !fileList.length,
+                                message: 'Please upload resume'
                             }
                         ]}
                     >
@@ -191,8 +201,8 @@ const CareerAdminForm = () => {
                         <Button type="primary" htmlType="submit" loading={isLoadingEdit}>
                             {isEditMode ? 'Update' : 'Submit'}
                         </Button>
-                        <Button 
-                           className='ml-3'
+                        <Button
+                            className='ml-3'
                             onClick={() => navigate('/career-table')}
                         >
                             Cancel

@@ -367,7 +367,8 @@ const getAllApplications = async (req, res) => {
 
 const getApplicationById = async (req, res) => {
   try {
-    const application = await Career.findById(req.params.id);
+    const { id } = req.query;
+    const application = await Career.findById(id);
 
     if (!application) {
       return res.status(404).json({
