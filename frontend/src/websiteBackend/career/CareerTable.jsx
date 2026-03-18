@@ -97,7 +97,7 @@ const CareerTable = () => {
             render: (_, record) => (
                 <div className="space-y-0.5">
                     <p className="font-normal text-gray-950 text-base">{record.name}</p>
-                    <p className="text-sm font-medium text-[#304a8a]">{record.contactNo}</p>
+                    <p className="text-sm font-medium text-[#304a8a]">{record.phone || record.contactNo}</p>
                     <p className="text-xs text-gray-500">{record.address}</p>
                 </div>
             ),
@@ -107,7 +107,7 @@ const CareerTable = () => {
             title: 'Post Applied For',
             dataIndex: 'postAppliedFor',
             key: 'postAppliedFor',
-            render: (text) => <span className="font-bold text-gray-800 text-sm uppercase tracking-tight">{text || <span className="text-gray-400 font-normal italic">Not specified</span>}</span>,
+            render: (_, record) => <span className="font-bold text-gray-800 text-sm uppercase tracking-tight">{record.careerTitle || record.postAppliedFor || <span className="text-gray-400 font-normal italic">Not specified</span>}</span>,
         },
         {
             title: 'Email',

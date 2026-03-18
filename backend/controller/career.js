@@ -5,11 +5,14 @@ const nodemailer = require('nodemailer');
 
 const submitApplication = async (req, res) => {
   try {
-    const { name, address, email, contactNo, postAppliedFor, url } = req.body;
+    const { 
+      name, address, email, contactNo, postAppliedFor, url, 
+      phone, careerTitle, post, linkedin, projectDetails, coverLetter 
+    } = req.body;
 
     // Validate inputs
-    if (!name || !address || !email || !contactNo || !postAppliedFor || !url) {
-      return res.status(400).json({ message: 'All fields are required' });
+    if (!name || !email || !url) {
+      return res.status(400).json({ message: 'Name, email and url are required' });
     }
 
     // Basic email validation
@@ -35,12 +38,21 @@ const submitApplication = async (req, res) => {
     // Create new application
     const application = new Career({
       name,
-      address,
+      address: address || 'Not Provided',
       email,
-      contactNo,
-      postAppliedFor,
+      contactNo: contactNo || phone,
+      postAppliedFor: postAppliedFor || careerTitle,
       resumeFile: resumePath,
-      url
+      resumeUrl: `/api/image/download/${resumePath}`, // Construct download URL
+      resumeName: req.files && req.files.resumeFile && req.files.resumeFile[0].originalname || resumePath, // Original filename
+      url: url || 'Website',
+      phone: phone || contactNo,
+      careerTitle: careerTitle || postAppliedFor,
+      post: post || '',
+      linkedin: linkedin || '',
+      projectDetails: projectDetails || '',
+      coverLetter: coverLetter || '',
+      status: 'pending'
     });
 
     await application.save();
@@ -393,27 +405,36 @@ const getApplicationById = async (req, res) => {
 const updateApplication = async (req, res) => {
   try {
     const { id } = req.query;
-    const { name, address, email, contactNo, postAppliedFor, url } = req.body;
+    const { 
+      name, address, email, contactNo, postAppliedFor, url,
+      phone, careerTitle, post, linkedin, projectDetails, coverLetter, status 
+    } = req.body;
 
     const updateData = {};
     if (name) updateData.name = name;
     if (address) updateData.address = address;
-    if (email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        return res.status(400).json({ message: 'Invalid email format' });
-      }
-      updateData.email = email;
+    if (url) updateData.url = url;
+    if (phone) {
+      updateData.phone = phone;
+      updateData.contactNo = phone; // sync
     }
     if (contactNo) {
-      const phoneRegex = /^\+?[\d\s-]{10,}$/;
-      if (!phoneRegex.test(contactNo)) {
-        return res.status(400).json({ message: 'Invalid phone number format' });
-      }
       updateData.contactNo = contactNo;
+      updateData.phone = contactNo; // sync
     }
-    if (postAppliedFor) updateData.postAppliedFor = postAppliedFor;
-    if (url) updateData.url = url;
+    if (careerTitle) {
+      updateData.careerTitle = careerTitle;
+      updateData.postAppliedFor = careerTitle; // sync
+    }
+    if (postAppliedFor) {
+      updateData.postAppliedFor = postAppliedFor;
+      updateData.careerTitle = postAppliedFor; // sync
+    }
+    if (post !== undefined) updateData.post = post;
+    if (linkedin !== undefined) updateData.linkedin = linkedin;
+    if (projectDetails !== undefined) updateData.projectDetails = projectDetails;
+    if (coverLetter !== undefined) updateData.coverLetter = coverLetter;
+    if (status) updateData.status = status;
 
     // Handle resume file update
     if (req.files && req.files.resumeFile && req.files.resumeFile[0]) {
