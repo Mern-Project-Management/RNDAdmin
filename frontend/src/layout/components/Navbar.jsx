@@ -8,7 +8,7 @@ import {
     useGetAdminProfileQuery,
     useUpdateAdminProfileMutation,
 } from '@/slice/login/adminlogin';
-import { useGetTodayMessagesQuery, useMarkAsReadMutation } from '@/slice/followUp/followUp';
+import { useGetTodayNotificationsQuery } from '@/slice/notification/notification';
 
 const Navbar = () => {
     const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
@@ -26,9 +26,8 @@ const Navbar = () => {
     const { data: adminProfile, error, isLoading } = useGetAdminProfileQuery();
     const [updateAdminProfile] = useUpdateAdminProfileMutation();
 
-    // Fetch today's messages
-    const { data: messagesData, isLoading: isMessagesLoading } = useGetTodayMessagesQuery();
-    const [markAsRead] = useMarkAsReadMutation();
+    // Fetch today's aggregated notifications
+    const { data: notificationsData, isLoading: isMessagesLoading } = useGetTodayNotificationsQuery();
 
     useEffect(() => {
         if (adminProfile) {
@@ -36,13 +35,7 @@ const Navbar = () => {
         }
     }, [adminProfile]);
 
-    const handleMarkAsRead = async (id) => {
-        try {
-            await markAsRead(id).unwrap();
-        } catch (error) {
-            console.error('Failed to mark as read:', error);
-        }
-    };
+    const unreadCount = notificationsData?.data?.filter(n => !n.isRead).length || 0;
 
     const toggleUserInfo = () => {
         setIsUserInfoOpen(!isUserInfoOpen);
@@ -90,10 +83,11 @@ const Navbar = () => {
                 <SidebarTrigger />
                 <div className="flex w-full items-center justify-end space-x-8">
                     <NotificationsDropdown
-                        notifications={messagesData?.data || []}
+                        notifications={notificationsData?.data || []}
+                        unreadCount={unreadCount}
                         isNotificationsOpen={isNotificationsOpen}
                         toggleNotifications={toggleNotifications}
-                        removeNotification={handleMarkAsRead}
+                        setIsNotificationsOpen={setIsNotificationsOpen}
                     />
 
                     {adminProfile && (

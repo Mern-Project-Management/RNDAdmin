@@ -7,7 +7,8 @@ const JobApplicationSchema = new mongoose.Schema({
   url: { type: String, required: true },
   contactNo: { type: String, required: true },
   postAppliedFor: { type: String, required: true },
-  resumeFile: { type: String, required: true }
+  resumeFile: { type: String, required: true },
+  isRead: { type: Boolean, default: false }
 }, {
   timestamps: true,
   collection: 'careerapplications'

@@ -8,7 +8,8 @@ const contactSchema = new mongoose.Schema({
     email: { type: String, required: true },
     message: { type: String, },
     status: { type: String, default: '' },
-    source: { type: String, default: '' }
+    source: { type: String, default: '' },
+    isRead: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('inquiry', contactSchema);
