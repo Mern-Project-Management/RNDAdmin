@@ -28,8 +28,15 @@ exports.getInquiryById = async (req, res) => {
 // Create new inquiry
 exports.createInquiry = async (req, res) => {
     try {
+        const firstName = req.body.firstName || "";
+        const lastName = req.body.lastName || "";
+        const name = req.body.name || (firstName || lastName ? `${firstName} ${lastName}`.trim() : "Anonymous");
+        const service = req.body.service || req.body.department || "";
+
         const inquiryData = {
             ...req.body,
+            name,
+            service,
             needCallback: req.body.needCallback || false,
             status: req.body.status || "New Inquiry",
             source: req.body.source || "",
@@ -224,11 +231,11 @@ console.log("Inquiry Data:", inquiryData);
                 </tr>
                 <tr>
                     <td>Organisation:</td>
-                    <td>${inquiryData.organisation || '—'}</td>
+                    <td>${inquiryData.organisation || "—"}</td>
                 </tr>
                 <tr>
-                    <td>Department:</td>
-                    <td>${inquiryData.department || '—'}</td>
+                    <td>Service:</td>
+                    <td>${inquiryData.service || inquiryData.department || "—"}</td>
                 </tr>
                 <tr>
                     <td>Address:</td>

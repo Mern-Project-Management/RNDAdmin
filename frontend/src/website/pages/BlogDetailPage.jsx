@@ -5,6 +5,7 @@ import { useGetBlogBySlugQuery ,useGetAllBlogsExceptLatestQuery
 
 } from '@/slice/blog/blog';
 import Footer from '../componets/home/Footer';
+import CallbackForm from '../componets/blog/CallbackForm';
 
 const RecentPostCard = ({ title, image, date }) => (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-4 group relative">
@@ -77,6 +78,9 @@ const BlogDetailPage = () => {
                             date={post?.publishedDate}
                         />
                     ))}
+                    
+                    {/* Callback Form for Blog */}
+                    <CallbackForm />
                 </div>
             </div>
         </div>
