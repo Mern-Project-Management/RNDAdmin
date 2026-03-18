@@ -25,7 +25,7 @@ const NotificationDetails = ({ notification }) => {
                 <tbody>
                     <DetailRow label="Name" value={src.name} />
                     <DetailRow label="Email" value={src.email} />
-                    <DetailRow label="Service" value={src.department || <span className="text-gray-400 italic">Not specified</span>} />
+                    <DetailRow label="Service" value={src.service || src.department || <span className="text-gray-400 italic">Not specified</span>} />
                     <DetailRow label="Phone" value={src.phone} />
                     <DetailRow label="Country" value={src.country} />
                     <DetailRow label="Source" value={src.source} />
@@ -45,7 +45,7 @@ const NotificationDetails = ({ notification }) => {
                     <DetailRow label="Name" value={name} />
                     <DetailRow label="Email" value={src.email} />
                     <DetailRow label="Contact No" value={src.phone || src.contactNo} />
-                    <DetailRow label="Role" value={src.roleApplied || src.postAppliedFor} />
+                    <DetailRow label="Role/Post" value={src.careerTitle || src.roleApplied || src.postAppliedFor} />
                     <DetailRow label="Country" value={src.country} />
                     <DetailRow label="Experience" value={src.experience} />
                     <DetailRow label="Address" value={src.address} />
@@ -182,9 +182,23 @@ const NotificationsDropdown = ({
                                                         {/* Name + Email at top */}
                                                         <div className="flex flex-col mb-1 leading-tight">
                                                             <h4 className={`text-sm font-normal ${notification.isRead ? 'text-gray-600' : 'text-gray-950'}`}>{title}</h4>
-                                                            {notification.inquiryEmail && (
-                                                                <span className="text-[11px] text-[#304a8a] font-semibold mt-0.5">{notification.inquiryEmail}</span>
-                                                            )}
+                                                            <div className="flex flex-wrap items-center gap-2 mt-1">
+                                                                {notification.inquiryEmail && (
+                                                                    <span className="text-[11px] text-[#304a8a] font-semibold">{notification.inquiryEmail}</span>
+                                                                )}
+                                                                
+                                                                {/* Service/Post Highlight */}
+                                                                {notification.type === 'inquiry' && (notification.sourceData?.service || notification.sourceData?.department) && (
+                                                                    <span className="bg-blue-50 text-[#304a8a] text-[10px] font-bold px-1.5 py-0.5 rounded border border-blue-100 uppercase tracking-tight">
+                                                                        {notification.sourceData?.service || notification.sourceData?.department}
+                                                                    </span>
+                                                                )}
+                                                                {notification.type === 'career' && (notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor) && (
+                                                                    <span className="bg-purple-50 text-purple-700 text-[10px] font-bold px-1.5 py-0.5 rounded border border-purple-100 uppercase tracking-tight">
+                                                                        {notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor}
+                                                                    </span>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                         
                                                         {/* Short message preview when collapsed */}
