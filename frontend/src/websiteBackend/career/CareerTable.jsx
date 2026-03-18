@@ -95,18 +95,25 @@ const CareerTable = () => {
             title: 'Info',
             key: 'info',
             render: (_, record) => (
-                <div>
-                    <p className="font-semibold">{record.name}</p>
-                    <p>{record.contactNo}</p>
-                    <p className="text-gray-500">{record.address}</p>
+                <div className="space-y-0.5">
+                    <p className="font-normal text-gray-950 text-base">{record.name}</p>
+                    <p className="text-sm font-medium text-[#304a8a]">{record.contactNo}</p>
+                    <p className="text-xs text-gray-500">{record.address}</p>
                 </div>
             ),
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            sorter: (a, b) => (a.name || '').localeCompare(b.name || ''),
+        },
+        {
+            title: 'Post Applied For',
+            dataIndex: 'postAppliedFor',
+            key: 'postAppliedFor',
+            render: (text) => <span className="font-bold text-gray-800 text-sm uppercase tracking-tight">{text || <span className="text-gray-400 font-normal italic">Not specified</span>}</span>,
         },
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            render: (text) => <span className="text-sm text-gray-700">{text}</span>
         },
         {
             title: 'Resume',
@@ -123,29 +130,29 @@ const CareerTable = () => {
                 return hasResume ? (
                     <DownloadOutlined
                         onClick={() => handleDownload(resumePath)}
-                        className="text-blue-600 cursor-pointer"
+                        className="text-blue-600 cursor-pointer text-lg hover:scale-110 transition-transform"
                     />
-                ) : <span className="text-gray-400 italic">No Resume</span>;
+                ) : <span className="text-gray-400 italic text-xs">No Resume</span>;
             },
         },
         {
             title: 'Applied Date',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (date) => new Date(date).toLocaleDateString(),
+            render: (date) => <span className="text-xs font-semibold text-gray-500">{new Date(date).toLocaleDateString()}</span>,
             sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
         },
         {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                     <EditOutlined
-                        className="text-blue-600 cursor-pointer"
+                        className="text-blue-600 cursor-pointer text-lg hover:scale-110 transition-transform"
                         onClick={() => handleEdit(record)}
                     />
                     <DeleteOutlined
-                        className="text-red-500 cursor-pointer"
+                        className="text-red-500 cursor-pointer text-lg hover:scale-110 transition-transform"
                         onClick={() => handleDelete(record._id)}
                     />
                 </div>

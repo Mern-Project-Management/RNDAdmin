@@ -130,19 +130,35 @@ export default function AddInquiryForm({ onClose }) {
                         />
                     </div>
 
-                    <FormField
-                        control={form.control}
-                        name="organisation"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Organisation</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Enter organisation name" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="organisation"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Organisation / Company</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter organisation name" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="department"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Service (Department)</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter service/department" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
                     <FormField
                         control={form.control}

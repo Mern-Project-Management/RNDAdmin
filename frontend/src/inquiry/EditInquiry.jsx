@@ -31,12 +31,13 @@ const breadcrumbItems = [
 ]
 // Define validation schema
 const inquirySchema = z.object({
-    companyName: z.string().min(2, { message: "Company name must be at least 2 characters" }),
+    organisation: z.string().min(2, { message: "Organisation/Company name must be at least 2 characters" }),
     name: z.string().min(2, { message: "Full name must be at least 2 characters" }),
     email: z.string().email({ message: "Invalid email address" }),
-    mobile: z.string()
-        .regex(/^[0-9]{10}$/, { message: "Mobile number must be 10 digits" }),
-    address: z.string().min(2, { message: "Address must be at least 2 characters" }),
+    phone: z.string()
+        .regex(/^[0-9]{10}$/, { message: "Phone number must be 10 digits" }),
+    address: z.string().optional(),
+    department: z.string().optional(),
     status: z.string({ required_error: "Please select a status" })
 });
 
@@ -51,11 +52,12 @@ export default function EditInquiryForm({ onClose }) {
     const form = useForm({
         resolver: zodResolver(inquirySchema),
         defaultValues: {
-            companyName: "",
+            organisation: "",
             name: "",
             email: "",
-            mobile: "",
+            phone: "",
             address: "",
+            department: "",
             status: "New Inquiry"
         }
     });
@@ -64,11 +66,12 @@ export default function EditInquiryForm({ onClose }) {
     useEffect(() => {
         if (inquiryData) {
             form.reset({
-                companyName: inquiryData.companyName || "",
+                organisation: inquiryData.organisation || "",
                 name: inquiryData.name || "",
                 email: inquiryData.email || "",
-                mobile: inquiryData.mobile || "",
+                phone: inquiryData.phone || "",
                 address: inquiryData.address || "",
+                department: inquiryData.department || "",
                 status: inquiryData.status || "New Inquiry"
             });
         }
@@ -78,7 +81,7 @@ export default function EditInquiryForm({ onClose }) {
     const onSubmit = async (data) => {
         try {
             // Perform update mutation
-            const response = await updateInquiry({ id, ...data }).unwrap();
+            await updateInquiry({ id, ...data }).unwrap();
             
             // Reset form
             form.reset();
@@ -87,151 +90,157 @@ export default function EditInquiryForm({ onClose }) {
             navigate('/inquiry-list');
         } catch (error) {
             // Handle error
-            alert({
-                title: "Error",
-                description: error?.data?.message || "Failed to update inquiry",
-                variant: "destructive"
-            });
+            alert(error?.data?.message || "Failed to update inquiry");
         }
     };
 
-    if (isFetching) return <div>Loading...</div>;  // Loading state
+    if (isFetching) return <div className="p-8 text-center text-gray-500 font-medium italic">Loading inquiry details...</div>;
 
     return (
-        <>
-          <div className="ml-1">
+        <div className="max-w-4xl mx-auto p-4">
+            <div className="mb-6">
                 <BreadcrumbWithCustomSeparator items={breadcrumbItems} />
-
             </div>
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
-                <h2 className="text-xl font-semibold mb-4">Update Inquiry</h2>
-                
-                <FormField
-                    control={form.control}
-                    name="companyName"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Company Name</FormLabel>
-                            <FormControl>
-                                <Input 
-                                    placeholder="Enter company name" 
-                                    {...field} 
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
 
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Full Name</FormLabel>
-                            <FormControl>
-                                <Input 
-                                    placeholder="Enter full name" 
-                                    {...field} 
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input 
-                                    type="email"
-                                    placeholder="Enter email" 
-                                    {...field} 
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="mobile"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Mobile Number</FormLabel>
-                            <FormControl>
-                                <Input 
-                                    type="tel"
-                                    placeholder="Enter 10-digit mobile" 
-                                    {...field} 
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Address</FormLabel>
-                            <FormControl>
-                                <Input 
-                                    placeholder="Enter address" 
-                                    {...field} 
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Status</FormLabel>
-                            <Select 
-                                onValueChange={field.onChange} 
-                                defaultValue={field.value}
-                            >
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select status" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {statusesData?.data?.map((statusItem) => (
-                                        <SelectItem key={statusItem._id} value={statusItem.status}>
-                                            {statusItem.status}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <div className="flex justify-end space-x-2 pt-4">
-                    <Button 
-                        type="submit" 
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Updating..." : "Update Inquiry"}
-                    </Button>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="bg-gray-50 border-b border-gray-100 p-6">
+                    <h2 className="text-2xl font-bold text-gray-900">Update Inquiry</h2>
+                    <p className="text-sm text-gray-500 mt-1">Modify the inquiry details below.</p>
                 </div>
-            </form>
-        </Form>
-        </>
+
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-700 font-bold">Full Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Enter full name" {...field} className="h-11 border-gray-300 focus:ring-[#304a8a]" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-700 font-bold">Email Address</FormLabel>
+                                        <FormControl>
+                                            <Input type="email" placeholder="Enter email" {...field} className="h-11 border-gray-300 focus:ring-[#304a8a]" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="organisation"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-700 font-bold">Organisation / Company</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Enter organisation name" {...field} className="h-11 border-gray-300 focus:ring-[#304a8a]" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="department"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-700 font-bold">Service (Department)</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Enter service/department" {...field} className="h-11 border-gray-300 focus:ring-[#304a8a]" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-700 font-bold">Phone Number</FormLabel>
+                                        <FormControl>
+                                            <Input type="tel" placeholder="Enter 10-digit phone" {...field} className="h-11 border-gray-300 focus:ring-[#304a8a]" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="status"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-700 font-bold">Inquiry Status</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="h-11 border-gray-300 focus:ring-[#304a8a]">
+                                                    <SelectValue placeholder="Select status" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {statusesData?.data?.map((statusItem) => (
+                                                    <SelectItem key={statusItem._id} value={statusItem.status}>
+                                                        {statusItem.status}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <FormField
+                            control={form.control}
+                            name="address"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-gray-700 font-bold">Address</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter address" {...field} className="h-11 border-gray-300 focus:ring-[#304a8a]" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
+                            <Button 
+                                type="button" 
+                                variant="outline" 
+                                className="h-11 px-8"
+                                onClick={() => navigate('/inquiry-list')}
+                            >
+                                Cancel
+                            </Button>
+                            <Button 
+                                type="submit" 
+                                disabled={isLoading}
+                                className="h-11 px-10 bg-[#304a8a] hover:bg-[#25396b] text-white font-bold"
+                            >
+                                {isLoading ? "Updating..." : "Save Changes"}
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            </div>
+        </div>
     );
 }

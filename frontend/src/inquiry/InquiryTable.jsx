@@ -16,7 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { ChevronDown, EllipsisVertical, MoreVertical, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, EllipsisVertical, MoreVertical, Plus } from "lucide-react";
 import FollowUpModal from "./FollowUpModel";
 import { useDeleteInquiryMutation, useDeleteMultipleInquiriesMutation } from "@/slice/inquiry/inquiry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -58,20 +58,25 @@ export default function InquiryList() {
     const [mobileFilter, setMobileFilter] = useState("");
     const [cityFilter, setCityFilter] = useState("");
     const [selectedInquiries, setSelectedInquiries] = useState([]);
+    const [expandedRowId, setExpandedRowId] = useState(null);
+
+    const toggleRowExpand = (id) => {
+        setExpandedRowId(prevId => prevId === id ? null : id);
+    };
 
     // Filtering function
     const filteredData = inquiryData.filter(item => {
         return (
             (companyNameFilter === "" ||
-                item.organisation.toLowerCase().includes(companyNameFilter.toLowerCase())) &&
+                (item.organisation || '').toLowerCase().includes(companyNameFilter.toLowerCase())) &&
             (statusFilter === null || item.status === statusFilter) &&
             (sourceFilter === null || item.source === sourceFilter) &&
             (nameFilter === null ||
-                `${item.firstName} ${item.lastName}`.toLowerCase().includes(nameFilter.toLowerCase())) &&
+                (item.name || '').toLowerCase().includes(nameFilter.toLowerCase())) &&
             (emailFilter === "" ||
-                item.email.toLowerCase().includes(emailFilter.toLowerCase())) &&
+                (item.email || '').toLowerCase().includes(emailFilter.toLowerCase())) &&
             (mobileFilter === "" ||
-                item.phone.toLowerCase().includes(mobileFilter.toLowerCase()))
+                (item.phone || '').toLowerCase().includes(mobileFilter.toLowerCase()))
         );
     });
     const handleDelete = async (inquiryId) => {
@@ -267,38 +272,83 @@ export default function InquiryList() {
                             <TableCell className="sticky left-0 bg-background">{item.createdAt.slice(0, 10)}</TableCell>
                             <TableCell>
                                 <div className="space-y-1">
-                                    <div className="font-medium">{item.firstName} {item.lastName},</div>
-                                    {item.organisation} ,
-                                    <div className="text-sm text-muted-foreground">
-                                        {item.email}
-                                    </div>
-                                    <div className="text-sm text-muted-foreground">
-
-                                        {item.phone} • {item.address}
-                                    </div>
+                                    <div className="font-normal text-gray-950 text-sm">{item.name}</div>
+                                    <div className="text-xs text-[#304a8a] font-medium">{item.email}</div>
+                                    {expandedRowId === item._id && (
+                                        <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4 space-y-2 text-sm shadow-sm scale-in-95 animate-in fade-in duration-200">
+                                            <div className="flex gap-3 border-b border-gray-100 pb-1.5">
+                                                <span className="font-bold text-gray-700 w-20 shrink-0 uppercase text-[10px] tracking-wider mt-0.5">Service</span>
+                                                <span className="text-gray-900 font-medium">{item.department || <span className="text-gray-400 italic font-normal">Not specified</span>}</span>
+                                            </div>
+                                            {item.phone && (
+                                                <div className="flex gap-3 border-b border-gray-100 pb-1.5">
+                                                    <span className="font-bold text-gray-700 w-20 shrink-0 uppercase text-[10px] tracking-wider mt-0.5">Phone</span>
+                                                    <span className="text-gray-900 font-medium">{item.phone}</span>
+                                                </div>
+                                            )}
+                                            {item.country && (
+                                                <div className="flex gap-3 border-b border-gray-100 pb-1.5">
+                                                    <span className="font-bold text-gray-700 w-20 shrink-0 uppercase text-[10px] tracking-wider mt-0.5">Country</span>
+                                                    <span className="text-gray-900 font-medium">{item.country}</span>
+                                                </div>
+                                            )}
+                                            {item.source && (
+                                                <div className="flex gap-3 border-b border-gray-100 pb-1.5">
+                                                    <span className="font-bold text-gray-700 w-20 shrink-0 uppercase text-[10px] tracking-wider mt-0.5">Source</span>
+                                                    <span className="text-gray-900 font-medium">{item.source}</span>
+                                                </div>
+                                            )}
+                                            {item.url && item.url !== 'Manual Entry' && (
+                                                <div className="flex gap-3">
+                                                    <span className="font-bold text-gray-700 w-20 shrink-0 uppercase text-[10px] tracking-wider mt-0.5">Page</span>
+                                                    <span className="text-gray-900 font-medium break-all">{item.url}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                    <button
+                                        onClick={() => toggleRowExpand(item._id)}
+                                        className="text-[#304a8a] text-xs font-bold hover:underline focus:outline-none flex items-center gap-1 mt-2"
+                                    >
+                                        {expandedRowId === item._id ? (
+                                            <><ChevronUp className="w-4 h-4" /> View Less</>
+                                        ) : (
+                                            <><ChevronDown className="w-4 h-4" /> View More</>
+                                        )}
+                                    </button>
                                 </div>
                             </TableCell>
                             <TableCell>
                                 {item.status ? (
-                                    <span className="text-xs font-medium px-2 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 italic">
+                                    <span className="text-xs font-bold px-2.5 py-1 rounded bg-indigo-50 text-[#304a8a] border border-indigo-100">
                                         {item.status}
                                     </span>
                                 ) : (
-                                    <span className="text-xs font-medium px-2 py-1 rounded bg-gray-50 text-gray-400 border border-gray-200 italic">
+                                    <span className="text-xs font-medium px-2.5 py-1 rounded bg-gray-50 text-gray-400 border border-gray-200 italic">
                                         Pending
                                     </span>
                                 )}
                             </TableCell>
                             <TableCell>
-                                {item.source ? item.source : <span className="text-gray-400 text-sm italic">Not set</span>}
+                                {item.source ? <span className="font-medium text-gray-800">{item.source}</span> : <span className="text-gray-400 text-sm italic">Not set</span>}
                             </TableCell>
                             <TableCell>
-                                <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">
+                                <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded text-gray-700 border border-gray-200">
                                     {formatUrl(item.url)}
                                 </span>
                             </TableCell>
                             {/* <TableCell>{item.email}</TableCell> */}
-                            <TableCell>{item.message}</TableCell>
+                            <TableCell>
+                                {item.message ? (
+                                    <div>
+                                        <p className={`text-sm text-gray-800 leading-relaxed ${expandedRowId === item._id ? '' : 'line-clamp-2'}`}>
+                                            {item.message}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <span className="text-gray-400 text-sm italic">No message</span>
+                                )}
+                            </TableCell>
                             <TableCell className="text-left">
                                 <FollowUpModal
                                     inquiry={item}
@@ -308,16 +358,21 @@ export default function InquiryList() {
                             <TableCell className="text-center">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <button variant="ghost" size="icon" className="h-8 w-8 p-0">
-                                            <EllipsisVertical className="h-4 w-4" />
+                                        <button className="h-9 w-9 p-0 hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors">
+                                            <EllipsisVertical className="h-5 w-5 text-gray-500" />
                                         </button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-[160px]">
+                                    <DropdownMenuContent align="end" className="w-[180px] p-1 shadow-xl">
                                         <Link to={`/edit-inquiry/${item._id}`}>
-                                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer font-medium py-2">
+                                                Edit Inquiry
+                                            </DropdownMenuItem>
                                         </Link>
-                                        <DropdownMenuItem onClick={() => handleDelete(item._id)}>
-                                            Delete
+                                        <DropdownMenuItem 
+                                            onClick={() => handleDelete(item._id)}
+                                            className="text-red-600 focus:text-red-700 cursor-pointer font-bold py-2"
+                                        >
+                                            Delete Inquiry
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
