@@ -277,33 +277,59 @@ export default function InquiryList() {
                                     
                                     {expandedRowId === item._id && (
                                         <div className="mt-3 bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2.5 text-sm shadow-inner scale-in-95 animate-in fade-in duration-200">
-                                            {/* All Inquiry Details */}
+                                            {/* Core Information */}
                                             <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Organisation</span>
-                                                <span className="text-gray-900 font-medium">{item.organisation || <span className="text-gray-400 italic font-normal">Not provided</span>}</span>
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Full Name</span>
+                                                <span className="text-gray-900 font-bold">{item.name}</span>
                                             </div>
                                             <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Service</span>
-                                                <span className="text-[#304a8a] font-bold">{item.service || item.department || <span className="text-gray-400 italic font-normal">Not specified</span>}</span>
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Email</span>
+                                                <span className="text-[#304a8a] font-medium">{item.email}</span>
                                             </div>
+
+                                            {/* Conditionally render fields only if they exist */}
+                                            {item.organisation && (
+                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Organisation</span>
+                                                    <span className="text-gray-900 font-medium">{item.organisation}</span>
+                                                </div>
+                                            )}
+                                            
+                                            {(item.service || item.department) && (
+                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Service</span>
+                                                    <span className="text-[#304a8a] font-bold">{item.service || item.department}</span>
+                                                </div>
+                                            )}
+
                                             {(item.firstName || item.lastName) && (
                                                 <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Sub-Names</span>
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Name Parts</span>
                                                     <span className="text-gray-900 font-medium">{item.firstName || ""} {item.lastName || ""}</span>
                                                 </div>
                                             )}
-                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Phone</span>
-                                                <span className="text-gray-900 font-medium">{item.phone || <span className="text-gray-400 italic font-normal">—</span>}</span>
-                                            </div>
-                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Country</span>
-                                                <span className="text-gray-900 font-medium">{item.country || <span className="text-gray-400 italic font-normal">—</span>}</span>
-                                            </div>
-                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Source</span>
-                                                <span className="text-gray-900 font-medium">{item.source || <span className="text-gray-400 italic font-normal">—</span>}</span>
-                                            </div>
+
+                                            {item.phone && (
+                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Phone</span>
+                                                    <span className="text-gray-900 font-medium">{item.phone}</span>
+                                                </div>
+                                            )}
+
+                                            {item.country && (
+                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Country</span>
+                                                    <span className="text-gray-900 font-medium">{item.country}</span>
+                                                </div>
+                                            )}
+
+                                            {item.source && (
+                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Source</span>
+                                                    <span className="text-gray-900 font-medium">{item.source}</span>
+                                                </div>
+                                            )}
+
                                             {item.url && item.url !== 'Manual Entry' && (
                                                 <div className="flex gap-3 border-b border-gray-200 pb-1.5">
                                                     <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Inquiry Page</span>
@@ -312,10 +338,22 @@ export default function InquiryList() {
                                                     </span>
                                                 </div>
                                             )}
-                                            <div className="flex gap-3">
-                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Address</span>
-                                                <span className="text-gray-900 font-medium whitespace-pre-wrap">{item.address || <span className="text-gray-400 italic font-normal">—</span>}</span>
-                                            </div>
+
+                                            {item.address && (
+                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Address</span>
+                                                    <span className="text-gray-900 font-medium whitespace-pre-wrap">{item.address}</span>
+                                                </div>
+                                            )}
+
+                                            {item.message && (
+                                                <div className="flex gap-3 pt-1">
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-1">Message</span>
+                                                    <div className="bg-white border border-gray-100 rounded-lg p-3 text-gray-800 text-xs w-full shadow-sm">
+                                                        {item.message}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                     <button
