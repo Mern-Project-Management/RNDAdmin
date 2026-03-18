@@ -298,7 +298,7 @@ export default function InquiryList() {
                                             {(item.service || item.department) && (
                                                 <div className="flex gap-3 border-b border-gray-200 pb-1.5">
                                                     <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Service</span>
-                                                    <span className="text-[#304a8a] font-bold">{item.service || item.department}</span>
+                                                    <span className="text-gray-900 font-medium lowercase">{item.service || item.department}</span>
                                                 </div>
                                             )}
 

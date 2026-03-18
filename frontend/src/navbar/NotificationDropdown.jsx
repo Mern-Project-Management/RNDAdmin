@@ -182,20 +182,20 @@ const NotificationsDropdown = ({
                                                         {/* Name + Email at top */}
                                                         <div className="flex flex-col mb-1 leading-tight">
                                                             <h4 className={`text-sm font-normal ${notification.isRead ? 'text-gray-600' : 'text-gray-950'}`}>{title}</h4>
-                                                            <div className="flex flex-wrap items-center gap-2 mt-1">
+                                                            <div className="flex flex-wrap items-center gap-1.5 mt-1">
                                                                 {notification.inquiryEmail && (
                                                                     <span className="text-[11px] text-[#304a8a] font-semibold">{notification.inquiryEmail}</span>
                                                                 )}
                                                                 
-                                                                {/* Service/Post Highlight */}
+                                                                {/* Service/Post Highlight - Minimalist Style */}
                                                                 {notification.type === 'inquiry' && (notification.sourceData?.service || notification.sourceData?.department) && (
-                                                                    <span className="bg-blue-50 text-[#304a8a] text-[10px] font-bold px-1.5 py-0.5 rounded border border-blue-100 uppercase tracking-tight">
-                                                                        {notification.sourceData?.service || notification.sourceData?.department}
+                                                                    <span className="text-[10px] text-gray-400 font-medium lowercase">
+                                                                        • {notification.sourceData?.service || notification.sourceData?.department}
                                                                     </span>
                                                                 )}
                                                                 {notification.type === 'career' && (notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor) && (
-                                                                    <span className="bg-purple-50 text-purple-700 text-[10px] font-bold px-1.5 py-0.5 rounded border border-purple-100 uppercase tracking-tight">
-                                                                        {notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor}
+                                                                    <span className="text-[10px] text-gray-400 font-medium lowercase">
+                                                                        • {notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor}
                                                                     </span>
                                                                 )}
                                                             </div>
