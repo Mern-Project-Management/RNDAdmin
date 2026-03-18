@@ -271,67 +271,61 @@ export default function InquiryList() {
                             </TableCell>
                             <TableCell className="sticky left-0 bg-background">{item.createdAt.slice(0, 10)}</TableCell>
                             <TableCell>
-                                <div className="space-y-1 py-2">
-                                    <div className="font-bold text-gray-900 text-base">{item.name}</div>
-                                    <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
-                                        <span className="text-[#304a8a] font-bold text-xs uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
-                                            {item.service || item.department || "No Service"}
-                                        </span>
-                                        {item.organisation && (
-                                            <span className="text-gray-600 text-xs font-medium border-l border-gray-300 pl-3">
-                                                {item.organisation}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="flex flex-col text-xs text-gray-500 pt-1">
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="font-semibold text-gray-400">E:</span> {item.email}
-                                        </span>
-                                        {item.phone && (
-                                            <span className="flex items-center gap-1.5">
-                                                <span className="font-semibold text-gray-400">P:</span> {item.phone}
-                                            </span>
-                                        )}
-                                    </div>
+                                <div className="space-y-1">
+                                    <div className="font-medium text-gray-900 text-sm">{item.name}</div>
+                                    <div className="text-xs text-[#304a8a] font-medium">{item.email}</div>
                                     
                                     {expandedRowId === item._id && (
-                                        <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2.5 text-sm shadow-inner scale-in-95 animate-in fade-in duration-200">
-                                            {item.country && (
+                                        <div className="mt-3 bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2.5 text-sm shadow-inner scale-in-95 animate-in fade-in duration-200">
+                                            {/* All Inquiry Details */}
+                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Organisation</span>
+                                                <span className="text-gray-900 font-medium">{item.organisation || <span className="text-gray-400 italic font-normal">Not provided</span>}</span>
+                                            </div>
+                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Service</span>
+                                                <span className="text-[#304a8a] font-bold">{item.service || item.department || <span className="text-gray-400 italic font-normal">Not specified</span>}</span>
+                                            </div>
+                                            {(item.firstName || item.lastName) && (
                                                 <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Country</span>
-                                                    <span className="text-gray-900 font-medium">{item.country}</span>
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Sub-Names</span>
+                                                    <span className="text-gray-900 font-medium">{item.firstName || ""} {item.lastName || ""}</span>
                                                 </div>
                                             )}
-                                            {item.source && (
-                                                <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Source</span>
-                                                    <span className="text-gray-900 font-medium">{item.source}</span>
-                                                </div>
-                                            )}
+                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Phone</span>
+                                                <span className="text-gray-900 font-medium">{item.phone || <span className="text-gray-400 italic font-normal">—</span>}</span>
+                                            </div>
+                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Country</span>
+                                                <span className="text-gray-900 font-medium">{item.country || <span className="text-gray-400 italic font-normal">—</span>}</span>
+                                            </div>
+                                            <div className="flex gap-3 border-b border-gray-200 pb-1.5">
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Source</span>
+                                                <span className="text-gray-900 font-medium">{item.source || <span className="text-gray-400 italic font-normal">—</span>}</span>
+                                            </div>
                                             {item.url && item.url !== 'Manual Entry' && (
                                                 <div className="flex gap-3 border-b border-gray-200 pb-1.5">
-                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Full URL</span>
-                                                    <span className="text-[#304a8a] font-medium break-all hover:underline cursor-pointer" onClick={() => window.open(item.url, '_blank')}>
+                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Inquiry Page</span>
+                                                    <span className="text-blue-600 font-medium break-all hover:underline cursor-pointer" onClick={() => window.open(item.url, '_blank')}>
                                                         {item.url}
                                                     </span>
                                                 </div>
                                             )}
-                                            {item.address && (
-                                                <div className="flex gap-3">
-                                                    <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Address</span>
-                                                    <span className="text-gray-900 font-medium">{item.address}</span>
-                                                </div>
-                                            )}
+                                            <div className="flex gap-3">
+                                                <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Address</span>
+                                                <span className="text-gray-900 font-medium whitespace-pre-wrap">{item.address || <span className="text-gray-400 italic font-normal">—</span>}</span>
+                                            </div>
                                         </div>
                                     )}
                                     <button
                                         onClick={() => toggleRowExpand(item._id)}
-                                        className="text-[#304a8a] text-[11px] font-bold hover:text-blue-800 focus:outline-none flex items-center gap-1 mt-2 tracking-wide uppercase"
+                                        className="text-[#304a8a] text-xs font-bold hover:underline focus:outline-none flex items-center gap-1 mt-2"
                                     >
                                         {expandedRowId === item._id ? (
-                                            <><ChevronUp className="w-3.5 h-3.5" /> Show Less</>
+                                            <><ChevronUp className="w-4 h-4" /> View Less</>
                                         ) : (
-                                            <><ChevronDown className="w-3.5 h-3.5" /> Detailed View</>
+                                            <><ChevronDown className="w-4 h-4" /> View Detailed Info</>
                                         )}
                                     </button>
                                 </div>
