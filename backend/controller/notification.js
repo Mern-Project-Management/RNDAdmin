@@ -14,7 +14,8 @@ const getTodayNotifications = async (req, res) => {
       createdAt: {
         $gte: startOfDay,
         $lt: endOfDay,
-      }
+      },
+      isNotificationDismissed: { $ne: true }
     };
 
     // 1. Fetch Follow-Ups
@@ -108,28 +109,28 @@ const markAsRead = async (req, res) => {
 
 const deleteNotification = async (req, res) => {
   try {
-    const { id, type } = req.body; // Changed from query to body to handle both id and type cleanly uniformly
+    const { id, type } = req.body; 
 
-    let deleted;
+    let updated;
     switch (type) {
       case 'followup':
-        deleted = await Message.findByIdAndDelete(id);
+        updated = await Message.findByIdAndUpdate(id, { isNotificationDismissed: true }, { new: true });
         break;
       case 'inquiry':
-        deleted = await Inquiry.findByIdAndDelete(id);
+        updated = await Inquiry.findByIdAndUpdate(id, { isNotificationDismissed: true }, { new: true });
         break;
       case 'career':
-        deleted = await Career.findByIdAndDelete(id);
+        updated = await Career.findByIdAndUpdate(id, { isNotificationDismissed: true }, { new: true });
         break;
       default:
         return res.status(400).json({ success: false, message: 'Invalid notification type' });
     }
 
-    if (!deleted) {
+    if (!updated) {
       return res.status(404).json({ success: false, message: 'Notification source not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Deleted successfully' });
+    res.status(200).json({ success: true, message: 'Dismissed from notifications' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

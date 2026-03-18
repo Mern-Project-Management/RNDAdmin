@@ -24,6 +24,7 @@ const messageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isNotificationDismissed: { type: Boolean, default: false },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

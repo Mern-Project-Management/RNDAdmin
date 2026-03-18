@@ -71,7 +71,8 @@ const CareerApplicationSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'reviewing', 'shortlisted', 'rejected', 'accepted'],
       default: 'pending'
-    }
+    },
+    isNotificationDismissed: { type: Boolean, default: false }
   },
   { 
     timestamps: true,

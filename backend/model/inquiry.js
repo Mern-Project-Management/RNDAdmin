@@ -16,7 +16,8 @@ const contactSchema = new mongoose.Schema({
     message: { type: String, },
     status: { type: String, default: 'New Inquiry' },
     source: { type: String, default: '' },
-    isRead: { type: Boolean, default: false }
+    isRead: { type: Boolean, default: false },
+    isNotificationDismissed: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('inquiry', contactSchema);
