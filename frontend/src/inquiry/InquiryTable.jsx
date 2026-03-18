@@ -55,6 +55,7 @@ export default function InquiryList() {
     const [sourceFilter, setSourceFilter] = useState(null);
     const [nameFilter, setNameFilter] = useState(null);
     const [emailFilter, setEmailFilter] = useState("");
+    const [activeTab, setActiveTab] = useState("Active"); // Filter inquiries by Active/Inactive status
     const [mobileFilter, setMobileFilter] = useState("");
     const [cityFilter, setCityFilter] = useState("");
     const [selectedInquiries, setSelectedInquiries] = useState([]);
@@ -66,7 +67,15 @@ export default function InquiryList() {
 
     // Filtering function
     const filteredData = inquiryData.filter(item => {
+        // Define active vs inactive status lists
+        const inactiveStatuses = ["Completed", "Rejected"];
+        
+        // If it's in inactiveStatuses, it's inactive; otherwise (including Pending/New/etc.) it's active
+        const itemIsInactive = inactiveStatuses.includes(item.status);
+        const matchesActiveTab = activeTab === "Active" ? !itemIsInactive : itemIsInactive;
+
         return (
+            matchesActiveTab &&
             (companyNameFilter === "" ||
                 (item.organisation || '').toLowerCase().includes(companyNameFilter.toLowerCase())) &&
             (statusFilter === null || item.status === statusFilter) &&
@@ -177,15 +186,39 @@ export default function InquiryList() {
                 </div>
             )}
 
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Inquiry List</h1>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <div>
+                    <h1 className="text-xl font-bold text-gray-900 mb-4 md:mb-0">Inquiry List</h1>
+                    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg mt-4 w-fit">
+                        <button 
+                            onClick={() => setActiveTab("Active")}
+                            className={`px-6 py-2 rounded-md text-sm font-bold transition-all ${
+                                activeTab === "Active" 
+                                ? "bg-white text-[#304a8a] shadow-sm" 
+                                : "text-gray-500 hover:text-gray-700"
+                            }`}
+                        >
+                            Active
+                        </button>
+                        <button 
+                            onClick={() => setActiveTab("Inactive")}
+                            className={`px-6 py-2 rounded-md text-sm font-bold transition-all ${
+                                activeTab === "Inactive" 
+                                ? "bg-white text-red-600 shadow-sm" 
+                                : "text-gray-500 hover:text-gray-700"
+                            }`}
+                        >
+                            Inactive
+                        </button>
+                    </div>
+                </div>
+                
                 <Link to='/add-inquiry'>
-                    <Button className="gap-2">
-                        <Plus className="h-4 w-4" />
+                    <Button className="gap-2 px-6">
+                        <Plus className="h-5 w-5" />
                         Add Inquiry
                     </Button>
                 </Link>
-
             </div>
 
             <Table className="border">
@@ -199,8 +232,7 @@ export default function InquiryList() {
                         </TableHead>
                         <TableHead className="lg:w-[100px] w-[50px] sticky left-0 bg-background z-50">Date</TableHead>
                         <TableHead className="text-left">Info</TableHead>
-                        <TableHead className="text-left">Status</TableHead>
-                        <TableHead className="text-left">Source</TableHead>
+                        {/* Hidden Headers for Status/Source */}
                         <TableHead className="text-left">Page</TableHead>
                         {/* <TableHead className="text-left">Email</TableHead> */}
                         <TableHead className="text-left">Message</TableHead>
@@ -218,42 +250,8 @@ export default function InquiryList() {
                                 onChange={(e) => setNameFilter(e.target.value)}
                             />
                         </TableHead>
-                        <TableHead>
-                            <Select
-                                value={statusFilter || "reset"}
-                                onValueChange={(value) => setStatusFilter(value === "reset" ? null : value)}
-                            >
-                                <SelectTrigger className="w-[130px]">
-                                    <SelectValue placeholder="Status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="reset">All Statuses</SelectItem>
-                                    {statuses?.data?.map((status) => (
-                                        <SelectItem key={status._id} value={status.status}>
-                                            {status.status}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-                        <TableHead>
-                            <Select
-                                value={sourceFilter || "reset"}
-                                onValueChange={(value) => setSourceFilter(value === "reset" ? null : value)}
-                            >
-                                <SelectTrigger className="w-[130px]">
-                                    <SelectValue placeholder="Source" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="reset">All Sources</SelectItem>
-                                    {sources?.data?.map((source) => (
-                                        <SelectItem key={source._id} value={source.source}>
-                                            {source.source}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
+                        <TableHead></TableHead>
+                        {/* Hidden Filters for Status/Source */}
                         <TableHead></TableHead>
                         <TableHead></TableHead>
                         <TableHead></TableHead>
@@ -368,20 +366,7 @@ export default function InquiryList() {
                                     </button>
                                 </div>
                             </TableCell>
-                            <TableCell>
-                                {item.status ? (
-                                    <span className="text-xs font-bold px-2.5 py-1 rounded bg-indigo-50 text-[#304a8a] border border-indigo-100">
-                                        {item.status}
-                                    </span>
-                                ) : (
-                                    <span className="text-xs font-medium px-2.5 py-1 rounded bg-gray-50 text-gray-400 border border-gray-200 italic">
-                                        Pending
-                                    </span>
-                                )}
-                            </TableCell>
-                            <TableCell>
-                                {item.source ? <span className="font-medium text-gray-800">{item.source}</span> : <span className="text-gray-400 text-sm italic">Not set</span>}
-                            </TableCell>
+                            {/* Hidden Status and Source Cells */}
                             <TableCell>
                                 <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded text-gray-700 border border-gray-200">
                                     {formatUrl(item.url)}
