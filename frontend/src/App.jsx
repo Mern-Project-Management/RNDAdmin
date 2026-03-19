@@ -194,10 +194,6 @@ const AppContent = () => {
 
   // Helper to check if current path is an admin/dashboard route
   const isAdminPath = (pathname) => {
-    // Check for logged-in admin via cookie
-    const token = Cookies.get('jwt');
-    if (token) return true;
-
     const adminFragments = [
       '/login', '/dashboard', '/chemical', '/service', '/portfolio', '/smtp',
       '/email', '/inquiry', '/source', '/status', '/faq', '/blog',
