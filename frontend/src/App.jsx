@@ -194,6 +194,10 @@ const AppContent = () => {
 
   // Helper to check if current path is an admin/dashboard route
   const isAdminPath = (pathname) => {
+    // Check for logged-in admin via cookie
+    const token = Cookies.get('jwt');
+    if (token) return true;
+
     const adminFragments = [
       '/login', '/dashboard', '/chemical', '/service', '/portfolio', '/smtp',
       '/email', '/inquiry', '/source', '/status', '/faq', '/blog',
@@ -203,8 +207,9 @@ const AppContent = () => {
       '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
       '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
       '/policy', '/counter', '/text-slider', '/staff', '/list', '/table',
-      '/form', '/add-', '/edit-', '/admin'
+      '/form', '/add-', '/edit-', '/admin', '/logo-table', '/worldwide-table'
     ];
+    
     return adminFragments.some(fragment =>
       pathname.toLowerCase().startsWith(fragment.toLowerCase()) ||
       pathname.toLowerCase().includes(fragment.toLowerCase())
@@ -212,35 +217,52 @@ const AppContent = () => {
   };
 
   React.useEffect(() => {
-    // We only want to track public website views
+    // We only want to track public website views (un-authenticated users on non-admin paths)
     if (!location.pathname.startsWith('/api') && !isAdminPath(location.pathname)) {
-      trackEvent('page_view', { page: location.pathname });
+      const currentSlug = location.pathname === '/' ? 'Home' : location.pathname.split('/').filter(Boolean).pop() || 'Home';
+      trackEvent('page_view', { 
+        page: location.pathname,
+        buttonName: `[${currentSlug}] Page View`
+      });
     }
   }, [location.pathname, trackEvent]);
 
   React.useEffect(() => {
     const handleGlobalClick = (e) => {
-      // Don't track clicks on admin dashboard
+      // Don't track clicks if we're on an admin path or user is logged in
       if (isAdminPath(location.pathname)) return;
 
       // Find the closest clickable element (button, link, etc)
       const clickableElement = e.target.closest('button, a, [role="button"], input[type="submit"]');
 
       if (clickableElement) {
-        let buttonName = clickableElement.innerText || clickableElement.getAttribute('aria-label') || clickableElement.value;
+        let buttonName = clickableElement.innerText || clickableElement.getAttribute('aria-label') || clickableElement.getAttribute('title') || clickableElement.value;
+
+        // If it's a link with no text, use the href
+        if (!buttonName && clickableElement.tagName === 'A') {
+          buttonName = clickableElement.getAttribute('href');
+        }
 
         // Clean up the text
         if (typeof buttonName === 'string') {
-          buttonName = buttonName.trim().substring(0, 50); // limit length
+          buttonName = buttonName.trim().replace(/\n/g, ' ').substring(0, 60); // limit length
         } else {
-          buttonName = 'Icon/Image Button';
+          buttonName = 'Interactive Element';
         }
 
-        // Only track if it has some identifying text or attributes
+        // Only track if it has some identifying info
         if (buttonName) {
+          // Get a clean slug for the current page
+          const currentSlug = location.pathname === '/' ? 'Home' : location.pathname.split('/').filter(Boolean).pop() || 'Home';
+
           trackEvent('click', {
-            buttonName: buttonName,
-            page: location.pathname
+            buttonName: `[${currentSlug}] ${buttonName}`,
+            page: location.pathname,
+            metadata: {
+              pageSlug: currentSlug,
+              elementTag: clickableElement.tagName,
+              elementId: clickableElement.id || null
+            }
           });
         }
       }

@@ -4,8 +4,14 @@ import { useState } from "react"
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Trash2, X, AlertTriangle } from "lucide-react"
 import axios from "axios"
 
-export default function EventTable({ data: initialData }) {
-  const [data, setData] = useState(initialData)
+export default function EventTable({ data: initialRawData }) {
+  // Filter out rows where page/slug is missing or not meaningful as per user request
+  const filteredInitialData = (initialRawData || []).filter(item => {
+    // Hide if page is missing or empty
+    return item.page && item.page !== "" && item.page !== "undefined" && item.page !== "null";
+  });
+
+  const [data, setData] = useState(filteredInitialData)
   const [sortConfig, setSortConfig] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [deletingId, setDeletingId] = useState(null)
@@ -24,6 +30,7 @@ export default function EventTable({ data: initialData }) {
     return 0
   })
 
+  // Recalculate based on filtered data
   const totalPages = Math.ceil(sortedData.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage)
@@ -90,6 +97,12 @@ export default function EventTable({ data: initialData }) {
       <ChevronDown className="w-4 h-4" />
   }
 
+  const getSlug = (url) => {
+    if (!url || url === "/" || url === "") return "Home"
+    const parts = url.split("/").filter(Boolean)
+    return parts[parts.length - 1] || "Home"
+  }
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("en-US", {
       year: "numeric",
@@ -143,7 +156,16 @@ export default function EventTable({ data: initialData }) {
                   onClick={() => handleSort("page")}
                   className="flex items-center gap-2 font-semibold text-gray-700 hover:text-indigo-600 transition-colors"
                 >
-                  Page
+                  Slug
+                  <SortIcon column="page" />
+                </button>
+              </th>
+              <th className="px-6 py-4 text-left">
+                <button
+                  onClick={() => handleSort("page")}
+                  className="flex items-center gap-2 font-semibold text-gray-700 hover:text-indigo-600 transition-colors"
+                >
+                  Path
                   <SortIcon column="page" />
                 </button>
               </th>
@@ -180,6 +202,9 @@ export default function EventTable({ data: initialData }) {
               >
                 <td className="px-6 py-4 text-sm text-gray-700 font-medium">
                   {formatDate(event.timestamp)}
+                </td>
+                <td className="px-6 py-4 text-sm font-bold text-gray-900">
+                  {getSlug(event.page)}
                 </td>
                 <td className="px-6 py-4 text-sm">
                   <a
