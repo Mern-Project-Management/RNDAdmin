@@ -24,6 +24,7 @@ const menuData = [
       { title: "ServiceSec2 Table", icon: PlusSquare, url: "/serviceSec2-table" },
 
       { title: "ServiceSec3 Table", icon: PlusSquare, url: "/serviceSec3-table" },
+      { title: "Our Service Banner", icon: Image, url: "/our-service-banner" },
       { title: "Why Choose Us", icon: PlusSquare, url: "/whyChooseUs-table" },
       { title: "Category", icon: GanttChart, url: "/service-category" },
       { title: "Testimonials", icon: FileText, url: "/testimonials" }

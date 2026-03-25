@@ -160,6 +160,7 @@ import ServiceSec1Table from './websiteBackend/Service/serviceSec1/ServiceSec1Ta
 import ServiceSec2Form from './websiteBackend/Service/serviceSec2/ServiceSec2Form';
 import ServiceSec2Table from './websiteBackend/Service/serviceSec2/ServiceSec2Table';
 import ServiceSec3Table from './websiteBackend/Service/serviceSec3/ServiceSec3Table';
+import OurServiceBanner from './websiteBackend/Service/OurServiceBanner';
 import ServiceSec3Form from './websiteBackend/Service/serviceSec3/ServiceSec3Form';
 import CreateTestimonials from './websiteBackend/testimonial/CreateTestimonials';
 import TestimonialsTable from './websiteBackend/testimonial/TestimonialTable';
@@ -473,6 +474,9 @@ function App() {
             { path: 'serviceSec3-table', element: <Suspense fallback={<LoadingFallback />}><ServiceSec3Table /></Suspense> },
             { path: 'service-sec3-form', element: <Suspense fallback={<LoadingFallback />}><ServiceSec3Form /></Suspense> },
             { path: 'service-sec3-form/:id', element: <Suspense fallback={<LoadingFallback />}><ServiceSec3Form /></Suspense> },
+
+            // Our Service Banner (Page Heading)
+            { path: 'our-service-banner', element: <Suspense fallback={<LoadingFallback />}><OurServiceBanner /></Suspense> },
 
             // Why Choose Us Management Routes
             { path: 'whyChooseUs-table', element: <Suspense fallback={<LoadingFallback />}><WhyChooseUsCRUD /></Suspense> },
