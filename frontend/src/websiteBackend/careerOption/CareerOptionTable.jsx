@@ -288,14 +288,14 @@ const CareerOptionTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
         >
           Save
         </button>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold  text-gray-700 font-serif uppercase">Career Options</h1>
-        <button className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300 font-serif">
+        <button className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif">
           <Link to="/career/add"><Plus size={15} /></Link>
         </button>
       </div>
@@ -319,7 +319,7 @@ const CareerOptionTable = () => {
               ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
               : <>
                 <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-                  <thead className="bg-slate-700 hover:bg-slate-800 text-white">
+                  <thead className="bg-[#ffc108] text-[#1a1a1a] hover:bg-slate-800 text-white">
                     {headerGroups.map((headerGroup) => (
                       <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
@@ -391,7 +391,7 @@ const CareerOptionTable = () => {
                         onClick={() => gotoPage(pg)}
                         className={`px-3 py-1 text-sm border rounded ${
                           pageIndex === pg
-                            ? 'bg-slate-700 text-white border-slate-700'
+                            ? 'bg-[#ffc108] text-[#1a1a1a] border-slate-700'
                             : 'hover:bg-gray-100'
                         }`}
                       >
@@ -467,7 +467,7 @@ const CareerOptionTable = () => {
           )}
           <button
             onClick={closeModal}
-            className="mt-4 px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300"
+            className="mt-4 px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300"
           >
             Close
           </button>

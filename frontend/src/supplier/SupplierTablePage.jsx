@@ -47,7 +47,7 @@ export default function SuppliersDashboard() {
        <BreadcrumbWithCustomSeparator items={breadcrumbItems} />
           
       <div className="flex justify-between mt-4 items-center mb-6">
-        <h1 className="text-2xl font-medium text-[#304a8a] ">Suppliers</h1>
+        <h1 className="text-2xl font-medium text-[#ffc108] ">Suppliers</h1>
         <Link to="/supplier-form">
         <Button>
           <Plus className="w-4 h-4 mr-2" />

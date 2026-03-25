@@ -82,7 +82,7 @@ const CustomerTable = () => {
         </div>
     <div className="space-y-4 mt-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-medium text-[#304a8a]">Customers</h2>
+        <h2 className="text-xl font-medium text-[#ffc108]">Customers</h2>
         <Link to="/customer-form">
           <Button>
             <Plus className="mr-2 h-4 w-4 " /> 
@@ -90,7 +90,7 @@ const CustomerTable = () => {
           </Button>
         </Link>
       </div>
-      <hr className="border-[#304a8a] border my-4" />
+      <hr className="border-[#ffc108] border my-4" />
 
       <div className="rounded-md border">
   <Table>

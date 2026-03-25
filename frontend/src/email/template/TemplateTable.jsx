@@ -80,7 +80,7 @@ const TemplateTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">Email Templates</h1>
         <Link to="/add-template">
-          <Button className="bg-[#304a8a] text-white hover:bg-purple-700" variant="primary">
+          <Button className="bg-[#ffc108]-[#1a1a1a] hover:bg-purple-700" variant="primary">
             Add Template
           </Button>
         </Link>
@@ -116,7 +116,7 @@ const TemplateTable = () => {
                   {template.body && template.body.length > 100 && (
                     <Button
                       variant="link"
-                      className="text-[#304a8a] p-0 h-auto font-medium"
+                      className="text-[#ffc108] p-0 h-auto font-medium"
                       onClick={() => toggleRowExpansion(template._id)}
                     >
                       {expandedRows[template._id] ? 'Show Less' : 'Read More'}

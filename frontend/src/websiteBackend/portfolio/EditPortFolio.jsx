@@ -602,7 +602,7 @@ const EditPortfolio = () => {
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className={`bg-[#304a8a] text-white py-2 px-4 rounded hover:bg-[#25396b] transition duration-200 ${
+        className={`bg-[#ffc108]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6ac07] transition duration-200 ${
           isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >

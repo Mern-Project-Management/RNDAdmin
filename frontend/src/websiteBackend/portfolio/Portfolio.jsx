@@ -82,7 +82,7 @@ const PortfolioTable = () => {
           return (
             <div className="flex gap-4 items-center">
               <button
-                className={`transition-colors duration-200 ${isExpanded ? 'text-[#304a8a]' : 'text-gray-400 hover:text-gray-600'}`} 
+                className={`transition-colors duration-200 ${isExpanded ? 'text-[#ffc108]' : 'text-gray-400 hover:text-gray-600'}`} 
                 onClick={() => toggleRowExpansion(row.original._id)}
                 title={isExpanded ? "Hide Details" : "View Details"}
               >
@@ -223,7 +223,7 @@ const PortfolioTable = () => {
                 setHeading(e.target.value);
                 setErrors(prev => ({ ...prev, heading: validateHeading(e.target.value) }));
               }}
-              className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#304a8a] focus:border-transparent transition-all duration-200 ${errors.heading ? 'border-red-500 bg-red-50/30' : 'border-gray-200'}`}
+              className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc108] focus:border-transparent transition-all duration-200 ${errors.heading ? 'border-red-500 bg-red-50/30' : 'border-gray-200'}`}
             />
             {errors.heading && <p className="text-red-500 text-xs mt-1 animate-pulse">{errors.heading}</p>}
           </div>
@@ -238,14 +238,14 @@ const PortfolioTable = () => {
                 setSubheading(e.target.value);
                 setErrors(prev => ({ ...prev, subheading: validateSubheading(e.target.value) }));
               }}
-              className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#304a8a] focus:border-transparent transition-all duration-200 ${errors.subheading ? 'border-red-500 bg-red-50/30' : 'border-gray-200'}`}
+              className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc108] focus:border-transparent transition-all duration-200 ${errors.subheading ? 'border-red-500 bg-red-50/30' : 'border-gray-200'}`}
             />
             {errors.subheading && <p className="text-red-500 text-xs mt-1 animate-pulse">{errors.subheading}</p>}
           </div>
         </div>
         <button
           onClick={saveHeadings}
-          className="px-6 py-2.5 bg-[#304a8a] text-white rounded-lg hover:bg-[#25396b] transition duration-300 shadow-sm font-medium"
+          className="px-6 py-2.5 bg-[#ffc108]-[#1a1a1a] rounded-lg hover:bg-[#e6ac07] transition duration-300 shadow-sm font-medium"
         >
           Update Headings
         </button>
@@ -264,12 +264,12 @@ const PortfolioTable = () => {
               placeholder="Search by title..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#304a8a] focus:border-transparent transition-all duration-200 text-sm"
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc108] focus:border-transparent transition-all duration-200 text-sm"
             />
           </div>
           <Link 
             to="/portfolio-form"
-            className="flex items-center gap-2 px-5 py-2 bg-[#304a8a] text-white rounded-lg hover:bg-[#25396b] transition-all duration-300 shadow-sm font-medium text-sm whitespace-nowrap"
+            className="flex items-center gap-2 px-5 py-2 bg-[#ffc108]-[#1a1a1a] rounded-lg hover:bg-[#e6ac07] transition-all duration-300 shadow-sm font-medium text-sm whitespace-nowrap"
           >
             <FaPlus size={12} /> Add Portfolio
           </Link>
@@ -310,7 +310,7 @@ const PortfolioTable = () => {
                                 {column.isSorted ? (
                                   column.isSortedDesc ? <FaArrowDown size={10} /> : <FaArrowUp size={10} />
                                 ) : (
-                                  <FaArrowDown size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                  <FaArrowDown size={10} className="transition-opacity" />
                                 )}
                               </span>
                             )}
@@ -367,7 +367,7 @@ const PortfolioTable = () => {
                                 {/* Portfolio Content Section */}
                                 <div className="flex-1 min-w-0">
                                   <div className="mb-4">
-                                    <p className="text-[#304a8a] font-bold text-[10px] uppercase tracking-wider mb-1">{row.original.categoryName}</p>
+                                    <p className="text-[#ffc108] font-bold text-[10px] uppercase tracking-wider mb-1">{row.original.categoryName}</p>
                                     <h4 className="text-xl font-bold text-gray-900 leading-tight mb-1">{row.original.title}</h4>
                                     {row.original.link && (
                                       <a 
@@ -412,34 +412,34 @@ const PortfolioTable = () => {
               <button 
                 onClick={() => setPageIndex(0)} 
                 disabled={pageIndex === 0} 
-                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#304a8a]"
+                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#ffc108]"
               >
                 {"<<"}
               </button>
               <button 
                 onClick={() => setPageIndex(pageIndex - 1)} 
                 disabled={pageIndex === 0} 
-                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#304a8a]"
+                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#ffc108]"
               >
                 {"<"}
               </button>
               <button 
                 onClick={() => setPageIndex(pageIndex + 1)} 
                 disabled={pageIndex + 1 >= pageCount} 
-                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#304a8a]"
+                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#ffc108]"
               >
                 {">"}
               </button>
               <button 
                 onClick={() => setPageIndex(pageCount - 1)} 
                 disabled={pageIndex + 1 >= pageCount} 
-                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#304a8a]"
+                className="p-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition hover:text-[#ffc108]"
               >
                 {">>"}
               </button>
             </div>
             <div className="font-serif tracking-normal text-slate-400 capitalize whitespace-nowrap">
-              Page <span className="text-[#304a8a] text-sm">{pageIndex + 1}</span> of <span className="text-slate-800 text-sm">{pageCount}</span>
+              Page <span className="text-[#ffc108] text-sm">{pageIndex + 1}</span> of <span className="text-slate-800 text-sm">{pageCount}</span>
             </div>
           </div>
         )}

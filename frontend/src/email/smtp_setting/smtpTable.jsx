@@ -30,7 +30,7 @@ const SMTPTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">SMTP Settings</h1>
         <Link to="/add-smtp">
-          <Button className="bg-[#304a8a] text-white hover:bg-purple-700" variant="primary">Add SMTP</Button>
+          <Button className="bg-[#ffc108]-[#1a1a1a] hover:bg-purple-700" variant="primary">Add SMTP</Button>
         </Link>
       </div>
       <hr className='mb-5' />

@@ -40,7 +40,7 @@ export default function CallbackForm() {
         title: 'Request Received!',
         text: 'We will call you back shortly.',
         icon: 'success',
-        confirmButtonColor: '#304a8a',
+        confirmButtonColor: '#ffc108',
         timer: 3000
       })
       
@@ -55,10 +55,10 @@ export default function CallbackForm() {
 
   const InputField = ({ label, name, icon: Icon, type = "text", required = false, placeholder }) => (
     <div className="mb-6 group">
-      <label className="block text-gray-800 text-sm font-semibold mb-1 group-focus-within:text-[#304a8a] transition-colors">
+      <label className="block text-gray-800 text-sm font-semibold mb-1 group-focus-within:text-[#ffc108] transition-colors">
         {label}{required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <div className="relative border-b border-gray-200 group-focus-within:border-[#304a8a] transition-colors duration-300">
+      <div className="relative border-b border-gray-200 group-focus-within:border-[#ffc108] transition-colors duration-300">
         <input
           required={required}
           name={name}
@@ -66,7 +66,7 @@ export default function CallbackForm() {
           placeholder={placeholder}
           className="w-full py-2 bg-transparent outline-none text-sm text-gray-700 placeholder:text-gray-300 transition-all pl-0 pr-8"
         />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#304a8a] transition-colors">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#ffc108] transition-colors">
           <Icon size={16} strokeWidth={1.5} />
         </div>
       </div>
@@ -111,17 +111,17 @@ export default function CallbackForm() {
         />
 
         <div className="mb-6 group">
-          <label className="block text-gray-800 text-sm font-semibold mb-1 group-focus-within:text-[#304a8a]">
+          <label className="block text-gray-800 text-sm font-semibold mb-1 group-focus-within:text-[#ffc108]">
             Message/Service
           </label>
-          <div className="relative border-b border-gray-200 group-focus-within:border-[#304a8a] transition-colors duration-300">
+          <div className="relative border-b border-gray-200 group-focus-within:border-[#ffc108] transition-colors duration-300">
             <textarea
               name="message"
               rows={2}
               placeholder="How can we help?"
               className="w-full py-2 bg-transparent outline-none text-sm text-gray-700 placeholder:text-gray-300 resize-none pr-8"
             />
-            <div className="absolute right-0 top-3 text-gray-400 group-focus-within:text-[#304a8a] transition-colors">
+            <div className="absolute right-0 top-3 text-gray-400 group-focus-within:text-[#ffc108] transition-colors">
               <MessageSquare size={16} strokeWidth={1.5} />
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function CallbackForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full group flex items-center justify-between bg-gray-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-[#304a8a] transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
+          className="w-full group flex items-center justify-between bg-gray-900 text-[#1a1a1a]-[#ffc108] transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
         >
           {loading ? 'Sending...' : 'Request Now'}
           <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

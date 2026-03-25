@@ -162,7 +162,7 @@ const SupplierForm = ({ onClose, fetchChemicals, chemicalId }) => {
             onChange={handleChange}
             accept="image/*"
           />
-          <Button type="submit" className="bg-[#304a8a] hover:bg-purple-700">
+          <Button type="submit" className="bg-[#ffc108] hover:bg-purple-700">
             Save Supplier
           </Button>
         </form>

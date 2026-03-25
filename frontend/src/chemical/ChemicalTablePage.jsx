@@ -195,12 +195,12 @@ const navigate = useNavigate();
     <div className="w-full">
       <div className="flex justify-between items-center mb-5">
         <div>
-          <h2 className="text-lg font-bold text-[#304a8a]">Chemical List</h2>
+          <h2 className="text-lg font-bold text-[#ffc108]">Chemical List</h2>
         </div>
         <div>
          
           <Link to="/chemical-form">
-          <Button className="bg-[#304a8a] hover:bg-[#2a1664]">
+          <Button className="bg-[#ffc108] hover:bg-[#2a1664]">
             <PlusCircle /> Add Chemical
           </Button>
           </Link>
@@ -284,7 +284,7 @@ const navigate = useNavigate();
                 <TableCell>
                   <Button
                     variant="default"
-                    className="bg-[#304a8a] hover:bg-[#304a8a]"
+                    className="bg-[#ffc108] hover:bg-[#ffc108]"
                     onClick={() => {
                       setSelectedItem(chemical);
                       setShowSuppliers(true);
@@ -297,7 +297,7 @@ const navigate = useNavigate();
                 <TableCell>
                   <Button
                     variant="default"
-                    className="bg-[#304a8a] hover:bg-[#304a8a]"
+                    className="bg-[#ffc108] hover:bg-[#ffc108]"
                     onClick={() => {
                       setSelectedItem(chemical);
                       setShowCustomers(true);

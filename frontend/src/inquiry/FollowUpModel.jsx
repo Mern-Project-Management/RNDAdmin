@@ -98,7 +98,7 @@ export default function FollowUpModal({ inquiry, onFollowUpAdded }) {
         <>
             <Dialog open={isOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
-                    <Button variant="outline" className="text-right bg-[#304a8a] text-white">
+                    <Button variant="outline" className="text-right bg-[#ffc108]-[#1a1a1a]">
                         Follow Up 
                         <Badge variant="outline" className="bg-[#ffffff] text-black">{followUpCount}
 

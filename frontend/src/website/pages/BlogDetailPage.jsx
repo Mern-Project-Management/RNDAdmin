@@ -18,7 +18,7 @@ const RecentPostCard = ({ title, image, date }) => (
                 className="w-full h-40 object-cover transform transition-transform duration-300 group-hover:scale-105"
             />
             {/* Transparent blue overlay */}
-            <div className="absolute inset-0 bg-blue-500 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-blue-500 bg-opacity-50 transition-opacity duration-300"></div>
         </div>
         {/* Text content */}
         <div className="p-4">

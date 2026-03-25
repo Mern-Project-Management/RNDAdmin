@@ -547,7 +547,7 @@ const PortfolioCategoryForm = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-        <button type="submit" className="bg-[#304a8a] text-white py-2 px-4 rounded hover:bg-[#25396b] transition duration-200">
+        <button type="submit" className="bg-[#ffc108]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6ac07] transition duration-200">
           Add Category
         </button>
       </form>

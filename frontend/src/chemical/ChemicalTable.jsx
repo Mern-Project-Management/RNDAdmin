@@ -143,7 +143,7 @@ export default function ChemicalTable() {
     <div className="w-full">
       <div className="flex justify-between items-center mb-5">
         <div>
-          <h2 className="text-lg font-bold text-[#304a8a]">Chemical List</h2>
+          <h2 className="text-lg font-bold text-[#ffc108]">Chemical List</h2>
         </div>
         <div>
           <Button>

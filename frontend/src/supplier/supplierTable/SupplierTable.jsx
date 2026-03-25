@@ -172,7 +172,7 @@ const SuppliersTable = () => {
                                             variant="default"
                                             size="sm"
                                             onClick={() => handleChemicalsClick(supplier)}
-                                            className="bg-[#304a8a] text-white px-4 py-2 rounded hover:bg-[#304a8a] transition-colors duration-300"
+                                            className="bg-[#ffc108]-[#1a1a1a] px-4 py-2 rounded hover:bg-[#ffc108] transition-colors duration-300"
                                         >
                                             Chemicals
                                             <Badge

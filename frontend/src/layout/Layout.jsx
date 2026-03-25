@@ -13,7 +13,7 @@ function Layout() {
         
         <main className="flex-1 overflow-auto">
           {/* Navbar */}
-          <nav className="bg-[#304a8a] p-2 ">
+          <nav className="bg-[#ffc108] p-2 ">
             {/* <SidebarTrigger /> */}
           <Navbar/>
             {/* Additional Navbar content goes here */}

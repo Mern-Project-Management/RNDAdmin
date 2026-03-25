@@ -95,7 +95,7 @@ const TestimonialsTable = () => {
         Cell: ({ row }) => (
           <div className="flex  gap-4 justify-center">
             <button 
-              className={`transition-colors duration-200 ${expandedRows.has(row.original._id) ? 'text-[#304a8a]' : 'text-gray-400 hover:text-gray-600'}`} 
+              className={`transition-colors duration-200 ${expandedRows.has(row.original._id) ? 'text-[#ffc108]' : 'text-gray-400 hover:text-gray-600'}`} 
               onClick={() => toggleRowExpansion(row.original._id)}
               title="View Details"
             >
@@ -203,7 +203,7 @@ const TestimonialsTable = () => {
               type="text"
               value={heading}
               onChange={handleHeadingChange}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#304a8a] focus:border-transparent transition duration-200"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc108] focus:border-transparent transition duration-200"
             />
           </div>
           <div className="mb-2">
@@ -212,7 +212,7 @@ const TestimonialsTable = () => {
               rows={1}
               value={subheading}
               onChange={handleSubheadingChange}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#304a8a] focus:border-transparent transition duration-200"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc108] focus:border-transparent transition duration-200"
             />
           </div>
         </div>
@@ -239,7 +239,7 @@ const TestimonialsTable = () => {
                 placeholder="Search by name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#304a8a] focus:border-transparent transition duration-200 text-sm"
+                className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc108] focus:border-transparent transition duration-200 text-sm"
               />
             </div>
             <Link 
@@ -277,7 +277,7 @@ const TestimonialsTable = () => {
                                 {column.isSorted ? (
                                   column.isSortedDesc ? <FaArrowDown size={10} /> : <FaArrowUp size={10} />
                                 ) : (
-                                  <FaArrowDown size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                  <FaArrowDown size={10} className="transition-opacity" />
                                 )}
                               </span>
                             )}
@@ -323,7 +323,7 @@ const TestimonialsTable = () => {
                                           alt={row.original.name} 
                                           className="w-32 h-32 object-cover rounded-xl shadow-md border-2 border-white"
                                         />
-                                        <div className="absolute -bottom-2 -right-2 bg-[#304a8a] text-white p-2 rounded-lg shadow-lg">
+                                        <div className="absolute -bottom-2 -right-2 bg-[#ffc108]-[#1a1a1a] p-2 rounded-lg shadow-lg">
                                           <FaEye size={14} />
                                         </div>
                                       </div>
@@ -336,10 +336,10 @@ const TestimonialsTable = () => {
                                   <div className="flex-1">
                                     <div className="mb-6">
                                       <h4 className="text-2xl font-bold text-gray-900 font-serif leading-tight">{row.original.name}</h4>
-                                      <p className="text-[#304a8a] font-bold uppercase tracking-widest text-xs mt-1">{row.original.designation}</p>
+                                      <p className="text-[#ffc108] font-bold uppercase tracking-widest text-xs mt-1">{row.original.designation}</p>
                                     </div>
-                                    <div className="relative bg-gray-50/50 rounded-xl p-6 border-l-4 border-[#304a8a]">
-                                      <div className="absolute -top-6 -left-2 text-[#304a8a]/10 text-8xl font-serif select-none italic pointer-events-none">
+                                    <div className="relative bg-gray-50/50 rounded-xl p-6 border-l-4 border-[#ffc108]">
+                                      <div className="absolute -top-6 -left-2 text-[#ffc108]/10 text-8xl font-serif select-none italic pointer-events-none">
                                         &ldquo;
                                       </div>
                                       <div className="relative z-10 italic text-gray-700 leading-relaxed font-serif">

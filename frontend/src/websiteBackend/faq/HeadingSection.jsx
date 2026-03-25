@@ -49,7 +49,7 @@ const HeadingSection = ({
         className={`px-4 py-2 ${
           loading 
             ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-slate-700 hover:bg-slate-900'
+            : 'bg-[#ffc108] text-[#1a1a1a] hover:bg-[#e6ac07]'
         } text-white rounded transition duration-300 font-serif flex items-center justify-center`}
       >
         {loading ? (

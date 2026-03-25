@@ -154,7 +154,7 @@ const OurServiceBanner = () => {
           <button
             onClick={saveHeadings}
             disabled={!hasChanges}
-            className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300 font-serif disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Save Headings
           </button>

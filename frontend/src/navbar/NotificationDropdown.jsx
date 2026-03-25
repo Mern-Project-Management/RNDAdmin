@@ -142,7 +142,7 @@ const NotificationsDropdown = ({
                                 <div className="flex gap-4 mr-6">
                                     <button 
                                         onClick={handleMarkAllAsRead}
-                                        className="text-[#304a8a] text-sm font-bold hover:underline"
+                                        className="text-[#ffc108] text-sm font-bold hover:underline"
                                     >
                                         Mark all as read
                                     </button>
@@ -184,7 +184,7 @@ const NotificationsDropdown = ({
                                                             <h4 className={`text-sm font-normal ${notification.isRead ? 'text-gray-600' : 'text-gray-950'}`}>{title}</h4>
                                                             <div className="flex flex-wrap items-center gap-1.5 mt-1">
                                                                 {notification.inquiryEmail && (
-                                                                    <span className="text-[11px] text-[#304a8a] font-semibold">{notification.inquiryEmail}</span>
+                                                                    <span className="text-[11px] text-[#ffc108] font-semibold">{notification.inquiryEmail}</span>
                                                                 )}
                                                                 
                                                                 {/* Service/Post Highlight - Minimalist Style */}
@@ -213,7 +213,7 @@ const NotificationsDropdown = ({
                                                             </span>
                                                             <button 
                                                                 onClick={() => toggleExpand(notification._id)}
-                                                                className="text-[#304a8a] hover:underline focus:outline-none flex items-center gap-1"
+                                                                className="text-[#ffc108] hover:underline focus:outline-none flex items-center gap-1"
                                                             >
                                                                 {isExpanded ? (
                                                                     <><ChevronUp className="w-3.5 h-3.5" /> View Less</>
