@@ -8,7 +8,7 @@ exports.createCareer = async (req, res) => {
     try {
         console.log(req.body);
         console.log(req.files);
-        const { jobtitle, department, jobType, employmentType, requirement, description, alt, imgTitle } = req.body
+        const { jobtitle, department, jobType, employmentType, requirement, description, alt, imgTitle, priority } = req.body
         const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
         const newCareer = new CareerDetails({
             jobtitle,
@@ -19,7 +19,8 @@ exports.createCareer = async (req, res) => {
             description,
             alt,
             imgTitle,
-            photo
+            photo,
+            priority: priority !== undefined ? Number(priority) : 0
         });
         await newCareer.save();
         res.status(201).json(newCareer);
@@ -32,7 +33,7 @@ exports.createCareer = async (req, res) => {
 // Get all careers
 exports.getAllCareers = async (req, res) => {
     try {
-        const careers = await CareerDetails.find();
+        const careers = await CareerDetails.find().sort({ priority: 1 });
         res.status(200).json(careers);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
@@ -105,6 +106,9 @@ console.log(req.files);
         }
 
         // Perform the update
+        if (updateFields.priority !== undefined) {
+            updateFields.priority = Number(updateFields.priority);
+        }
         const updatedCareerOption = await CareerDetails.findByIdAndUpdate(
             id,
             updateFields,

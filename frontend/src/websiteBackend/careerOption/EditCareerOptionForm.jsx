@@ -13,6 +13,7 @@ const EditCareerOptionForm = () => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState([]);
   const [status, setStatus] = useState("active");
+  const [priority, setPriority] = useState(0);
   const { id } = useParams();
   const [initialPhotos, setInitialPhotos] = useState([]);
   const [photoAlts, setPhotoAlts] = useState([]);
@@ -56,6 +57,7 @@ const EditCareerOptionForm = () => {
       setDescription(career.description);
       setInitialPhotos(career.photo || []);
       setStatus(career.status);
+      setPriority(career.priority !== undefined ? career.priority : 0);
       setInitialPhotoAlts(career.alt || []);
       setInitialImgtitle(career.imgTitle || []);
     } catch (error) {
@@ -74,6 +76,7 @@ const EditCareerOptionForm = () => {
       formData.append('requirement', requirement);
       formData.append('description', description);
       formData.append('status', status);
+      formData.append('priority', priority);
 
       // Combine initial and new photo alts and titles into single arrays
       const combinedAlts = [...initialphotoAlts, ...photoAlts];
@@ -344,6 +347,17 @@ const EditCareerOptionForm = () => {
         />
       </div>
      
+      <div className="mb-4">
+        <label htmlFor="priority" className="block font-semibold mb-2">Priority <span className="text-gray-400 font-normal text-sm">(lower number = shown first)</span></label>
+        <input
+          type="number"
+          id="priority"
+          value={priority}
+          min={0}
+          onChange={(e) => setPriority(e.target.value)}
+          className="w-full p-2 border rounded focus:outline-none"
+        />
+      </div>
       <div className="mb-4">
         <label htmlFor="status" className="block font-semibold mb-2">
           Status

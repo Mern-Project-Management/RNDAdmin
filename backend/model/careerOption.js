@@ -15,6 +15,10 @@ const JobSchema = new mongoose.Schema({
     type: String,
     enum: ['active', 'inactive'],
     default: 'active'
+  },
+  priority: {
+    type: Number,
+    default: 0
   }
 });
 

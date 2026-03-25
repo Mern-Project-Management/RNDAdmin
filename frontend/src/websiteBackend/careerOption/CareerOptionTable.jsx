@@ -1,14 +1,16 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { useTable, useSortBy } from "react-table";
+import { useTable, useSortBy, usePagination } from "react-table";
 import {
-  Edit,  //Edit
-  Trash2,  //Trash2
-  Check,  //Check
-  Eye,  //Eye
-  X,  //X
-  ArrowUp,  //ArrowUp
-  ArrowDown,  //ArrowDown
-  Plus  //Plus
+  Edit,
+  Trash2,
+  Check,
+  Eye,
+  X,
+  ArrowUp,
+  ArrowDown,
+  Plus,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -52,6 +54,15 @@ const CareerOptionTable = () => {
       {
         Header: "ID",
         accessor: "id",
+      },
+      {
+        Header: "Priority",
+        accessor: "priority",
+        Cell: ({ value }) => (
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-sm">
+            {value ?? 0}
+          </span>
+        ),
       },
       {
         Header: "Title",
@@ -114,18 +125,30 @@ const CareerOptionTable = () => {
     []
   );
 
+  const PAGE_SIZE = 10;
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,          // rows for current page
     prepareRow,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    state: { pageIndex },
   } = useTable(
     {
       columns,
       data: filteredCareerOptions,
+      initialState: { pageIndex: 0, pageSize: PAGE_SIZE },
     },
-    useSortBy
+    useSortBy,
+    usePagination
   );
 
   const fetchData = async () => {
@@ -292,53 +315,107 @@ const CareerOptionTable = () => {
       ) : (
         <>
           {
-            careerOptions.length == 0 ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
-              :
-              <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-                <thead className="bg-slate-700 hover:bg-slate-800 text-white">
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <th
-                          {...column.getHeaderProps(column.getSortByToggleProps())}
-                          className="py-2 px-4 border-b border-gray-300 cursor-pointer uppercase font-serif "
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="">{column.render("Header")}</span>
-                            {column.canSort && (
-                              <span className="ml-1">
-                                {column.isSorted ? (
-                                  column.isSortedDesc ? (
-                                    <ArrowDown />
+            careerOptions.length == 0
+              ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
+              : <>
+                <table className="w-full mt-4 border-collapse" {...getTableProps()}>
+                  <thead className="bg-slate-700 hover:bg-slate-800 text-white">
+                    {headerGroups.map((headerGroup) => (
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column) => (
+                          <th
+                            {...column.getHeaderProps(column.getSortByToggleProps())}
+                            className="py-2 px-4 border-b border-gray-300 cursor-pointer uppercase font-serif "
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="">{column.render("Header")}</span>
+                              {column.canSort && (
+                                <span className="ml-1">
+                                  {column.isSorted ? (
+                                    column.isSortedDesc ? (
+                                      <ArrowDown />
+                                    ) : (
+                                      <ArrowUp />
+                                    )
                                   ) : (
-                                    <ArrowUp />
-                                  )
-                                ) : (
-                                  <ArrowDown className="text-gray-400" />
-                                )}
-                              </span>
-                            )}
-                          </div>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                  {rows.map((row) => {
-                    prepareRow(row);
-                    return (
-                      <tr {...row.getRowProps()} className="border-b border-gray-300 hover:bg-gray-100 transition duration-150">
-                        {row.cells.map((cell) => (
-                          <td {...cell.getCellProps()} className="py-2 px-4 ">
-                            {cell.render("Cell")}
-                          </td>
+                                    <ArrowDown className="text-gray-400" />
+                                  )}
+                                </span>
+                              )}
+                            </div>
+                          </th>
                         ))}
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>}</>
+                    ))}
+                  </thead>
+                  <tbody {...getTableBodyProps()}>
+                    {page.map((row) => {
+                      prepareRow(row);
+                      return (
+                        <tr {...row.getRowProps()} className="border-b border-gray-300 hover:bg-gray-100 transition duration-150">
+                          {row.cells.map((cell) => (
+                            <td {...cell.getCellProps()} className="py-2 px-4 ">
+                              {cell.render("Cell")}
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+
+                {/* Pagination Controls */}
+                <div className="flex items-center justify-between mt-4 px-2">
+                  <span className="text-sm text-gray-600">
+                    Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
+                    {" "}({filteredCareerOptions.length} total records)
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => gotoPage(0)}
+                      disabled={!canPreviousPage}
+                      className="px-2 py-1 text-sm border rounded disabled:opacity-40 hover:bg-gray-100"
+                    >
+                      «
+                    </button>
+                    <button
+                      onClick={() => previousPage()}
+                      disabled={!canPreviousPage}
+                      className="p-1 border rounded disabled:opacity-40 hover:bg-gray-100"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    {pageOptions.map((pg) => (
+                      <button
+                        key={pg}
+                        onClick={() => gotoPage(pg)}
+                        className={`px-3 py-1 text-sm border rounded ${
+                          pageIndex === pg
+                            ? 'bg-slate-700 text-white border-slate-700'
+                            : 'hover:bg-gray-100'
+                        }`}
+                      >
+                        {pg + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => nextPage()}
+                      disabled={!canNextPage}
+                      className="p-1 border rounded disabled:opacity-40 hover:bg-gray-100"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                    <button
+                      onClick={() => gotoPage(pageCount - 1)}
+                      disabled={!canNextPage}
+                      className="px-2 py-1 text-sm border rounded disabled:opacity-40 hover:bg-gray-100"
+                    >
+                      »
+                    </button>
+                  </div>
+                </div>
+              </>
+          }</>
 
       )}
       <Modal

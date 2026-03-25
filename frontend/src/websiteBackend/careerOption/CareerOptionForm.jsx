@@ -17,6 +17,7 @@ const CareerOptionForm = () => {
   const [photoAlts, setPhotoAlts] = useState([]);
   const [imgTitles, setImgTitles] = useState([]);
   const [status, setStatus] = useState("active");
+  const [priority, setPriority] = useState(0);
   const navigate = useNavigate();
 
   const handlePhotoChange = (e) => {
@@ -75,6 +76,7 @@ const CareerOptionForm = () => {
       });
 
       formData.append('status', status);
+      formData.append('priority', priority);
 
       const response = await axios.post('/api/career-option/add', formData, {
         headers: {
@@ -94,7 +96,8 @@ const CareerOptionForm = () => {
       setPhotoAlts([]);
       setImgTitles([]);
       setStatus("active");
-      navigate('/career-table');
+      setPriority(0);
+      navigate('/JobApplication');
     } catch (error) {
       console.error(error);
       toast.error("Error adding career option");
@@ -239,6 +242,18 @@ const CareerOptionForm = () => {
         />
       </div>
      
+
+      <div className="mb-4">
+        <label htmlFor="priority" className="block font-semibold mb-2">Priority <span className="text-gray-400 font-normal text-sm">(lower number = shown first)</span></label>
+        <input
+          type="number"
+          id="priority"
+          value={priority}
+          min={0}
+          onChange={(e) => setPriority(e.target.value)}
+          className="w-full p-2 border rounded focus:outline-none"
+        />
+      </div>
 
       <div className="mb-4">
         <label htmlFor="status" className="block font-semibold mb-2">Status</label>
