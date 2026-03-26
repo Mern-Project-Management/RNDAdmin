@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+﻿import { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -85,11 +85,11 @@ export default function SuppliersTable({ chemicalName, supplier,fetchChemicals, 
     <div className="p-4 space-y-4">
       {/* Table Header and Add Supplier Modal */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-[#ffc108]">
+        <h1 className="text-xl font-semibold text-[#7a6b00]">
           {supplier} for {selectedItem?.name || "Chemical"}
         </h1>
         <Button
-          className="bg-[#ffc108] hover:bg-purple-700"
+          className="bg-[#ffcc00] hover:bg-purple-700"
           onClick={() => setShowAddSupplierModal(true)}
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -199,3 +199,7 @@ export default function SuppliersTable({ chemicalName, supplier,fetchChemicals, 
     </div>
   );
 }
+
+
+
+

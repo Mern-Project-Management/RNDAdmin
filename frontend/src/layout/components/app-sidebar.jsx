@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
@@ -281,17 +281,17 @@ export default function AppSidebar() {
     items.map((item) => {
       const isParentActive = item.children?.some((child) => isActive(child.url));
       const isChildActive = isActive(item.url);
-      const activeClass = isParentActive || isChildActive ? "text-[#cc9900] font-semibold" : "text-gray-600";
+      const activeClass = isParentActive || isChildActive ? "text-[#dbaf00] font-semibold" : "text-gray-600";
 
       return (
         <SidebarMenuItem key={item.title}>
           {item.children?.length ? (
             <Collapsible open={openSections[item.title]} onOpenChange={() => toggleSection(item.title)}>
               <CollapsibleTrigger asChild title={item.title}>
-                <Button variant="ghost" className={`w-full justify-start gap-2 hover:text-[#cc9900] font-normal overflow-hidden ${activeClass}`}>
+                <Button variant="ghost" className={`w-full justify-start gap-2 hover:text-[#dbaf00] font-normal overflow-hidden ${activeClass}`}>
                   <item.icon className="w-4 h-4 shrink-0" />
                   <span className="truncate flex-1 text-left">{item.title}</span>
-                  <ChevronDown className={cn("w-4 h-4 ml-auto shrink-0 transition-transform hover:text-[#cc9900]", { "-rotate-90": !openSections[item.title] })} />
+                  <ChevronDown className={cn("w-4 h-4 ml-auto shrink-0 transition-transform hover:text-[#dbaf00]", { "-rotate-90": !openSections[item.title] })} />
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent className="pl-6 space-y-1">
@@ -300,7 +300,7 @@ export default function AppSidebar() {
             </Collapsible>
           ) : (
             <SidebarMenuButton asChild title={item.title}>
-              <Link to={item.url} className={`pl-4 flex items-center gap-2 hover:text-[#cc9900] overflow-hidden ${activeClass}`}>
+              <Link to={item.url} className={`pl-4 flex items-center gap-2 hover:text-[#dbaf00] overflow-hidden ${activeClass}`}>
                 <item.icon className="w-4 h-4 shrink-0" />
                 <span className="truncate flex-1 text-left">{item.title}</span>
               </Link>
@@ -358,3 +358,7 @@ export default function AppSidebar() {
     </Sidebar>
   );
 }
+
+
+
+

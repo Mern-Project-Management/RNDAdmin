@@ -1,4 +1,4 @@
-import * as React from "react"
+﻿import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 
@@ -9,13 +9,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#ffc108]-[#1a1a1a] hover:bg-[#ffc108]/90",
+        default: "bg-[#ffcc00]-[#1a1a1a] hover:bg-[#ffcc00]/90",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90",
         outline:
           "border border-input bg-background text-white hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-[#ffc108]-[#1a1a1a] hover:bg-[#ffc108]/80",
+          "bg-[#ffcc00]-[#1a1a1a] hover:bg-[#ffcc00]/80",
         ghost: "text-white hover:bg-accent hover:text-accent-foreground",
         link: "text-white underline-offset-4 hover:underline",
       },
@@ -46,3 +46,6 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Form, Button, message, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -204,7 +204,7 @@ const PrivacyForm = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
         >
           Save Headings
         </button>
@@ -251,3 +251,7 @@ const PrivacyForm = () => {
 };
 
 export default PrivacyForm;
+
+
+
+

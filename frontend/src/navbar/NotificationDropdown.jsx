@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Bell, AlertTriangle, CheckCheck, Trash2, Briefcase, Mail, ChevronDown, ChevronUp } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useMarkAsReadMutation, useDeleteNotificationMutation } from '@/slice/notification/notification';
@@ -142,7 +142,7 @@ const NotificationsDropdown = ({
                                 <div className="flex gap-4 mr-6">
                                     <button 
                                         onClick={handleMarkAllAsRead}
-                                        className="text-[#ffc108] text-sm font-bold hover:underline"
+                                        className="text-[#7a6b00] text-sm font-bold hover:underline"
                                     >
                                         Mark all as read
                                     </button>
@@ -184,18 +184,18 @@ const NotificationsDropdown = ({
                                                             <h4 className={`text-sm font-normal ${notification.isRead ? 'text-gray-600' : 'text-gray-950'}`}>{title}</h4>
                                                             <div className="flex flex-wrap items-center gap-1.5 mt-1">
                                                                 {notification.inquiryEmail && (
-                                                                    <span className="text-[11px] text-[#ffc108] font-semibold">{notification.inquiryEmail}</span>
+                                                                    <span className="text-[11px] text-[#7a6b00] font-semibold">{notification.inquiryEmail}</span>
                                                                 )}
                                                                 
                                                                 {/* Service/Post Highlight - Minimalist Style */}
                                                                 {notification.type === 'inquiry' && (notification.sourceData?.service || notification.sourceData?.department) && (
                                                                     <span className="text-[10px] text-gray-400 font-medium lowercase">
-                                                                        • {notification.sourceData?.service || notification.sourceData?.department}
+                                                                        â€¢ {notification.sourceData?.service || notification.sourceData?.department}
                                                                     </span>
                                                                 )}
                                                                 {notification.type === 'career' && (notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor) && (
                                                                     <span className="text-[10px] text-gray-400 font-medium lowercase">
-                                                                        • {notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor}
+                                                                        â€¢ {notification.sourceData?.careerTitle || notification.sourceData?.roleApplied || notification.sourceData?.postAppliedFor}
                                                                     </span>
                                                                 )}
                                                             </div>
@@ -213,7 +213,7 @@ const NotificationsDropdown = ({
                                                             </span>
                                                             <button 
                                                                 onClick={() => toggleExpand(notification._id)}
-                                                                className="text-[#ffc108] hover:underline focus:outline-none flex items-center gap-1"
+                                                                className="text-[#7a6b00] hover:underline focus:outline-none flex items-center gap-1"
                                                             >
                                                                 {isExpanded ? (
                                                                     <><ChevronUp className="w-3.5 h-3.5" /> View Less</>
@@ -265,3 +265,7 @@ const NotificationsDropdown = ({
 };
 
 export default NotificationsDropdown;
+
+
+
+

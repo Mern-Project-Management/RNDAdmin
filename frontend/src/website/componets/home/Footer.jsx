@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -19,7 +19,7 @@ export default function Footer() {
 
   if (!footerData) {
     return (
-      <footer className="text-white py-12 bg-[#2d4899]">
+      <footer className="text-[#1a1a1a] py-12 bg-[#ffcc00]">
         <div className="max-w-[75rem] mx-auto px-4 text-center">Loading...</div>
       </footer>
     );
@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <>
       <footer
-        className="text-white py-12 bg-[#2d4899]" // Add a bg color as fallback
+        className="text-[#1a1a1a] py-12 bg-[#ffcc00]" // Add a bg color as fallback
       >
         <div className="max-w-[75rem] mx-auto px-4">
           <div className="flex flex-col items-center text-center">
@@ -51,3 +51,6 @@ export default function Footer() {
     </>
   );
 }
+
+
+

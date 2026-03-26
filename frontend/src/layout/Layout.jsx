@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/layout/components/app-sidebar"; // Ensure correct path to AppSidebar
 import { Outlet } from "react-router-dom";
@@ -13,7 +13,7 @@ function Layout() {
         
         <main className="flex-1 overflow-auto">
           {/* Navbar */}
-          <nav className="bg-[#ffc108] p-2 ">
+          <nav className="bg-[#ffcc00] p-2 ">
             {/* <SidebarTrigger /> */}
           <Navbar/>
             {/* Additional Navbar content goes here */}
@@ -33,3 +33,6 @@ function Layout() {
 }
 
 export default Layout;
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAddUserMutation, useUpdateUserMutation, useGetAllUsersQuery } from '@/slice/contactInfo/contactInfo';
 import { MapPin, Phone, Mail, LinkIcon } from 'lucide-react';
 import axios from 'axios';
@@ -31,7 +31,7 @@ const ContactInfoForm = () => {
     useEffect(() => {
         if (allUsers && allUsers.length > 0) {
             const existingData = allUsers[0];
-            console.log('📋 Existing Contact Data:', existingData);
+            console.log('ðŸ“‹ Existing Contact Data:', existingData);
             const newFormData = {
                 address: existingData.address || '',
                 mobiles: existingData.mobiles || [''],
@@ -44,7 +44,7 @@ const ContactInfoForm = () => {
                 hrEmail: existingData.hrEmail || '',
                 hrPhone: existingData.hrPhone || ''
             };
-            console.log('✅ Form Data Set:', newFormData);
+            console.log('âœ… Form Data Set:', newFormData);
             setFormData(newFormData);
         }
     }, [allUsers]);
@@ -121,8 +121,8 @@ const ContactInfoForm = () => {
         submitFormData.append('hrEmail', formData.hrEmail);
         submitFormData.append('hrPhone', formData.hrPhone);
 
-        console.log('📝 Form Data Before Submit:', formData);
-        console.log('📦 Submitted Data:');
+        console.log('ðŸ“ Form Data Before Submit:', formData);
+        console.log('ðŸ“¦ Submitted Data:');
         console.log('  - Address:', formData.address);
         console.log('  - Map Link:', formData.mapLink);
         console.log('  - Mobiles:', formData.mobiles);
@@ -151,21 +151,21 @@ const ContactInfoForm = () => {
 
         try {
             if (allUsers && allUsers.length > 0) {
-                console.log('🔄 Updating Contact with ID:', allUsers[0]._id);
+                console.log('ðŸ”„ Updating Contact with ID:', allUsers[0]._id);
                 await updateUser({
                     id: allUsers[0]._id,
                     formData: submitFormData
                 }).unwrap();
-                console.log('✅ Successfully Updated!');
+                console.log('âœ… Successfully Updated!');
                 alert('Contact information updated successfully!');
             } else {
-                console.log('➕ Creating New Contact');
+                console.log('âž• Creating New Contact');
                 await addUser(submitFormData).unwrap();
-                console.log('✅ Successfully Created!');
+                console.log('âœ… Successfully Created!');
                 alert('Contact information added successfully!');
             }
         } catch (error) {
-            console.error('❌ Error:', error);
+            console.error('âŒ Error:', error);
             alert('Error saving contact information. Please try again.');
         }
     };
@@ -223,7 +223,7 @@ const ContactInfoForm = () => {
                     </div>
                     <button
                         onClick={saveHeadings}
-                        className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
+                        className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
                     >
                         Save Headings
                     </button>
@@ -421,7 +421,7 @@ const ContactInfoForm = () => {
                         onClick={handleSubmit}
                         className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-4 px-6 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                        {allUsers && allUsers.length > 0 ? '✓ Update Contact Information' : '+ Add Contact Information'}
+                        {allUsers && allUsers.length > 0 ? 'âœ“ Update Contact Information' : '+ Add Contact Information'}
                     </button>
                 </div>
             </div>
@@ -430,3 +430,7 @@ const ContactInfoForm = () => {
 };
 
 export default ContactInfoForm;
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -72,7 +72,7 @@ export const AddChemicalDialog = ({
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onOpenChange(false)}>
             <DialogContent className="max-w-lg p-6">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-semibold text-[#ffc108]">
+                    <DialogTitle className="text-lg font-semibold text-[#7a6b00]">
                         Add Chemicals to Customer
                     </DialogTitle>
                 </DialogHeader>
@@ -140,7 +140,7 @@ export const AddChemicalDialog = ({
                     <div className="flex justify-between mt-4">
                         <Button
                             onClick={handleAddChemical}
-                            className="bg-[#ffc108] hover:bg-purple-700"
+                            className="bg-[#ffcc00] hover:bg-purple-700"
                             disabled={selectedChemicals.length === 0}
                         >
                             + Add Chemicals
@@ -159,3 +159,7 @@ export const AddChemicalDialog = ({
 }
 
 export default AddChemicalDialog;
+
+
+
+

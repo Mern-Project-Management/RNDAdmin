@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Search, UserCircle, LogIn, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -93,7 +93,7 @@ export default function NavbarComp({ categories }) {
             </div>
             <Button
               variant="ghost"
-              className="text-[#2d4899] hover:text-orange-400 hover:bg-transparent p-2"
+              className="text-[#7a6b00] hover:text-orange-400 hover:bg-transparent p-2"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -131,7 +131,7 @@ export default function NavbarComp({ categories }) {
           />
 
           {/* Menu Content */}
-          <div className="relative bg-[#2d4899] w-full px-4 py-2 space-y-2 overflow-y-auto">
+          <div className="relative bg-[#ffcc00] w-full px-4 py-2 space-y-2 overflow-y-auto">
             <div className="flex items-center justify-between pb-4 bg-white -mx-4 px-4 pt-2">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}>
                 <picture>
@@ -159,7 +159,7 @@ export default function NavbarComp({ categories }) {
               </Link>
               <Button
                 variant="ghost"
-                className="text-[#2d4899] hover:text-orange-400 hover:bg-transparent p-2"
+                className="text-[#7a6b00] hover:text-orange-400 hover:bg-transparent p-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <X className="h-6 w-6" />
@@ -176,3 +176,7 @@ export default function NavbarComp({ categories }) {
     </>
   );
 }
+
+
+
+

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,7 +15,7 @@ export function BreadcrumbWithCustomSeparator({ items }) {
         {items.map((item, index) => (
           <BreadcrumbItem key={index}>
             {index === items.length - 1 ? (
-              <BreadcrumbPage className="text-[#ffc108] font-medium">
+              <BreadcrumbPage className="text-[#7a6b00] font-medium">
                 {item.label}
               </BreadcrumbPage>
             ) : (
@@ -32,3 +32,7 @@ export function BreadcrumbWithCustomSeparator({ items }) {
     </Breadcrumb>
   );
 }
+
+
+
+

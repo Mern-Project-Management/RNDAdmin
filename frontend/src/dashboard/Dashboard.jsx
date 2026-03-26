@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
   Users, 
@@ -32,7 +32,7 @@ const Dashboard = () => {
   return (
     <div className="w-full">
       <div>
-        <h1 className="text-xl font-semibold text-purple-800 mb-4 pb-1 border-b border-purple-800">Dashboard</h1>
+        <h1 className="text-xl font-semibold text-[#7a6b00] mb-4 pb-1 border-b border-[#7a6b00]">Dashboard</h1>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Total Inquiries Card */}
@@ -76,3 +76,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+

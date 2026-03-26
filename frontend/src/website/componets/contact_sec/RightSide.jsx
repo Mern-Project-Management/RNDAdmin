@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'react-toastify'
 import { useAddInquiryMutation } from '@/slice/inquiry/inquiry'
@@ -46,7 +46,7 @@ export default function RightSection() {
         title: 'Thank You!',
         text: 'Your inquiry has been submitted successfully. We will get back to you soon.',
         icon: 'success',
-        confirmButtonColor: '#ffc108',
+        confirmButtonColor: '#ffcc00',
         timer: 3000,
         timerProgressBar: true
       })
@@ -62,10 +62,10 @@ export default function RightSection() {
 
   const InputField = ({ label, name, icon: Icon, type = "text", required = false, placeholder }) => (
     <div className="mb-8 group">
-      <label className="block text-gray-800 font-semibold mb-2 transform transition-all group-focus-within:text-[#ffc108]">
+      <label className="block text-gray-800 font-semibold mb-2 transform transition-all group-focus-within:text-[#7a6b00]">
         {label}{required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <div className="relative border-b-2 border-gray-200 group-focus-within:border-[#ffc108] transition-colors duration-300">
+      <div className="relative border-b-2 border-gray-200 group-focus-within:border-[#ead37a] transition-colors duration-300">
         <input
           required={required}
           name={name}
@@ -73,7 +73,7 @@ export default function RightSection() {
           placeholder={placeholder}
           className="w-full py-2 bg-transparent outline-none text-gray-700 placeholder:text-gray-300 transition-all pl-0 pr-10"
         />
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#ffc108] transition-colors">
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#7a6b00] transition-colors">
           <Icon size={20} strokeWidth={1.5} />
         </div>
       </div>
@@ -147,10 +147,10 @@ export default function RightSection() {
         />
 
         <div className="mb-10 group">
-          <label className="block text-gray-800 font-semibold mb-2 group-focus-within:text-[#ffc108]">
+          <label className="block text-gray-800 font-semibold mb-2 group-focus-within:text-[#7a6b00]">
             Your Message<span className="text-red-500 ml-1">*</span>
           </label>
-          <div className="relative border-b-2 border-gray-200 group-focus-within:border-[#ffc108] transition-colors duration-300">
+          <div className="relative border-b-2 border-gray-200 group-focus-within:border-[#ead37a] transition-colors duration-300">
             <textarea
               required
               name="message"
@@ -158,7 +158,7 @@ export default function RightSection() {
               placeholder="Tell us more about your inquiry..."
               className="w-full py-2 bg-transparent outline-none text-gray-700 placeholder:text-gray-300 resize-none pr-10"
             />
-            <div className="absolute right-2 top-4 text-gray-400 group-focus-within:text-[#ffc108] transition-colors">
+            <div className="absolute right-2 top-4 text-gray-400 group-focus-within:text-[#7a6b00] transition-colors">
               <MessageSquare size={20} strokeWidth={1.5} />
             </div>
           </div>
@@ -187,3 +187,8 @@ export default function RightSection() {
     </div>
   )
 }
+
+
+
+
+

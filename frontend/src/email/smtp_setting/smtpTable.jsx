@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useGetAllServersQuery, useDeleteServerMutation } from '@/slice/smtpSlice/smtp';
 import { Button } from '@/components/ui/button';
@@ -30,7 +30,7 @@ const SMTPTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">SMTP Settings</h1>
         <Link to="/add-smtp">
-          <Button className="bg-[#ffc108]-[#1a1a1a] hover:bg-purple-700" variant="primary">Add SMTP</Button>
+          <Button className="bg-[#ffcc00]-[#1a1a1a] hover:bg-purple-700" variant="primary">Add SMTP</Button>
         </Link>
       </div>
       <hr className='mb-5' />
@@ -82,3 +82,6 @@ const SMTPTable = () => {
 };
 
 export default SMTPTable;
+
+
+

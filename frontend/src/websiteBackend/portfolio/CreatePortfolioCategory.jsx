@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
@@ -547,7 +547,7 @@ const PortfolioCategoryForm = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-        <button type="submit" className="bg-[#ffc108]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6ac07] transition duration-200">
+        <button type="submit" className="bg-[#ffcc00]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6b800] transition duration-200">
           Add Category
         </button>
       </form>
@@ -557,3 +557,7 @@ const PortfolioCategoryForm = () => {
 };
 
 export default PortfolioCategoryForm;
+
+
+
+

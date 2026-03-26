@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Button } from '@/components/ui/button';
@@ -135,7 +135,7 @@ const EmailForm = ({ selectedSupplier, supplier, email, name,type, chemicalName 
               />
             </div>
             <Button
-              className="bg-[#ffc108] hover:bg-purple-700"
+              className="bg-[#ffcc00] hover:bg-purple-700"
               onClick={handleSendEmail}
               disabled={isLoading}
             >
@@ -149,4 +149,7 @@ const EmailForm = ({ selectedSupplier, supplier, email, name,type, chemicalName 
 };
 
 export default EmailForm;
+
+
+
 

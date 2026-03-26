@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from "react";
+﻿import React, { useState ,useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -195,12 +195,12 @@ const navigate = useNavigate();
     <div className="w-full">
       <div className="flex justify-between items-center mb-5">
         <div>
-          <h2 className="text-lg font-bold text-[#ffc108]">Chemical List</h2>
+          <h2 className="text-lg font-bold text-[#7a6b00]">Chemical List</h2>
         </div>
         <div>
          
           <Link to="/chemical-form">
-          <Button className="bg-[#ffc108] hover:bg-[#2a1664]">
+          <Button className="bg-[#ffcc00] hover:bg-[#2a1664]">
             <PlusCircle /> Add Chemical
           </Button>
           </Link>
@@ -284,7 +284,7 @@ const navigate = useNavigate();
                 <TableCell>
                   <Button
                     variant="default"
-                    className="bg-[#ffc108] hover:bg-[#ffc108]"
+                    className="bg-[#ffcc00] hover:bg-[#ffcc00]"
                     onClick={() => {
                       setSelectedItem(chemical);
                       setShowSuppliers(true);
@@ -297,7 +297,7 @@ const navigate = useNavigate();
                 <TableCell>
                   <Button
                     variant="default"
-                    className="bg-[#ffc108] hover:bg-[#ffc108]"
+                    className="bg-[#ffcc00] hover:bg-[#ffcc00]"
                     onClick={() => {
                       setSelectedItem(chemical);
                       setShowCustomers(true);
@@ -413,4 +413,8 @@ const navigate = useNavigate();
     </div>
   );
 }
+
+
+
+
 

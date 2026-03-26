@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "./NavLink";
 import { useGetAllCompanyItemsQuery } from "@/slice/companyItemSlice";
@@ -22,7 +22,7 @@ const NavSection = ({
     const isCompanyActive = companyItems.some(item => window.location.pathname === item.link);
 
     return (
-        <nav className="bg-[#2d4899] text-white">
+        <nav className="bg-[#ffcc00] text-[#1a1a1a]">
             <div className="max-w-[75rem] mx-auto px-4 flex items-center justify-evenly">
                 <div className="space-x-2 lg:space-x-3 hidden md:flex text-sm items-center lg:text-[16px] font-bold">
                     {/* Company Dropdown */}
@@ -82,7 +82,7 @@ const NavSection = ({
                                     </div>
                                 ) : (
                                     <div className="text-gray-300 flex flex-col items-center">
-                                        <span className="text-4xl mb-2">🏢</span>
+                                        <span className="text-4xl mb-2">ðŸ¢</span>
                                         <p className="text-sm italic">Preview</p>
                                     </div>
                                 )}
@@ -178,3 +178,6 @@ const NavSection = ({
 };
 
 export default NavSection;
+
+
+

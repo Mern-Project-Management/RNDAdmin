@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+﻿import { Button } from '@/components/ui/button'
 import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -162,7 +162,7 @@ const SupplierForm = ({ onClose, fetchChemicals, chemicalId }) => {
             onChange={handleChange}
             accept="image/*"
           />
-          <Button type="submit" className="bg-[#ffc108] hover:bg-purple-700">
+          <Button type="submit" className="bg-[#ffcc00] hover:bg-purple-700">
             Save Supplier
           </Button>
         </form>
@@ -172,3 +172,6 @@ const SupplierForm = ({ onClose, fetchChemicals, chemicalId }) => {
 }
 
 export default SupplierForm
+
+
+

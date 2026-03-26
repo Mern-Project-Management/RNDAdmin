@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Table, Button, Space, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useGetAboutUsQuery, useDeleteAboutUsMutation } from '../../slice/aboutUs/aboutUs';
@@ -179,7 +179,7 @@ const AboutUsTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif"
         >
           Save Headings
         </button>
@@ -211,3 +211,4 @@ const AboutUsTable = () => {
 };
 
 export default AboutUsTable;
+

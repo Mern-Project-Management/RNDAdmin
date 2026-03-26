@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ const AddChemicalModal = ({ open, onClose, chemicalName, supplier, supplierId, r
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent className="max-w-lg p-6">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-[#ffc108]">
+          <DialogTitle className="text-lg font-semibold text-[#7a6b00]">
             Add Chemicals for {supplier}
           </DialogTitle>
         </DialogHeader>
@@ -116,7 +116,7 @@ const AddChemicalModal = ({ open, onClose, chemicalName, supplier, supplierId, r
           <div className="flex justify-between mt-4">
             <Button
               onClick={handleAddSupplier}
-              className="bg-[#ffc108] hover:bg-purple-700"
+              className="bg-[#ffcc00] hover:bg-purple-700"
               disabled={isAdding || selectedChemicals.length === 0}
             >
               {isAdding ? "Adding..." : "+ Add"}
@@ -132,3 +132,7 @@ const AddChemicalModal = ({ open, onClose, chemicalName, supplier, supplierId, r
 };
 
 export default AddChemicalModal;
+
+
+
+

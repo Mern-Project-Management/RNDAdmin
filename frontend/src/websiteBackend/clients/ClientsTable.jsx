@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+﻿import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Edit, Trash2, ArrowUp, ArrowDown, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -200,14 +200,14 @@ const ClientsTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
         >
           Save
         </button>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold text-gray-700 font-serif uppercase">Clients</h1>
-        <button className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif">
+        <button className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif">
           <Link to="/add-client">
             <Plus size={15} />
           </Link>
@@ -238,7 +238,7 @@ const ClientsTable = () => {
             </div>
           ) : (
             <table className="w-full mt-4 border-collapse overflow-x-auto" {...getTableProps()}>
-              <thead className="bg-[#ffc108] text-[#1a1a1a] hover:bg-slate-800 text-white">
+              <thead className="bg-[#ffcc00] text-[#1a1a1a] hover:bg-slate-800 text-white">
                 {headerGroups.map((headerGroup) => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => (
@@ -293,3 +293,7 @@ const ClientsTable = () => {
 };
 
 export default ClientsTable;
+
+
+
+

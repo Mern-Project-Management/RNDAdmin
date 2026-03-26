@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import NotificationsDropdown from '@/navbar/NotificationDropdown';
 import UserInfoDropdown from '@/navbar/UserInfoDropdown';
@@ -79,7 +79,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="bg-[#ffc108] flex items-center justify-between text-[#1a1a1a] relative">
+            <nav className="bg-[#ffcc00] flex items-center justify-between text-[#1a1a1a] relative">
                 <SidebarTrigger />
                 <div className="flex w-full items-center justify-end space-x-8">
                     <NotificationsDropdown
@@ -123,3 +123,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+

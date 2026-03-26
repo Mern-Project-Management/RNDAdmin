@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+﻿import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaArrowUp, FaArrowDown, FaPlus } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
@@ -254,14 +254,14 @@ const StaffTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
         >
           Save
         </button>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold  text-gray-700 font-serif uppercase">Our Team</h1>
-        <button className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif">
+        <button className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif">
           <Link to="/our-staff-form"><FaPlus size={15} /></Link>
         </button>
       </div>
@@ -283,7 +283,7 @@ const StaffTable = () => {
           {
             staff.length == 0 ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
               : <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-                <thead className="bg-[#ffc108] text-[#1a1a1a] hover:bg-slate-800 text-white">
+                <thead className="bg-[#ffcc00] text-[#1a1a1a] hover:bg-slate-800 text-white">
                   {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
@@ -330,16 +330,16 @@ const StaffTable = () => {
 
       )}
       <div className="mt-4 flex justify-center">
-        <button onClick={() => setPageIndex(0)} disabled={pageIndex === 0} className="mr-2 px-3 py-1 bg-[#ffc108] text-[#1a1a1a]  hover:bg-[#e6ac07] rounded transition">
+        <button onClick={() => setPageIndex(0)} disabled={pageIndex === 0} className="mr-2 px-3 py-1 bg-[#ffcc00] text-[#1a1a1a]  hover:bg-[#e6b800] rounded transition">
           {"<<"}
         </button>{" "}
-        <button onClick={() => setPageIndex(pageIndex - 1)} disabled={pageIndex === 0} className="mr-2 px-3 py-1 bg-[#ffc108] text-[#1a1a1a]  hover:bg-[#e6ac07] rounded transition">
+        <button onClick={() => setPageIndex(pageIndex - 1)} disabled={pageIndex === 0} className="mr-2 px-3 py-1 bg-[#ffcc00] text-[#1a1a1a]  hover:bg-[#e6b800] rounded transition">
           {"<"}
         </button>{" "}
-        <button onClick={() => setPageIndex(pageIndex + 1)} disabled={pageIndex + 1 >= pageCount} className="mr-2 px-3 py-1 bg-[#ffc108] text-[#1a1a1a]  hover:bg-[#e6ac07] rounded transition">
+        <button onClick={() => setPageIndex(pageIndex + 1)} disabled={pageIndex + 1 >= pageCount} className="mr-2 px-3 py-1 bg-[#ffcc00] text-[#1a1a1a]  hover:bg-[#e6b800] rounded transition">
           {">"}
         </button>{" "}
-        <button onClick={() => setPageIndex(pageCount - 1)} disabled={pageIndex + 1 >= pageCount} className="mr-2 px-3 py-1 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07]  transition">
+        <button onClick={() => setPageIndex(pageCount - 1)} disabled={pageIndex + 1 >= pageCount} className="mr-2 px-3 py-1 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800]  transition">
           {">>"}
         </button>{" "}
         <strong>
@@ -351,3 +351,7 @@ const StaffTable = () => {
 };
 
 export default StaffTable;
+
+
+
+

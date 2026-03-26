@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+﻿import React, { useState , useEffect} from "react";
 import {
   Table,
   TableBody,
@@ -143,7 +143,7 @@ export default function ChemicalTable() {
     <div className="w-full">
       <div className="flex justify-between items-center mb-5">
         <div>
-          <h2 className="text-lg font-bold text-[#ffc108]">Chemical List</h2>
+          <h2 className="text-lg font-bold text-[#7a6b00]">Chemical List</h2>
         </div>
         <div>
           <Button>
@@ -281,3 +281,7 @@ export default function ChemicalTable() {
     </div>
   );
 }
+
+
+
+

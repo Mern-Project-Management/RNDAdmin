@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+﻿import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Edit, Trash2, ArrowUp, ArrowDown, Plus, X } from 'lucide-react';
 import { BsArrowReturnRight } from "react-icons/bs";
@@ -259,14 +259,14 @@ const CategoryTable = () => {
           </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 mt-6 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300 font-serif"
+          className="px-4 py-2 mt-6 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
         >
           Save
         </button>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold text-gray-700 font-serif uppercase">Categories</h1>
-        <Link to="/service-category-form"><button className="px-4 py-2 bg-[#ffc108] text-[#1a1a1a] rounded hover:bg-[#e6ac07] transition duration-300">
+        <Link to="/service-category-form"><button className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300">
           <Plus size={15} /></button></Link>
       </div>
       {loadings ? (
@@ -274,7 +274,7 @@ const CategoryTable = () => {
       ) : (
         <>{categories.length === 0 ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
           : <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-            <thead className="bg-[#ffc108] text-[#1a1a1a] hover:bg-slate-800 text-white">
+            <thead className="bg-[#ffcc00] text-[#1a1a1a] hover:bg-slate-800 text-white">
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
@@ -443,3 +443,7 @@ const CategoryTable = () => {
 };
 
 export default CategoryTable;
+
+
+
+

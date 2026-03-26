@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Table, Modal, message, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -97,7 +97,7 @@ const CareerTable = () => {
             render: (_, record) => (
                 <div className="space-y-0.5">
                     <p className="font-normal text-gray-950 text-base">{record.name}</p>
-                    <p className="text-sm font-medium text-[#ffc108]">{record.phone || record.contactNo}</p>
+                    <p className="text-sm font-medium text-[#7a6b00]">{record.phone || record.contactNo}</p>
                     <p className="text-xs text-gray-500">{record.address}</p>
                 </div>
             ),
@@ -214,3 +214,7 @@ const CareerTable = () => {
 };
 
 export default CareerTable;
+
+
+
+

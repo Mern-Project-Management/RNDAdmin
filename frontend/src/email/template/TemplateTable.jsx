@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { useGetAllTemplatesQuery, useDeleteTemplateMutation } from "@/slice/template/emailTemplate";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
@@ -80,7 +80,7 @@ const TemplateTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">Email Templates</h1>
         <Link to="/add-template">
-          <Button className="bg-[#ffc108]-[#1a1a1a] hover:bg-purple-700" variant="primary">
+          <Button className="bg-[#ffcc00]-[#1a1a1a] hover:bg-purple-700" variant="primary">
             Add Template
           </Button>
         </Link>
@@ -116,7 +116,7 @@ const TemplateTable = () => {
                   {template.body && template.body.length > 100 && (
                     <Button
                       variant="link"
-                      className="text-[#ffc108] p-0 h-auto font-medium"
+                      className="text-[#7a6b00] p-0 h-auto font-medium"
                       onClick={() => toggleRowExpansion(template._id)}
                     >
                       {expandedRows[template._id] ? 'Show Less' : 'Read More'}
@@ -157,3 +157,7 @@ const TemplateTable = () => {
 };
 
 export default TemplateTable;
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -172,7 +172,7 @@ const SuppliersTable = () => {
                                             variant="default"
                                             size="sm"
                                             onClick={() => handleChemicalsClick(supplier)}
-                                            className="bg-[#ffc108]-[#1a1a1a] px-4 py-2 rounded hover:bg-[#ffc108] transition-colors duration-300"
+                                            className="bg-[#ffcc00]-[#1a1a1a] px-4 py-2 rounded hover:bg-[#ffcc00] transition-colors duration-300"
                                         >
                                             Chemicals
                                             <Badge
@@ -267,3 +267,6 @@ const SuppliersTable = () => {
 };
 
 export default SuppliersTable;
+
+
+

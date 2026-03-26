@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -194,7 +194,7 @@ export default function InquiryList() {
                             onClick={() => setActiveTab("Active")}
                             className={`px-6 py-2 rounded-md text-sm font-bold transition-all ${
                                 activeTab === "Active" 
-                                ? "bg-white text-[#ffc108] shadow-sm" 
+                                ? "bg-white text-[#7a6b00] shadow-sm" 
                                 : "text-gray-500 hover:text-gray-700"
                             }`}
                         >
@@ -271,7 +271,7 @@ export default function InquiryList() {
                             <TableCell>
                                 <div className="space-y-1">
                                     <div className="font-medium text-gray-900 text-sm">{item.name}</div>
-                                    <div className="text-xs text-[#ffc108] font-medium">{item.email}</div>
+                                    <div className="text-xs text-[#7a6b00] font-medium">{item.email}</div>
                                     
                                     {expandedRowId === item._id && (
                                         <div className="mt-3 bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2.5 text-sm shadow-inner scale-in-95 animate-in fade-in duration-200">
@@ -282,7 +282,7 @@ export default function InquiryList() {
                                             </div>
                                             <div className="flex gap-3 border-b border-gray-200 pb-1.5">
                                                 <span className="font-bold text-gray-500 w-24 shrink-0 uppercase text-[10px] tracking-widest mt-0.5">Email</span>
-                                                <span className="text-[#ffc108] font-medium">{item.email}</span>
+                                                <span className="text-[#7a6b00] font-medium">{item.email}</span>
                                             </div>
 
                                             {/* Conditionally render fields only if they exist */}
@@ -356,7 +356,7 @@ export default function InquiryList() {
                                     )}
                                     <button
                                         onClick={() => toggleRowExpand(item._id)}
-                                        className="text-[#ffc108] text-xs font-bold hover:underline focus:outline-none flex items-center gap-1 mt-2"
+                                        className="text-[#7a6b00] text-xs font-bold hover:underline focus:outline-none flex items-center gap-1 mt-2"
                                     >
                                         {expandedRowId === item._id ? (
                                             <><ChevronUp className="w-4 h-4" /> View Less</>
@@ -439,3 +439,7 @@ export default function InquiryList() {
         </div>
     );
 }
+
+
+
+

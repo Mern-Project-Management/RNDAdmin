@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -493,7 +493,7 @@ const PortfolioForm = () => {
                 onClick={handleDeleteImage}
                 title="Remove image"
               >
-                <span className="text-xs font-bold">×</span>
+                <span className="text-xs font-bold">Ã—</span>
               </button>
               <img
                 src={URL.createObjectURL(photo)}
@@ -567,7 +567,7 @@ const PortfolioForm = () => {
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className={`bg-[#ffc108]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6ac07] transition duration-200 ${
+        className={`bg-[#ffcc00]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6b800] transition duration-200 ${
           isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
@@ -578,3 +578,7 @@ const PortfolioForm = () => {
 };
 
 export default PortfolioForm;
+
+
+
+

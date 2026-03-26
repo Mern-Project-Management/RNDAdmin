@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -118,7 +118,7 @@ export default function EditInquiryForm({ onClose }) {
                                     <FormItem>
                                         <FormLabel className="text-gray-700 font-bold">Full Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter full name" {...field} className="h-11 border-gray-300 focus:ring-[#ffc108]" />
+                                            <Input placeholder="Enter full name" {...field} className="h-11 border-gray-300 focus:ring-[#ffcc00]" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -132,7 +132,7 @@ export default function EditInquiryForm({ onClose }) {
                                     <FormItem>
                                         <FormLabel className="text-gray-700 font-bold">Email Address</FormLabel>
                                         <FormControl>
-                                            <Input type="email" placeholder="Enter email" {...field} className="h-11 border-gray-300 focus:ring-[#ffc108]" />
+                                            <Input type="email" placeholder="Enter email" {...field} className="h-11 border-gray-300 focus:ring-[#ffcc00]" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -146,7 +146,7 @@ export default function EditInquiryForm({ onClose }) {
                                     <FormItem>
                                         <FormLabel className="text-gray-700 font-bold">Organisation / Company</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter organisation name" {...field} className="h-11 border-gray-300 focus:ring-[#ffc108]" />
+                                            <Input placeholder="Enter organisation name" {...field} className="h-11 border-gray-300 focus:ring-[#ffcc00]" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -160,7 +160,7 @@ export default function EditInquiryForm({ onClose }) {
                                     <FormItem>
                                         <FormLabel className="text-gray-700 font-bold">Service (Department)</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter service/department" {...field} className="h-11 border-gray-300 focus:ring-[#ffc108]" />
+                                            <Input placeholder="Enter service/department" {...field} className="h-11 border-gray-300 focus:ring-[#ffcc00]" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -174,7 +174,7 @@ export default function EditInquiryForm({ onClose }) {
                                     <FormItem>
                                         <FormLabel className="text-gray-700 font-bold">Phone Number</FormLabel>
                                         <FormControl>
-                                            <Input type="tel" placeholder="Enter 10-digit phone" {...field} className="h-11 border-gray-300 focus:ring-[#ffc108]" />
+                                            <Input type="tel" placeholder="Enter 10-digit phone" {...field} className="h-11 border-gray-300 focus:ring-[#ffcc00]" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -189,7 +189,7 @@ export default function EditInquiryForm({ onClose }) {
                                         <FormLabel className="text-gray-700 font-bold">Inquiry Status</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                                             <FormControl>
-                                                <SelectTrigger className="h-11 border-gray-300 focus:ring-[#ffc108]">
+                                                <SelectTrigger className="h-11 border-gray-300 focus:ring-[#ffcc00]">
                                                     <SelectValue placeholder="Select status" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -214,7 +214,7 @@ export default function EditInquiryForm({ onClose }) {
                                 <FormItem>
                                     <FormLabel className="text-gray-700 font-bold">Address</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter address" {...field} className="h-11 border-gray-300 focus:ring-[#ffc108]" />
+                                        <Input placeholder="Enter address" {...field} className="h-11 border-gray-300 focus:ring-[#ffcc00]" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -233,7 +233,7 @@ export default function EditInquiryForm({ onClose }) {
                             <Button 
                                 type="submit" 
                                 disabled={isLoading}
-                                className="h-11 px-10 bg-[#ffc108]-[#1a1a1a] font-bold"
+                                className="h-11 px-10 bg-[#ffcc00]-[#1a1a1a] font-bold"
                             >
                                 {isLoading ? "Updating..." : "Save Changes"}
                             </Button>
@@ -244,3 +244,6 @@ export default function EditInquiryForm({ onClose }) {
         </div>
     );
 }
+
+
+
