@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Search, UserCircle, LogIn, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import Footer from "../home/Footer";
 import { useGetLogoQuery } from "@/slice/logo/LogoSlice";
 import NavSection from "./NavSection";
 
-export default function NavbarComp({ categories }) {
+export default function NavbarComp({ categories, serviceCategories }) {
   const [productDropdownOpen, setProductDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -103,6 +103,7 @@ export default function NavbarComp({ categories }) {
 
         <NavSection
           categories={categories}
+          serviceCategories={serviceCategories}
           parsedBlogCategories={parsedBlogCategories}
           isHomeActive={isHomeActive}
           isProductsActive={isProductsActive}
@@ -164,6 +165,36 @@ export default function NavbarComp({ categories }) {
               >
                 <X className="h-6 w-6" />
               </Button>
+            </div>
+            {/* Mobile Menu Links */}
+            <div className="flex flex-col space-y-2 py-4 max-h-[70vh] overflow-y-auto">
+              {[
+                { label: "Home", path: "/", active: isHomeActive },
+                { label: "Products", path: "/categories", active: isProductsActive },
+                { label: "Services", path: "/services", active: pathname.startsWith("/services") },
+                { label: "Worldwide", path: "/worldwide", active: pathname === "/worldwide" },
+                { label: "Careers", path: "/careers", active: pathname === "/careers" },
+                { label: "Blogs", path: "/blogs", active: isBlogActive },
+                { label: "Contact Us", path: "/contact-us", active: isContactActive },
+              ].map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-lg font-bold px-4 py-3 rounded-lg transition-colors ${
+                    link.active ? "bg-white text-[#7a6b00] shadow-sm" : "text-[#7a6b00] hover:bg-white/20"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                to="/advance-search"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mx-2 text-center mt-6 bg-orange-500 text-white py-4 rounded-xl font-bold shadow-lg"
+              >
+                Advanced Search
+              </Link>
             </div>
           </div>
         </div>

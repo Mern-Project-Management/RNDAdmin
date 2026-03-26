@@ -11,7 +11,9 @@ const ServiceCategoryForm = () => {
   const [tag, setTag] = useState("");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState("");
+  const [dropdownPhoto, setDropdownPhoto] = useState(null);
   const [altText, setAltText] = useState("");
+  const [dropdownPhotoAlt, setDropdownPhotoAlt] = useState("");
   const [imgtitle, setImgtitle] = useState("");
 
   const [parentCategoryId, setParentCategoryId] = useState("");
@@ -37,8 +39,17 @@ const ServiceCategoryForm = () => {
     setPhoto(file);
   };
 
+  const handleDropdownPhotoChange = (e) => {
+    const file = e.target.files[0];
+    setDropdownPhoto(file);
+  };
+
   const handleDeleteImage = () => {
     setPhoto(null);
+  };
+
+  const handleDeleteDropdownImage = () => {
+    setDropdownPhoto(null);
   };
 
   const modules = {
@@ -121,7 +132,11 @@ const ServiceCategoryForm = () => {
       if (photo) {
         formData.append("photo", photo);
       }
+      if (dropdownPhoto) {
+        formData.append("dropdownPhoto", dropdownPhoto);
+      }
       formData.append("alt", altText);
+      formData.append("dropdownPhotoAlt", dropdownPhotoAlt);
       formData.append("imgtitle", imgtitle);
       formData.append("slug", slug);
       formData.append("metatitle", metatitle);
@@ -162,7 +177,9 @@ const ServiceCategoryForm = () => {
       setTag("")
       setDescription("");
       setPhoto("");
+      setDropdownPhoto(null);
       setAltText("");
+      setDropdownPhotoAlt("");
       setImgtitle("");
       setParentCategoryId("");
       setSubCategoryId("");
@@ -319,7 +336,7 @@ const ServiceCategoryForm = () => {
         </div>
         <div className="mb-8">
           <label htmlFor="photo" className="block font-semibold mb-2">
-            Photo
+            Photo (For Service Page)
           </label>
           <input
             type="file"
@@ -366,6 +383,50 @@ const ServiceCategoryForm = () => {
                   id="imgtitle"
                   value={imgtitle}
                   onChange={(e) => setImgtitle(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none"
+                  required
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mb-8">
+          <label htmlFor="dropdownPhoto" className="block font-semibold mb-2">
+            Dropdown Photo (For Navbar MegaMenu)
+          </label>
+          <input
+            type="file"
+            name="dropdownPhoto"
+            id="dropdownPhoto"
+            onChange={handleDropdownPhotoChange}
+            className="border rounded focus:outline-none"
+            accept="image/*"
+          />
+
+          {dropdownPhoto && (
+            <div className="mt-2 relative group w-56">
+              <img
+                src={URL.createObjectURL(dropdownPhoto)}
+                alt="Dropdown Preview"
+                className="h-32 w-56 object-cover"
+              />
+              <button
+                type="button"
+                onClick={handleDeleteDropdownImage}
+                className="absolute top-4 right-2 bg-red-500 text-white rounded-md p-1 size-6 flex items-center justify-center hover:bg-red-600 focus:outline-none"
+              >
+                X
+              </button>
+              <div className="mb-4">
+                <label htmlFor="dropdownPhotoAlt" className="block font-semibold mb-2">
+                  Dropdown Alternative Text
+                </label>
+                <input
+                  type="text"
+                  id="dropdownPhotoAlt"
+                  value={dropdownPhotoAlt}
+                  onChange={(e) => setDropdownPhotoAlt(e.target.value)}
                   className="w-full p-2 border rounded focus:outline-none"
                   required
                 />

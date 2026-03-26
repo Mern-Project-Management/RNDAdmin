@@ -5,7 +5,9 @@ const ServicecategorySchema = new mongoose.Schema({
   tag:{type:String},
   description: { type: String },
   photo: { type: String },
+  dropdownPhoto: { type: String }, // Separate image for dropdown
   alt: { type: String },
+  dropdownPhotoAlt: { type: String }, // Alt for dropdown image
   imgtitle: { type: String },
   slug: { type: String },
   metatitle: { type: String },
@@ -28,7 +30,9 @@ const ServicecategorySchema = new mongoose.Schema({
       tag:{type:String},
       description: { type: String },
       photo: { type: String },
+      dropdownPhoto: { type: String }, // Separate image for dropdown
       alt: { type: String },
+      dropdownPhotoAlt: { type: String }, // Alt for dropdown image
       slug: { type: String },
       metatitle: { type: String },
       metadescription: { type: String },
@@ -50,7 +54,9 @@ const ServicecategorySchema = new mongoose.Schema({
           tag:{type:String},
           description: { type: String },
           photo: { type: String },
+          dropdownPhoto: { type: String }, // Separate image for dropdown
           alt: { type: String },
+          dropdownPhotoAlt: { type: String }, // Alt for dropdown image
           slug: { type: String },
           metatitle: { type: String },
           metadescription: { type: String },

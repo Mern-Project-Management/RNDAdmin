@@ -1,7 +1,9 @@
-﻿import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { NavLink } from "./NavLink";
 import { useGetAllCompanyItemsQuery } from "@/slice/companyItemSlice";
+import { ChevronDown } from "lucide-react";
+import ServiceMegaMenu from "./ServiceMegaMenu";
 
 const NavSection = ({ 
     categories, 
@@ -11,15 +13,19 @@ const NavSection = ({
     isBlogActive, 
     isContactActive,
     mobileMenuOpen, 
-    setMobileMenuOpen 
+    setMobileMenuOpen,
+    serviceCategories = []
 }) => {
     const [corporateDropdownOpen, setCorporateDropdownOpen] = useState(false);
     const [blogDropdownOpen, setBlogDropdownOpen] = useState(false);
+    const [serviceDropdownOpen, setServiceDropdownOpen] = useState(false);
     const [hoveredCompanyItem, setHoveredCompanyItem] = useState(null);
 
     const { data: companyItems = [] } = useGetAllCompanyItemsQuery();
 
-    const isCompanyActive = companyItems.some(item => window.location.pathname === item.link);
+    const location = useLocation();
+    const pathname = location.pathname;
+    const isCompanyActive = companyItems.some(item => pathname === item.link);
 
     return (
         <nav className="bg-[#ffcc00] text-[#1a1a1a]">
@@ -114,6 +120,26 @@ const NavSection = ({
                     >
                         Careers
                     </NavLink>
+
+                    {/* Services Dropdown */}
+                    <div
+                        className="relative"
+                        onMouseEnter={() => setServiceDropdownOpen(true)}
+                        onMouseLeave={() => setServiceDropdownOpen(false)}
+                    >
+                        <NavLink 
+                            href="/services"
+                            className={() => `block py-2 px-4 hover:text-orange-400 transition-colors ${pathname.startsWith("/services") ? "text-orange-400" : ""}`}
+                        >
+                            <div className="flex items-center gap-1">
+                                Services
+                                <ChevronDown className={`size-4 transition-transform ${serviceDropdownOpen ? "rotate-180" : ""}`} />
+                            </div>
+                        </NavLink>
+                        {serviceDropdownOpen && (
+                            <ServiceMegaMenu serviceCategories={serviceCategories} />
+                        )}
+                    </div>
 
                     {/* Blog Dropdown */}
                     <div

@@ -16,8 +16,9 @@ const insertCategory = async (req, res) => {
     category,
     tag,
     description,
-    alt,
     status,
+    alt,
+    dropdownPhotoAlt,
     imgtitle,
     slug,
     metatitle,
@@ -32,7 +33,8 @@ const insertCategory = async (req, res) => {
     changeFreq,
   } = req.body;
 
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.files?.photo ? req.files.photo[0].filename : null;
+  const dropdownPhoto = req.files?.dropdownPhoto ? req.files.dropdownPhoto[0].filename : null;
   const component = "MainService"; // Hardcoding the component field
 
   try {
@@ -48,8 +50,10 @@ const insertCategory = async (req, res) => {
       description,
       status,
       alt,
+      dropdownPhotoAlt,
       imgtitle,
       photo,
+      dropdownPhoto,
       slug,
       metatitle,
       metadescription,
@@ -78,8 +82,9 @@ const insertSubCategory = async (req, res) => {
     category,
     tag,
     description,
-    alt,
     status,
+    alt,
+    dropdownPhotoAlt,
     imgtitle,
     slug,
     metatitle,
@@ -93,7 +98,8 @@ const insertSubCategory = async (req, res) => {
     priority,
     changeFreq,
   } = req.body;
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.files?.photo ? req.files.photo[0].filename : null;
+  const dropdownPhoto = req.files?.dropdownPhoto ? req.files.dropdownPhoto[0].filename : null;
   const component = "SubService"; // Hardcoding the component field
 
   try {
@@ -116,8 +122,10 @@ const insertSubCategory = async (req, res) => {
       component,
       category,
       alt,
+      dropdownPhotoAlt,
       imgtitle,
       photo,
+      dropdownPhoto,
       slug,
       metatitle,
       metadescription,
@@ -146,6 +154,7 @@ const insertSubSubCategory = async (req, res) => {
     description,
     status,
     alt,
+    dropdownPhotoAlt,
     imgtitle,
     slug,
     metatitle,
@@ -159,7 +168,8 @@ const insertSubSubCategory = async (req, res) => {
     priority,
     changeFreq,
   } = req.body;
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.files?.photo ? req.files.photo[0].filename : null;
+  const dropdownPhoto = req.files?.dropdownPhoto ? req.files.dropdownPhoto[0].filename : null;
 
   try {
     const categoryDoc = await ServiceCategory.findById(categoryId);
@@ -189,8 +199,10 @@ const insertSubSubCategory = async (req, res) => {
       description,
       component,
       photo,
+      dropdownPhoto,
       status,
       alt,
+      dropdownPhotoAlt,
       imgtitle,
       slug,
       metatitle,
@@ -221,6 +233,7 @@ const updateCategory = async (req, res) => {
     description,
     status,
     alt,
+    dropdownPhotoAlt,
     imgtitle,
     slug,
     metatitle,
@@ -237,8 +250,10 @@ const updateCategory = async (req, res) => {
 
   // Check for photo file
   let photo;
-  if (req.file) {
-    photo = req.file.filename;
+  let dropdownPhoto;
+  if (req.files) {
+    if (req.files.photo) photo = req.files.photo[0].filename;
+    if (req.files.dropdownPhoto) dropdownPhoto = req.files.dropdownPhoto[0].filename;
   }
 
   // Prepare update object
@@ -248,6 +263,7 @@ const updateCategory = async (req, res) => {
     description,
     status,
     alt,
+    dropdownPhotoAlt,
     imgtitle,
     slug,
     metatitle,
@@ -261,10 +277,9 @@ const updateCategory = async (req, res) => {
     changeFreq,
   };
 
-  // Only set photo if it exists
-  if (photo) {
-    updateData.photo = photo;
-  }
+  // Only set photos if they exist
+  if (photo) updateData.photo = photo;
+  if (dropdownPhoto) updateData.dropdownPhoto = dropdownPhoto;
 
   // Update priority if it's a valid number
   if (priority !== undefined && !isNaN(priority)) {
@@ -315,6 +330,7 @@ const updateSubCategory = async (req, res) => {
     'url',
     'priority',
     'changeFreq',
+    'dropdownPhotoAlt',
   ];
 
   // Add only defined fields from req.body to updateData
@@ -324,9 +340,10 @@ const updateSubCategory = async (req, res) => {
     }
   });
 
-  // Add photo if uploaded
-  if (req.file) {
-    updateData['subCategories.$.photo'] = req.file.filename;
+  // Add photos if uploaded
+  if (req.files) {
+    if (req.files.photo) updateData['subCategories.$.photo'] = req.files.photo[0].filename;
+    if (req.files.dropdownPhoto) updateData['subCategories.$.dropdownPhoto'] = req.files.dropdownPhoto[0].filename;
   }
 
   try {
@@ -374,11 +391,14 @@ const updatesubsubcategory = async (req, res) => {
     url,
     priority,
     changeFreq,
+    dropdownPhotoAlt,
   } = req.body;
 
   let photo = req.body.photo;
-  if (req.file) {
-    photo = req.file.filename; // Use uploaded file's filename if available
+  let dropdownPhoto = req.body.dropdownPhoto;
+  if (req.files) {
+    if (req.files.photo) photo = req.files.photo[0].filename;
+    if (req.files.dropdownPhoto) dropdownPhoto = req.files.dropdownPhoto[0].filename;
   }
 
   try {
@@ -403,7 +423,9 @@ const updatesubsubcategory = async (req, res) => {
     subSubCategories.description = description || subSubCategories.description;
     subSubCategories.status = status || subSubCategories.status;
     subSubCategories.photo = photo || subSubCategories.photo;
+    subSubCategories.dropdownPhoto = dropdownPhoto || subSubCategories.dropdownPhoto;
     subSubCategories.alt = alt || subSubCategories.alt;
+    subSubCategories.dropdownPhotoAlt = dropdownPhotoAlt || subSubCategories.dropdownPhotoAlt;
     subSubCategories.imgtitle = imgtitle || subSubCategories.imgtitle;
     subSubCategories.slug = slug || subSubCategories.slug;
     subSubCategories.metatitle = metatitle || subSubCategories.metatitle;

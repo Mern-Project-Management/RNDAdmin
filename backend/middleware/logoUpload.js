@@ -63,25 +63,33 @@ const processLogoImage = async (filePath, mimetype) => {
 // Middleware to handle the logo file upload and process the image
 const uploadLogo = async (req, res, next) => {
   try {
-    await upload.single('photo')(req, res, async (err) => {
+    await upload.fields([
+      { name: 'photo', maxCount: 1 },
+      { name: 'dropdownPhoto', maxCount: 1 }
+    ])(req, res, async (err) => {
       if (err) {
         return res.status(400).json({
           error: err.message || 'Error uploading file'
         });
       }
 
-      // If no file is uploaded, proceed without photo processing
-      if (!req.file) {
-        return next();
-      }
+      // Process uploaded files
+      const processFile = async (file) => {
+        if (!file) return;
+        const filePath = file.path;
+        console.log('File saved to:', filePath);
+        await processLogoImage(filePath, file.mimetype);
+      };
 
       try {
-        const filePath = req.file.path;
-        console.log('File saved to:', filePath);
-
-        // Process the image to ensure it's in WebP format (skip GIFs)
-        await processLogoImage(filePath, req.file.mimetype);
-
+        if (req.files) {
+          if (req.files.photo) {
+            await processFile(req.files.photo[0]);
+          }
+          if (req.files.dropdownPhoto) {
+            await processFile(req.files.dropdownPhoto[0]);
+          }
+        }
         next();
       } catch (processError) {
         console.error('Processing error:', processError);

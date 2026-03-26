@@ -31,6 +31,7 @@ import { coreValueApi } from '@/slice/coreValue/coreValue';
 import { policyApi } from '@/slice/policy/policy';
 import { companyItemApi } from '../slice/companyItemSlice';
 import { notificationApi } from '@/slice/notification/notification';
+import { serviceApi } from '../slice/serviceSlice';
 const store = configureStore({
   reducer: {
     [chemicalApi.reducerPath]: chemicalApi.reducer, // RTK Query reducer for chemicals
@@ -64,7 +65,8 @@ const store = configureStore({
     [coreValueApi.reducerPath]: coreValueApi.reducer,
     [policyApi.reducerPath]: policyApi.reducer,
     [companyItemApi.reducerPath]: companyItemApi.reducer,
-    [notificationApi.reducerPath]: notificationApi.reducer
+    [notificationApi.reducerPath]: notificationApi.reducer,
+    [serviceApi.reducerPath]: serviceApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -101,7 +103,8 @@ const store = configureStore({
       .concat(coreValueApi.middleware)
       .concat(policyApi.middleware)
       .concat(companyItemApi.middleware)
-      .concat(notificationApi.middleware),
+      .concat(notificationApi.middleware)
+      .concat(serviceApi.middleware),
 });
 
 export default store;

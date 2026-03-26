@@ -11,9 +11,12 @@ const EditServiceCategory = () => {
   const [tag, setTag] = useState("");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState("");
+  const [dropdownPhoto, setDropdownPhoto] = useState(null);
   const [altText, setAltText] = useState("");
+  const [dropdownPhotoAlt, setDropdownPhotoAlt] = useState("");
   const [imgtitle, setImgtitle] = useState("");
   const [currentPhoto, setCurrentPhoto] = useState("");
+  const [currentDropdownPhoto, setCurrentDropdownPhoto] = useState("");
   const [slug, setSlug] = useState("");
   const [metatitle, setMetatitle] = useState("");
   const [metadescription, setMetadescription] = useState("");
@@ -41,13 +44,15 @@ const EditServiceCategory = () => {
 
       try {
         const response = await axios.get(urls, { withCredentials: true });
-        const { category, tag, description, photo, alt, imgtitle, slug, metatitle, metadescription, metakeywords, metalanguage, metacanonical, metaschema, otherMeta, changeFreq, priority, status } = response.data;
+        const { category, tag, description, photo, dropdownPhoto, alt, dropdownPhotoAlt, imgtitle, slug, metatitle, metadescription, metakeywords, metalanguage, metacanonical, metaschema, otherMeta, changeFreq, priority, status } = response.data;
 
         setCategory(category);
         setTag(tag);
         setDescription(description)
         setCurrentPhoto(photo);
+        setCurrentDropdownPhoto(dropdownPhoto);
         setAltText(alt);
+        setDropdownPhotoAlt(dropdownPhotoAlt);
         setImgtitle(imgtitle)
         setSlug(slug);
         setStatus(status);
@@ -74,12 +79,22 @@ const EditServiceCategory = () => {
     setPhoto(file);
   };
 
+  const handleDropdownPhotoChange = (e) => {
+    const file = e.target.files[0];
+    setDropdownPhoto(file);
+  };
 
   const handleDeleteImage = () => {
     setPhoto(null);
     setCurrentPhoto("");
     setAltText("");
     setImgtitle("");
+  };
+
+  const handleDeleteDropdownImage = () => {
+    setDropdownPhoto(null);
+    setCurrentDropdownPhoto("");
+    setDropdownPhotoAlt("");
   };
 
   const generateUrl = () => {
@@ -121,6 +136,7 @@ const EditServiceCategory = () => {
     formData.append("description", description);
     formData.append("tag", tag);
     formData.append("alt", altText);
+    formData.append("dropdownPhotoAlt", dropdownPhotoAlt);
     formData.append("imgtitle", imgtitle);
     formData.append('slug', slug);
     formData.append('metatitle', metatitle);
@@ -137,6 +153,9 @@ const EditServiceCategory = () => {
 
     if (photo instanceof File) {
       formData.append("photo", photo);
+    }
+    if (dropdownPhoto instanceof File) {
+      formData.append("dropdownPhoto", dropdownPhoto);
     }
 
     if (categoryId && subCategoryId && subSubCategoryId) {
@@ -262,7 +281,7 @@ const EditServiceCategory = () => {
         ></input>
       </div>
       <div className="mb-8">
-        <label htmlFor="photo" className="block font-semibold mb-2">Photo</label>
+        <label htmlFor="photo" className="block font-semibold mb-2">Photo (For Service Page)</label>
         <input
           type="file"
           name="photo"
@@ -275,13 +294,13 @@ const EditServiceCategory = () => {
           htmlFor="photo"
           className="px-4 py-2 bg-gray-200 text-gray-700 rounded cursor-pointer hover:bg-gray-300 transition inline-block"
         >
-          {photo ? photo.name : "Choose File"}
+          {photo ? (photo instanceof File ? photo.name : "Change File") : (currentPhoto ? "Change File" : "Choose File")}
         </label>
 
         {(photo || currentPhoto) && (
           <div className="mt-2 w-56 relative group">
             <img
-              src={photo instanceof File ? URL.createObjectURL(photo) : `/api/image/download/${currentPhoto}`}
+              src={photo instanceof File ? URL.createObjectURL(photo) : `/api/logo/download/${currentPhoto}`}
               alt={altText}
               className="h-32 w-56 object-cover"
             />
@@ -310,6 +329,52 @@ const EditServiceCategory = () => {
                 id="imgtitle"
                 value={imgtitle}
                 onChange={(e) => setImgtitle(e.target.value)}
+                className="w-full p-2 border rounded focus:outline-none"
+                required
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="mb-8">
+        <label htmlFor="dropdownPhoto" className="block font-semibold mb-2">Dropdown Photo (For Navbar MegaMenu)</label>
+        <input
+          type="file"
+          name="dropdownPhoto"
+          id="dropdownPhoto"
+          onChange={handleDropdownPhotoChange}
+          className="hidden"
+          accept="image/*"
+        />
+        <label
+          htmlFor="dropdownPhoto"
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded cursor-pointer hover:bg-gray-300 transition inline-block"
+        >
+          {dropdownPhoto ? (dropdownPhoto instanceof File ? dropdownPhoto.name : "Change File") : (currentDropdownPhoto ? "Change File" : "Choose File")}
+        </label>
+
+        {(dropdownPhoto || currentDropdownPhoto) && (
+          <div className="mt-2 w-56 relative group">
+            <img
+              src={dropdownPhoto instanceof File ? URL.createObjectURL(dropdownPhoto) : `/api/logo/download/${currentDropdownPhoto}`}
+              alt={dropdownPhotoAlt}
+              className="h-32 w-56 object-cover"
+            />
+            <button
+              type="button"
+              onClick={handleDeleteDropdownImage}
+              className="absolute top-4 right-2 bg-red-500 text-white rounded-md p-1 size-6 flex items-center justify-center hover:bg-red-600 focus:outline-none"
+            >
+              X
+            </button>
+            <div className="mb-4">
+              <label htmlFor="dropdownPhotoAlt" className="block font-semibold mb-2">Dropdown Alt Text</label>
+              <input
+                type="text"
+                id="dropdownPhotoAlt"
+                value={dropdownPhotoAlt}
+                onChange={(e) => setDropdownPhotoAlt(e.target.value)}
                 className="w-full p-2 border rounded focus:outline-none"
                 required
               />
