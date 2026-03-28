@@ -47,7 +47,7 @@ const processLogoImage = async (filePath, mimetype) => {
       return;
     }
     // If the file is already a .webp, skip processing
-    if (path.extname(filePath).toLowerCase() === '.webp') {
+    if (mimetype === 'image/webp') {
       return;
     }
     // Otherwise, convert to WebP
@@ -65,7 +65,9 @@ const uploadLogo = async (req, res, next) => {
   try {
     await upload.fields([
       { name: 'photo', maxCount: 1 },
-      { name: 'dropdownPhoto', maxCount: 1 }
+      { name: 'dropdownPhoto', maxCount: 1 },
+      { name: 'headerLogo', maxCount: 1 },
+      { name: 'favIcon', maxCount: 1 }
     ])(req, res, async (err) => {
       if (err) {
         return res.status(400).json({
@@ -88,6 +90,12 @@ const uploadLogo = async (req, res, next) => {
           }
           if (req.files.dropdownPhoto) {
             await processFile(req.files.dropdownPhoto[0]);
+          }
+          if (req.files.headerLogo) {
+            await processFile(req.files.headerLogo[0]);
+          }
+          if (req.files.favIcon) {
+            await processFile(req.files.favIcon[0]);
           }
         }
         next();
