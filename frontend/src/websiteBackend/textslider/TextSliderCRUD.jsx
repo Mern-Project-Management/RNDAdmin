@@ -179,7 +179,7 @@ const TextSliderCRUD = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#ffd333] text-[#1a1a1a] font-bold px-6 py-2 rounded-lg hover:bg-[#edc32f] transition disabled:opacity-50"
               >
                 {loading ? <Loader className="animate-spin" size={18} /> : <Save size={18} />}
                 {editingIndex !== null ? "Update" : "Add"}
@@ -201,7 +201,7 @@ const TextSliderCRUD = () => {
         {/* Table Section */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-100 border-b">
+            <thead className="bg-[#ffd333] text-white">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                   #

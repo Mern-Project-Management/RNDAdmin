@@ -69,7 +69,7 @@ const CareerOptionTable = () => {
         accessor: "jobtitle",
         Cell: ({ row }) => (
           <span
-            className="hover:text-blue-500 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate(`/careeroption/editCareerOption/${row.original._id}`)}
           >
             {row.original.jobtitle}
@@ -81,7 +81,7 @@ const CareerOptionTable = () => {
         accessor: "description",
         Cell: ({ row }) => (
           <span
-            className="hover:text-blue-500 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate(`/careeroption/editCareerOption/${row.original._id}`)}
           >
             <p dangerouslySetInnerHTML={{ __html: row.original.description }}></p>
@@ -288,14 +288,14 @@ const CareerOptionTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif"
         >
           Save
         </button>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold  text-gray-700 font-serif uppercase">Career Options</h1>
-        <button className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif">
+        <button className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif">
           <Link to="/career/add"><Plus size={15} /></Link>
         </button>
       </div>
@@ -319,7 +319,7 @@ const CareerOptionTable = () => {
               ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
               : <>
                 <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-                  <thead className="bg-[#ffcc00] text-[#1a1a1a] hover:bg-slate-800 text-white">
+                  <thead className="bg-[#ffd333] text-white">
                     {headerGroups.map((headerGroup) => (
                       <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (

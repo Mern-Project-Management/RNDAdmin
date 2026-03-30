@@ -1,4 +1,4 @@
-﻿// components/HeadingSection.jsx
+// components/HeadingSection.jsx
 import React from 'react';
 
 const HeadingSection = ({ 
@@ -49,7 +49,7 @@ const HeadingSection = ({
         className={`px-4 py-2 ${
           loading 
             ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-[#ffcc00] text-[#1a1a1a] hover:bg-[#e6b800]'
+            : 'bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f]'
         } text-white rounded transition duration-300 font-serif flex items-center justify-center`}
       >
         {loading ? (

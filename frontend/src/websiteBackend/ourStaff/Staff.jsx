@@ -43,7 +43,7 @@ const StaffTable = () => {
         accessor: "S_id",
         Cell: ({ row }) => (
           <span
-            className="hover:text-blue-500 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate(`edit-our-staff-form/${row.original._id}`)}
           >
             {row.original.S_id}
@@ -55,7 +55,7 @@ const StaffTable = () => {
         accessor: "name",
         Cell: ({ row }) => (
           <span
-            className="hover:text-blue-500 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate(`/edit-our-staff-form/${row.original._id}`)}
           >
             {row.original.name}
@@ -77,7 +77,7 @@ const StaffTable = () => {
         accessor: "jobTitle",
         Cell: ({ row }) => (
           <span
-            className="hover:text-blue-500 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate(`/edit-our-staff-form/${row.original._id}`)}
           >
             {row.original.jobTitle}
@@ -254,14 +254,14 @@ const StaffTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif"
         >
           Save
         </button>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold  text-gray-700 font-serif uppercase">Our Team</h1>
-        <button className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif">
+        <button className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif">
           <Link to="/our-staff-form"><FaPlus size={15} /></Link>
         </button>
       </div>
@@ -283,7 +283,7 @@ const StaffTable = () => {
           {
             staff.length == 0 ? <div className="flex justify-center items-center"><iframe className="w-96 h-96" src="https://lottie.host/embed/1ce6d411-765d-4361-93ca-55d98fefb13b/AonqR3e5vB.json"></iframe></div>
               : <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-                <thead className="bg-[#ffcc00] text-[#1a1a1a] hover:bg-slate-800 text-white">
+                <thead className="bg-[#ffd333] text-white">
                   {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (

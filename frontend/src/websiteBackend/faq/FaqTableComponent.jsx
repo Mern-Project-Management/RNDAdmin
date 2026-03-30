@@ -31,7 +31,7 @@ export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, dele
         accessor: "question",
         Cell: ({ row }) => (
           <span
-            className="hover:text-blue-500 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate(`/faq/editFAQ/${row.original._id}`)}
           >
             {row.original.question}
@@ -130,13 +130,13 @@ export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, dele
   const renderFaqTable = (data) => (
     <div className="overflow-x-auto my-2">
       <table {...getTableProps()} className="min-w-full divide-y divide-gray-200 border border-gray-100 rounded-lg shadow-sm">
-        <thead className="bg-gray-50">
+        <thead className="bg-[#ffd333] text-white">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="px-4 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider"
+                  className="px-4 py-2 text-left text-[11px] font-bold uppercase tracking-wider"
                 >
                   <div className="flex items-center gap-1">
                     {column.render("Header")}
