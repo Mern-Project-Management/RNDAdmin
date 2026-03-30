@@ -94,7 +94,7 @@ const AddCoreValue = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">Submit</Button>
+            <Button htmlType="submit" className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">Submit</Button>
           </Form.Item>
         </Form>
       </div>

@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -233,7 +233,7 @@ export default function EditInquiryForm({ onClose }) {
                             <Button 
                                 type="submit" 
                                 disabled={isLoading}
-                                className="h-11 px-10 bg-[#ffcc00]-[#1a1a1a] font-bold"
+                                className="h-11 px-10 bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] font-bold border-none shadow-sm"
                             >
                                 {isLoading ? "Updating..." : "Save Changes"}
                             </Button>

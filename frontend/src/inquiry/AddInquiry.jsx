@@ -329,10 +329,19 @@ export default function AddInquiryForm({ onClose }) {
                     />
 
 
-                    <div className="flex justify-end space-x-2 pt-4">
+                    <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
+                        <Button 
+                            type="button" 
+                            variant="outline" 
+                            className="h-11 px-8"
+                            onClick={() => navigate('/inquiry-list')}
+                        >
+                            Cancel
+                        </Button>
                         <Button
                             type="submit"
                             disabled={isAdding}
+                            className="h-11 px-10 bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] font-bold border-none shadow-sm"
                         >
                             {isAdding ? "Adding..." : "Add Inquiry"}
                         </Button>

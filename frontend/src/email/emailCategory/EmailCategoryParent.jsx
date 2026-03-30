@@ -26,10 +26,9 @@ const EmailCategoryParent = () => {
     return (
         <Card title="Email Categories">
             <Button 
-                type="primary" 
                 icon={<PlusOutlined />} 
                 onClick={handleAddNew}
-                className='mb-4'
+                className="mb-4 bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold"
             >
                 Add New Category
             </Button>

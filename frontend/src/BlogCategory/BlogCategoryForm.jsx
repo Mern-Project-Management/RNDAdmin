@@ -76,9 +76,9 @@ const CategoryForm = () => {
   const isEditMode = !!id;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        {isEditMode ? 'Update Category' : 'Add Category'}
+    <div className="w-full p-6 bg-white">
+      <h2 className="text-2xl font-bold mb-6">
+        {isEditMode ? 'Update Blog Category' : 'Add Blog Category'}
       </h2>
       
       {isLoading ? (
@@ -97,7 +97,7 @@ const CategoryForm = () => {
                 required: "Category is required",
                 minLength: { value: 2, message: "Category must be at least 2 characters" }
               })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
             {errors.category && (
               <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>
@@ -119,7 +119,7 @@ const CategoryForm = () => {
                   message: "Slug must be lowercase, numbers, and hyphens only"
                 }
               })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
             {errors.slug && (
               <p className="text-red-500 text-xs mt-1">{errors.slug.message}</p>
@@ -135,7 +135,7 @@ const CategoryForm = () => {
               type="text"
               id="metatitle"
               {...register("metatitle")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
           </div>
 
@@ -147,7 +147,7 @@ const CategoryForm = () => {
             <textarea
               id="metadescription"
               {...register("metadescription")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
           </div>
 
@@ -160,7 +160,7 @@ const CategoryForm = () => {
               type="text"
               id="metakeywords"
               {...register("metakeywords")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
           </div>
 
@@ -178,7 +178,7 @@ const CategoryForm = () => {
                   message: "Invalid URL format"
                 }
               })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
             {errors.url && (
               <p className="text-red-500 text-xs mt-1">{errors.url.message}</p>
@@ -196,7 +196,7 @@ const CategoryForm = () => {
               {...register("priority", {
                 min: { value: 0, message: "Priority must be a non-negative number" }
               })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
             {errors.priority && (
               <p className="text-red-500 text-xs mt-1">{errors.priority.message}</p>
@@ -211,17 +211,23 @@ const CategoryForm = () => {
             <textarea
               id="otherMeta"
               {...register("otherMeta")}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] focus:border-[#ffd333]"
             />
           </div>
 
           {/* Submit Button */}
-          <div className="pt-4">
+          <div className="pt-4 flex justify-start space-x-4">
+            <button
+              type="button"
+              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 font-semibold"
+              onClick={() => navigate('/blog-category-table')}
+            >
+              Cancel
+            </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
-              disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-md hover:bg-[#edc32f] font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd333] disabled:opacity-50"
             >
               {isLoading 
                 ? 'Processing...' 

@@ -155,7 +155,7 @@ const CompanyItemForm = () => {
                 </Form.Item>
 
                 <Form.Item className="mt-8">
-                    <Button type="primary" htmlType="submit" className="w-full h-10 text-lg font-medium shadow-md">
+                    <Button htmlType="submit" className="w-full h-10 text-lg bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] font-medium border-none shadow-md">
                         {id ? 'Update Item' : 'Create Item'}
                     </Button>
                 </Form.Item>
