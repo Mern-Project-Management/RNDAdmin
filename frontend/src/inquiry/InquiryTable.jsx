@@ -393,11 +393,6 @@ export default function InquiryList() {
                             </TableCell>
                             <TableCell className="text-center">
                                 <div className="flex gap-4 justify-center items-center">
-                                    <EyeOutlined
-                                        className={`cursor-pointer text-lg transition-colors ${expandedRowId === item._id ? 'text-blue-500' : 'text-slate-800 hover:text-slate-600'}`}
-                                        onClick={() => toggleRowExpand(item._id)}
-                                        title="View Details"
-                                    />
                                     <Link to={`/edit-inquiry/${item._id}`}>
                                         <EditOutlined 
                                             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"

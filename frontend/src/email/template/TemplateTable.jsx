@@ -2,7 +2,7 @@ import React from "react";
 import { useGetAllTemplatesQuery, useDeleteTemplateMutation } from "@/slice/template/emailTemplate";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Pencil, Trash2 } from "lucide-react";
+import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa";
 
 const TemplateTable = () => {
   const { data: apiResponse, error, isLoading } = useGetAllTemplatesQuery();
@@ -108,6 +108,7 @@ const TemplateTable = () => {
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   <div
+                    className={`relative overflow-hidden transition-all duration-300 ${expandedRows[template._id] ? 'max-h-none' : 'max-h-20'}`}
                     dangerouslySetInnerHTML={{
                       __html: expandedRows[template._id] 
                         ? template.body 
@@ -131,14 +132,14 @@ const TemplateTable = () => {
                       onClick={() => handleEdit(template._id)}
                       title="Edit"
                     >
-                      <Pencil className="w-5 h-5" />
+                      <FaEdit size={20} />
                     </button>
                     <button 
                       className="text-red-500 hover:text-red-700 transition-colors" 
                       onClick={() => handleDelete(template._id)}
                       title="Delete"
                     >
-                      <Trash2 className="w-5 h-5" />
+                      <FaTrashAlt size={20} />
                     </button>
                   </div>
                 </td>
