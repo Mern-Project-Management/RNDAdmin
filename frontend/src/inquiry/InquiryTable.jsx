@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp, EllipsisVertical, MoreVertical, Plus } from "lucide-react";
 import FollowUpModal from "./FollowUpModel";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useDeleteInquiryMutation, useDeleteMultipleInquiriesMutation } from "@/slice/inquiry/inquiry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useGetInquiriesQuery } from "@/slice/inquiry/inquiry";
@@ -394,12 +394,12 @@ export default function InquiryList() {
                             <TableCell className="text-center">
                                 <div className="flex gap-4 justify-center items-center">
                                     <Link to={`/edit-inquiry/${item._id}`}>
-                                        <EditOutlined 
+                                        <FaEdit 
                                             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
                                             title="Edit Inquiry"
                                         />
                                     </Link>
-                                    <DeleteOutlined
+                                    <FaTrashAlt
                                         onClick={() => handleDelete(item._id)}
                                         className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
                                         title="Delete Inquiry"
