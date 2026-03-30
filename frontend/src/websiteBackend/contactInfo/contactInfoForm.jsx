@@ -133,7 +133,7 @@ const ContactForm = () => {
           <button
             type="button"
             onClick={() => addArrayField('photo')}
-            className="text-sm text-blue-500"
+            className="text-sm text-[#7a6b00] hover:text-[#ffd333] font-medium transition-colors"
           >
             + Add another photo
           </button>
@@ -167,7 +167,7 @@ const ContactForm = () => {
           <button
             type="button"
             onClick={() => addArrayField('imgTitle')}
-            className="text-sm text-blue-500"
+            className="text-sm text-[#7a6b00] hover:text-[#ffd333] font-medium transition-colors"
           >
             + Add another title
           </button>
@@ -200,7 +200,7 @@ const ContactForm = () => {
           <button
             type="button"
             onClick={() => addArrayField('altName')}
-            className="text-sm text-blue-500"
+            className="text-sm text-[#7a6b00] hover:text-[#ffd333] font-medium transition-colors"
           >
             + Add another name
           </button>
@@ -246,7 +246,7 @@ const ContactForm = () => {
           <button
             type="button"
             onClick={() => addArrayField('mobiles')}
-            className="text-sm text-blue-500"
+            className="text-sm text-[#7a6b00] hover:text-[#ffd333] font-medium transition-colors"
           >
             + Add another mobile
           </button>
@@ -280,7 +280,7 @@ const ContactForm = () => {
           <button
             type="button"
             onClick={() => addArrayField('emails')}
-            className="text-sm text-blue-500"
+            className="text-sm text-[#7a6b00] hover:text-[#ffd333] font-medium transition-colors"
           >
             + Add another email
           </button>
@@ -288,7 +288,7 @@ const ContactForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="w-full bg-[#ffd333] text-[#1a1a1a] p-2 rounded-lg hover:bg-[#edc32f] transition font-semibold"
         >
           Submit
         </button>

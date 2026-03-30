@@ -174,9 +174,12 @@ const StaticMetaForm = () => {
 
         <Form.Item>
           <div className="flex gap-4">
-            <Button type="primary" htmlType="submit">
-              {id ? "Update Meta" : "Add Meta"}
-            </Button>
+            <button
+              type="submit"
+              className="bg-[#ffd333] text-[#1a1a1a] px-6 py-2 rounded-lg hover:bg-[#edc32f] transition font-semibold"
+            >
+              {id ? 'Update Meta' : 'Add Meta'}
+            </button>
           </div>
         </Form.Item>
       </Form>

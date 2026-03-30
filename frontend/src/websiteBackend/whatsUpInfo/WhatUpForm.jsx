@@ -71,9 +71,13 @@ const WhatsUpInfoForm = ({ onClose }) => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={isUpdating}>
-                        Update
-                    </Button>
+                    <button
+                        type="submit"
+                        disabled={isUpdating}
+                        className="bg-[#ffd333] text-[#1a1a1a] px-6 py-2 rounded-lg hover:bg-[#edc32f] transition font-semibold disabled:opacity-60"
+                    >
+                        {isUpdating ? 'Updating...' : 'Update'}
+                    </button>
                 </Form.Item>
             </Form>
         </div>

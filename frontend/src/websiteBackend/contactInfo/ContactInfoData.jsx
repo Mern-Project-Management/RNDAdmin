@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAddUserMutation, useUpdateUserMutation, useGetAllUsersQuery } from '@/slice/contactInfo/contactInfo';
 import { MapPin, Phone, Mail, LinkIcon } from 'lucide-react';
 import axios from 'axios';
@@ -228,10 +228,10 @@ const ContactInfoForm = () => {
                         Save Headings
                     </button>
                 </div>
-                {/* Header */}
-                <div className="bg-white rounded-t-2xl  p-2 border-b-4 border-indigo-600">
-                    <h1 className="text-3xl font-bold text-gray-900">Contact Information</h1>
 
+                {/* Header */}
+                <div className="bg-white rounded-t-2xl p-2 border-b-4 border-[#ffd333]">
+                    <h1 className="text-3xl font-bold text-gray-900">Contact Information</h1>
                 </div>
 
                 {/* Form */}
@@ -239,7 +239,7 @@ const ContactInfoForm = () => {
                     {/* Address Field */}
                     <div className="space-y-2">
                         <label className="flex items-center text-sm font-semibold text-gray-700">
-                            <MapPin className="w-5 h-5 mr-2 text-indigo-600" />
+                            <MapPin className="w-5 h-5 mr-2 text-[#7a6b00]" />
                             Address
                         </label>
                         <textarea
@@ -249,7 +249,7 @@ const ContactInfoForm = () => {
                                 address: e.target.value
                             }))}
                             rows="3"
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#ffd333] focus:ring-2 focus:ring-[#ffd33340] transition-all outline-none"
                             placeholder="Enter your business address"
                             required
                         />
@@ -258,7 +258,7 @@ const ContactInfoForm = () => {
                     {/* Map Link Field */}
                     <div className="space-y-2">
                         <label className="flex items-center text-sm font-semibold text-gray-700">
-                            <LinkIcon className="w-5 h-5 mr-2 text-indigo-600" />
+                            <LinkIcon className="w-5 h-5 mr-2 text-[#7a6b00]" />
                             Map Link
                         </label>
                         <input
@@ -268,7 +268,7 @@ const ContactInfoForm = () => {
                                 ...prev,
                                 mapLink: e.target.value
                             }))}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#ffd333] focus:ring-2 focus:ring-[#ffd33340] transition-all outline-none"
                             placeholder="https://maps.google.com/..."
                         />
                     </div>
@@ -276,7 +276,7 @@ const ContactInfoForm = () => {
                     {/* Mobile Numbers */}
                     <div className="space-y-2">
                         <label className="flex items-center text-sm font-semibold text-gray-700">
-                            <Phone className="w-5 h-5 mr-2 text-indigo-600" />
+                            <Phone className="w-5 h-5 mr-2 text-[#7a6b00]" />
                             Mobile Numbers
                         </label>
                         {formData.mobiles.map((mobile, index) => (
@@ -292,7 +292,7 @@ const ContactInfoForm = () => {
                                             mobiles: newArray
                                         };
                                     })}
-                                    className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                                    className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#ffd333] focus:ring-2 focus:ring-[#ffd33340] transition-all outline-none"
                                     placeholder="+91 XXXXX XXXXX"
                                     required
                                 />
@@ -320,7 +320,7 @@ const ContactInfoForm = () => {
                                 ...prev,
                                 mobiles: [...prev.mobiles, '']
                             }))}
-                            className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center gap-1"
+                            className="text-[#7a6b00] hover:text-[#ffd333] font-medium text-sm flex items-center gap-1 transition-colors"
                         >
                             <span className="text-xl">+</span> Add Mobile Number
                         </button>
@@ -329,7 +329,7 @@ const ContactInfoForm = () => {
                     {/* HR Email */}
                     <div className="space-y-2">
                         <label className="flex items-center text-sm font-semibold text-gray-700">
-                            <Mail className="w-5 h-5 mr-2 text-indigo-600" />
+                            <Mail className="w-5 h-5 mr-2 text-[#7a6b00]" />
                             HR Email
                         </label>
                         <input
@@ -339,7 +339,7 @@ const ContactInfoForm = () => {
                                 ...prev,
                                 hrEmail: e.target.value
                             }))}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#ffd333] focus:ring-2 focus:ring-[#ffd33340] transition-all outline-none"
                             placeholder="hr@example.com"
                         />
                     </div>
@@ -347,7 +347,7 @@ const ContactInfoForm = () => {
                     {/* HR Phone */}
                     <div className="space-y-2">
                         <label className="flex items-center text-sm font-semibold text-gray-700">
-                            <Phone className="w-5 h-5 mr-2 text-indigo-600" />
+                            <Phone className="w-5 h-5 mr-2 text-[#7a6b00]" />
                             HR Phone
                         </label>
                         <input
@@ -357,7 +357,7 @@ const ContactInfoForm = () => {
                                 ...prev,
                                 hrPhone: e.target.value
                             }))}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#ffd333] focus:ring-2 focus:ring-[#ffd33340] transition-all outline-none"
                             placeholder="+91 XXXXX XXXXX"
                         />
                     </div>
@@ -365,7 +365,7 @@ const ContactInfoForm = () => {
                     {/* Emails */}
                     <div className="space-y-2">
                         <label className="flex items-center text-sm font-semibold text-gray-700">
-                            <Mail className="w-5 h-5 mr-2 text-indigo-600" />
+                            <Mail className="w-5 h-5 mr-2 text-[#7a6b00]" />
                             Email Addresses
                         </label>
                         {formData.emails.map((email, index) => (
@@ -381,7 +381,7 @@ const ContactInfoForm = () => {
                                             emails: newArray
                                         };
                                     })}
-                                    className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+                                    className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#ffd333] focus:ring-2 focus:ring-[#ffd33340] transition-all outline-none"
                                     placeholder="contact@example.com"
                                     required
                                 />
@@ -409,7 +409,7 @@ const ContactInfoForm = () => {
                                 ...prev,
                                 emails: [...prev.emails, '']
                             }))}
-                            className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center gap-1"
+                            className="text-[#7a6b00] hover:text-[#ffd333] font-medium text-sm flex items-center gap-1 transition-colors"
                         >
                             <span className="text-xl">+</span> Add Email Address
                         </button>
@@ -419,9 +419,9 @@ const ContactInfoForm = () => {
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-4 px-6 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="w-full bg-[#ffd333] text-[#1a1a1a] py-4 px-6 rounded-lg hover:bg-[#edc32f] transition-all font-semibold text-lg shadow-md hover:shadow-lg"
                     >
-                        {allUsers && allUsers.length > 0 ? 'âœ“ Update Contact Information' : '+ Add Contact Information'}
+                        {allUsers && allUsers.length > 0 ? '✔ Update Contact Information' : '+ Add Contact Information'}
                     </button>
                 </div>
             </div>
