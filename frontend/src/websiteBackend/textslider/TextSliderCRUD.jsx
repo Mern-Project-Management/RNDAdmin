@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   Plus,
-  Edit2,
-  Trash2,
   Save,
   X,
   Loader,
   ToggleLeft,
   ToggleRight,
 } from "lucide-react";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const TextSliderCRUD = () => {
   const [items, setItems] = useState([]);
@@ -241,17 +240,17 @@ const TextSliderCRUD = () => {
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => handleEdit(index)}
-                          className="text-blue-600 hover:text-blue-900 transition"
+                          className="text-green-500 hover:text-green-700 transition-colors"
                           title="Edit"
                         >
-                          <Edit2 size={18} />
+                          <FaEdit size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(index)}
-                          className="text-red-600 hover:text-red-900 transition"
+                          className="text-red-500 hover:text-red-700 transition-colors"
                           title="Delete"
                         >
-                          <Trash2 size={18} />
+                          <FaTrashAlt size={18} />
                         </button>
                       </div>
                     </td>

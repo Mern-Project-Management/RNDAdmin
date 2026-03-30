@@ -93,18 +93,11 @@ const TestimonialsTable = () => {
       {
         Header: "Options",
         Cell: ({ row }) => (
-          <div className="flex  gap-4 justify-center">
-            <button 
-              className={`transition-colors duration-200 ${expandedRows.has(row.original._id) ? 'text-[#7a6b00]' : 'text-slate-800 hover:text-slate-600'}`} 
-              onClick={() => toggleRowExpansion(row.original._id)}
-              title="View Details"
-            >
-              <FaEye size={18} />
-            </button>
-            <button className="text-green-500 hover:text-green-700 p-1 transition-colors" title="Edit">
-              <Link to={`/testimonials/editTestimonials/${row.original._id}`}>  <FaEdit size={18} /></Link>
-            </button>
-            <button className="text-red-500 hover:text-red-700 p-1 transition-colors" title="Delete" onClick={() => deleteTestimonial(row.original._id)}>
+          <div className="flex gap-4 justify-center items-center">
+            <Link to={`/testimonials/editTestimonials/${row.original._id}`} className="text-green-500 hover:text-green-700 transition-colors" title="Edit">
+              <FaEdit size={18} />
+            </Link>
+            <button className="text-red-500 hover:text-red-700 transition-colors" title="Delete" onClick={() => deleteTestimonial(row.original._id)}>
               <FaTrashAlt size={18} />
             </button>
           </div>
@@ -112,7 +105,7 @@ const TestimonialsTable = () => {
         disableSortBy: true,
       },
     ],
-    [expandedRows]
+    []
   );
 
   const {

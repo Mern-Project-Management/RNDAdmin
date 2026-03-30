@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   Plus,
-  Edit2,
-  Trash2,
   X,
   Save,
   ChevronLeft,
   ChevronRight,
+  Trash2,
 } from "lucide-react";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -834,18 +834,20 @@ const WhyChooseUsCRUD = () => {
                       )}
                     </td>
                     <td className="px-6 py-4 text-sm">
-                      <div className="flex gap-2">
+                      <div className="flex gap-4">
                         <button
                           onClick={() => handleEdit(item)}
-                          className="text-blue-600 hover:text-blue-800 transition"
+                          className="text-green-500 hover:text-green-700 transition-colors"
+                          title="Edit"
                         >
-                          <Edit2 size={18} />
+                          <FaEdit size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(item._id)}
-                          className="text-red-600 hover:text-red-800 transition"
+                          className="text-red-500 hover:text-red-700 transition-colors"
+                          title="Delete"
                         >
-                          <Trash2 size={18} />
+                          <FaTrashAlt size={18} />
                         </button>
                       </div>
                     </td>
