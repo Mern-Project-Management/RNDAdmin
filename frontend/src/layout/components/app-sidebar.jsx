@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
@@ -78,10 +78,10 @@ const menuData = [
         ]
       },
       {
-        title: "Text Slider",
+        title: "Stripe",
         icon: SlidersHorizontal,
         children: [
-          { title: "Manage Slider", icon: List, url: "/text-slider" },
+          { title: "Manage Stripe", icon: List, url: "/text-slider" },
         ]
       },
       {
