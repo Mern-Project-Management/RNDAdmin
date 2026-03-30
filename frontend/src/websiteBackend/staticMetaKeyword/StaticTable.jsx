@@ -99,7 +99,7 @@ const MetaList = () => {
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Static Page Meta</h2>
-        <Button type="primary" onClick={() => navigate("/meta-form")}>Add Meta</Button>
+        <Button className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold" onClick={() => navigate("/meta-form")}>Add Meta</Button>
       </div>
 
       <Table

@@ -88,7 +88,7 @@ const CatalogueForm = () => {
           </Upload>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={isFetching}>
+          <Button htmlType="submit" loading={isFetching} className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">
             {id ? 'Update' : 'Create'}
           </Button>
         </Form.Item>

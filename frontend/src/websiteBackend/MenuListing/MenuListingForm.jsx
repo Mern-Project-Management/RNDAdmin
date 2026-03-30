@@ -207,7 +207,7 @@ const MenuListingForm = () => {
           )}
         </Form.List>
 
-        <Button type="primary" htmlType="submit" className="mt-5">
+        <Button htmlType="submit" className="mt-5 bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">
           {id ? "Update" : "Create"}
         </Button>
       </Form>

@@ -67,7 +67,7 @@ const CatalogueTable = () => {
       <div className="flex justify-between items-center mb-3">
         <h1 className='font-bold text-2xl'>Catalogue Table</h1>
         <Button
-          type="primary"
+          className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold"
           onClick={() => navigate('/catalogue-form')}
         >
           Add Catalogue

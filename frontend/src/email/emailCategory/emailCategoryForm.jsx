@@ -30,6 +30,7 @@ const EmailCategoryForm = ({ visible, onClose, editingCategory }) => {
             open={visible}
             onCancel={onClose}
             onOk={() => form.submit()}
+            okButtonProps={{ className: 'bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold' }}
         >
             <Form
                 form={form}

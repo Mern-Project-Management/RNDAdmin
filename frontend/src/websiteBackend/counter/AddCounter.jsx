@@ -102,7 +102,7 @@ const AddCounter = () => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] font-semibold border-none rounded-md hover:bg-[#edc32f] transition"
             >
               Add Counter
             </button>
