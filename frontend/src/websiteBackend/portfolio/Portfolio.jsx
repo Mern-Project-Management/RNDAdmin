@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { FaEdit, FaTrashAlt, FaCheck, FaEye, FaTimes, FaArrowUp, FaArrowDown, FaPlus, FaSearch, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
@@ -245,7 +245,7 @@ const PortfolioTable = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-6 py-2.5 bg-[#ffcc00]-[#1a1a1a] rounded-lg hover:bg-[#e6b800] transition duration-300 shadow-sm font-medium"
+          className="px-6 py-2.5 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition duration-300 shadow-sm font-semibold"
         >
           Update Headings
         </button>
@@ -269,7 +269,7 @@ const PortfolioTable = () => {
           </div>
           <Link 
             to="/portfolio-form"
-            className="flex items-center gap-2 px-5 py-2 bg-[#ffcc00]-[#1a1a1a] rounded-lg hover:bg-[#e6b800] transition-all duration-300 shadow-sm font-medium text-sm whitespace-nowrap"
+            className="flex items-center gap-2 px-5 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition-all duration-300 shadow-sm font-semibold text-sm whitespace-nowrap"
           >
             <FaPlus size={12} /> Add Portfolio
           </Link>

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Form, Button, message, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -211,7 +211,7 @@ const CookiesForm = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif font-semibold"
         >
           Save Headings
         </button>
@@ -248,9 +248,12 @@ const CookiesForm = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <button
+            type="submit"
+            className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition font-semibold"
+          >
             {isExistingData ? 'Update' : 'Save'}
-          </Button>
+          </button>
         </Form.Item>
       </Form>
     </>

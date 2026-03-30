@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Form, Button, message, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -204,7 +204,7 @@ const PrivacyForm = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif font-semibold"
         >
           Save Headings
         </button>
@@ -238,9 +238,13 @@ const PrivacyForm = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={isLoading} disabled={isLoading}>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
             {isExistingData ? 'Update' : 'Save'}
-          </Button>
+          </button>
           {isLoading && (
             <span className="ml-3 text-gray-500 text-sm">Loading data...</span>
           )}

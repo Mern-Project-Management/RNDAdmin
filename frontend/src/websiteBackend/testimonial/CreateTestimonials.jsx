@@ -534,7 +534,7 @@ const CreateTestimonials = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded focus:outline-none disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="bg-[#ffd333] hover:bg-[#edc32f] text-[#1a1a1a] py-2 px-6 rounded font-semibold focus:outline-none disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? "Adding..." : "Add Testimonial"}
         </button>

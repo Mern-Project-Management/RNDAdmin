@@ -419,7 +419,7 @@ const WhyChooseUsCRUD = () => {
             </h1>
             <button
               onClick={() => setShowForm(!showForm)}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="flex items-center gap-2 bg-[#ffd333] text-[#1a1a1a] px-4 py-2 rounded-lg hover:bg-[#edc32f] transition font-semibold"
             >
               {showForm ? <X size={20} /> : <Plus size={20} />}
               {showForm ? "Close" : "Add New"}
@@ -660,7 +660,7 @@ const WhyChooseUsCRUD = () => {
                   <h3 className="text-lg font-semibold">Cards</h3>
                   <button
                     onClick={addCard}
-                    className="flex items-center gap-2 bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition text-sm"
+                    className="flex items-center gap-2 bg-[#ffd333] text-[#1a1a1a] px-3 py-1 rounded-lg hover:bg-[#edc32f] transition text-sm font-semibold"
                   >
                     <Plus size={16} /> Add Card
                   </button>
@@ -768,7 +768,7 @@ const WhyChooseUsCRUD = () => {
               <div className="flex gap-3">
                 <button
                   onClick={handleSubmit}
-                  className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                  className="flex items-center gap-2 bg-[#ffd333] text-[#1a1a1a] px-6 py-2 rounded-lg hover:bg-[#edc32f] transition font-semibold"
                 >
                   <Save size={18} />
                   {editingId ? "Update" : "Create"}

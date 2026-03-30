@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Form, Button, message, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -222,7 +222,7 @@ const TermsConditionForm = () => {
         </div>
         <button
           onClick={saveHeadings}
-          className="px-4 py-2 bg-[#ffcc00] text-[#1a1a1a] rounded hover:bg-[#e6b800] transition duration-300 font-serif"
+          className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300 font-serif font-semibold"
         >
           Save Headings
         </button>
@@ -259,9 +259,13 @@ const TermsConditionForm = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={isLoading} disabled={isLoading}>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
             {isExistingData ? 'Update' : 'Save'}
-          </Button>
+          </button>
           {isLoading && <span className="ml-3 text-gray-500 text-sm">Loading data...</span>}
         </Form.Item>
       </Form>
@@ -300,11 +304,11 @@ const TermsConditionForm = () => {
         /* Toolbar button hover effects */
         :global(.ql-toolbar button:hover),
         :global(.ql-toolbar button:focus) {
-          color: #1890ff;
+          color: #dbaf00;
         }
 
         :global(.ql-toolbar button.ql-active) {
-          color: #1890ff;
+          color: #dbaf00;
         }
 
         :global(.ql-toolbar .ql-stroke) {
@@ -314,7 +318,7 @@ const TermsConditionForm = () => {
         :global(.ql-toolbar button:hover .ql-stroke),
         :global(.ql-toolbar button:focus .ql-stroke),
         :global(.ql-toolbar button.ql-active .ql-stroke) {
-          stroke: #1890ff;
+          stroke: #dbaf00;
         }
 
         :global(.ql-toolbar .ql-fill) {
@@ -324,13 +328,13 @@ const TermsConditionForm = () => {
         :global(.ql-toolbar button:hover .ql-fill),
         :global(.ql-toolbar button:focus .ql-fill),
         :global(.ql-toolbar button.ql-active .ql-fill) {
-          fill: #1890ff;
+          fill: #dbaf00;
         }
 
         /* Picker hover effects */
         :global(.ql-toolbar .ql-picker-label:hover),
         :global(.ql-toolbar .ql-picker-item:hover) {
-          color: #1890ff;
+          color: #dbaf00;
         }
 
         /* Editor content styling */
@@ -363,7 +367,7 @@ const TermsConditionForm = () => {
         }
 
         :global(.ql-editor blockquote) {
-          border-left: 4px solid #1890ff;
+          border-left: 4px solid #ffd333;
           padding-left: 16px;
           margin: 1em 0;
           font-style: italic;
@@ -371,12 +375,12 @@ const TermsConditionForm = () => {
         }
 
         :global(.ql-editor a) {
-          color: #1890ff;
+          color: #dbaf00;
           text-decoration: underline;
         }
 
         :global(.ql-editor a:hover) {
-          color: #40a9ff;
+          color: #edc32f;
         }
 
         :global(.ql-editor img) {
@@ -386,8 +390,8 @@ const TermsConditionForm = () => {
 
         /* Focus state */
         :global(.ql-container.ql-snow:focus-within) {
-          border-color: #40a9ff;
-          box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+          border-color: #ffd333;
+          box-shadow: 0 0 0 2px rgba(255, 211, 51, 0.1);
         }
 
         /* Scrollbar styling */

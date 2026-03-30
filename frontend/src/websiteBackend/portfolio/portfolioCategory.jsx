@@ -146,7 +146,7 @@ const PorfolioCategoryTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold text-gray-700 font-serif uppercase">Categories</h1>
         <Link to="/portfolio-category-form">
-          <button className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 transition duration-300">
+          <button className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded hover:bg-[#edc32f] transition duration-300">
             <Plus size={15} />
           </button>
         </Link>
@@ -166,7 +166,7 @@ const PorfolioCategoryTable = () => {
             </div>
           ) : (
             <table className="w-full mt-4 border-collapse" {...getTableProps()}>
-              <thead className="bg-slate-700 hover:bg-slate-800 text-white">
+              <thead className="bg-[#ffd333] text-[#1a1a1a]">
                 {headerGroups.map((headerGroup) => (
                   <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => (

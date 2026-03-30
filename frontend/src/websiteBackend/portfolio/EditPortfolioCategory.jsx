@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
@@ -515,7 +515,7 @@ const EditPortfolioCategory = () => {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-        <button type="submit" className="bg-[#ffcc00]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6b800] transition duration-200">
+        <button type="submit" className="bg-[#ffd333] text-[#1a1a1a] py-2 px-6 rounded-lg hover:bg-[#edc32f] transition duration-200 font-semibold shadow-sm">
           Update Category
         </button>
       </form>

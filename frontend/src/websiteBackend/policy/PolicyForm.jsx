@@ -166,9 +166,13 @@ const PolicyForm = () => {
             <Button type="default" onClick={() => navigate('/policy-table')}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit" loading={isCreating || isUpdating}>
+            <button
+              type="submit"
+              disabled={isCreating || isUpdating}
+              className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
               {id ? 'Update' : 'Create'}
-            </Button>
+            </button>
           </div>
         </Form.Item>
       </Form>

@@ -93,14 +93,12 @@ const PolicyTable = () => {
           <h1>Policies</h1>
         </div>
         <div>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
+          <button
             onClick={() => navigate('/policy-form')}
-            className="mb-4"
+            className="mb-4 bg-[#ffd333] text-[#1a1a1a] px-4 py-2 rounded-lg hover:bg-[#edc32f] transition font-semibold flex items-center gap-2"
           >
-            Add Policy
-          </Button>
+            <PlusOutlined /> Add Policy
+          </button>
         </div>
       </div>
 

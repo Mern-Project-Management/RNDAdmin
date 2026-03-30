@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye, FaArrowUp, FaArrowDown, FaPlus } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
@@ -219,7 +219,7 @@ const TestimonialsTable = () => {
         <div className="mt-4">
           <button
             onClick={saveHeadings}
-            className="px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition duration-300 font-serif font-semibold shadow-sm"
+            className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition duration-300 font-serif font-semibold shadow-sm"
           >
             Save Headings
           </button>
@@ -244,7 +244,7 @@ const TestimonialsTable = () => {
             </div>
             <Link 
               to="/add-testimonials"
-              className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition duration-300 flex items-center justify-center shadow-sm"
+              className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition duration-300 flex items-center justify-center shadow-sm"
             >
               <FaPlus size={14} className="mr-2" /> <span className="text-sm font-semibold">Add New</span>
             </Link>

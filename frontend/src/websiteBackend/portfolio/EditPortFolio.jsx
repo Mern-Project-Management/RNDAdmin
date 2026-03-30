@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from 'react-quill';
@@ -602,7 +602,7 @@ const EditPortfolio = () => {
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className={`bg-[#ffcc00]-[#1a1a1a] py-2 px-4 rounded hover:bg-[#e6b800] transition duration-200 ${
+        className={`bg-[#ffd333] text-[#1a1a1a] py-2 px-6 rounded-lg hover:bg-[#edc32f] transition duration-200 font-semibold shadow-sm ${
           isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
