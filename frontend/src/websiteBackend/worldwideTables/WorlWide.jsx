@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Space, Breadcrumb, Modal, Button } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useGetAllWorldwideQuery, useDeleteWorldwideMutation } from '../../slice/worldwide/worldwide';
 import { useNavigate } from 'react-router-dom';
 
@@ -51,12 +51,12 @@ const WorldWideBackend = () => {
             key: 'actions',
             render: (_, record) => (
                 <Space size="middle">
-                    <EditOutlined 
+                    <FaEdit 
                         className={`${iconClass} text-green-500 hover:text-green-700`} 
                         onClick={() => handleEdit(record)} 
                     />
-                    <DeleteOutlined 
-                        className={`${iconClass} text-red-500`} 
+                    <FaTrashAlt 
+                        className={`${iconClass} text-red-500 hover:text-red-700`} 
                         onClick={() => handleDelete(record._id)} 
                     />
                 </Space>
@@ -81,12 +81,12 @@ const WorldWideBackend = () => {
             key: 'actions',
             render: (_, record) => (
                 <Space size="middle">
-                    <EditOutlined 
+                    <FaEdit 
                         className={`${iconClass} text-green-500 hover:text-green-700`} 
                         onClick={() => handleEdit(record)} 
                     />
-                    <DeleteOutlined 
-                        className={`${iconClass} text-red-500`} 
+                    <FaTrashAlt 
+                        className={`${iconClass} text-red-500 hover:text-red-700`} 
                         onClick={() => handleDelete(record._id)} 
                     />
                 </Space>

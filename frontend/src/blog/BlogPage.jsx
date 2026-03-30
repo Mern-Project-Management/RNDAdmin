@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Popconfirm, Typography, Image, message } from 'antd';
-import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import {
   useGetAllBlogsQuery,
@@ -189,7 +190,7 @@ const BlogTable = () => {
       fixed: 'right',
       render: (_, record) => (
         <div className="flex space-x-4">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => navigate(`/edit-blog-form/${record._id}`)}
           />
@@ -200,7 +201,7 @@ const BlogTable = () => {
             cancelText="No"
             disabled={isDeleting}
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className={`text-red-500 cursor-pointer text-lg hover:text-red-700 transition ${isDeleting ? 'opacity-50' : ''}`}
             />
           </Popconfirm>

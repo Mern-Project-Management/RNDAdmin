@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGetAllCataloguesQuery, useDeleteCatalogueMutation } from "@/slice/catalogue/catalogueslice";
 import { Table, Button, Space, message, Breadcrumb } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
 
 const CatalogueTable = () => {
@@ -41,11 +41,11 @@ const CatalogueTable = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-catalogue/${record._id}`)}
           />
-          <DeleteOutlined
+          <FaTrashAlt
             className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             onClick={() => handleDelete(record._id)}
           />

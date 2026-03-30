@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Button, Popconfirm, Space, Typography, Card } from "antd";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAllMenuListingsQuery, useDeleteMenuListingMutation } from "@/slice/menuListing/menuList";
 
@@ -61,14 +62,14 @@ const MenuListingTable = () => {
       render: (_, record) => (
         <Space size="middle">
           {!record.name.includes('└──') && (
-            <EditOutlined 
+            <FaEdit 
               className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
               onClick={() => handleEdit(record.key)}
             />
           )}
 
           <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.key)}>
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             />
           </Popconfirm>

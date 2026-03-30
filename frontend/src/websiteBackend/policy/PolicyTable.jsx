@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Button, Space, message, Breadcrumb, Tag, Popconfirm } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, HomeOutlined } from '@ant-design/icons';
+import { PlusOutlined, HomeOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
 import { useDeletePolicyMutation, useGetAllPoliciesQuery } from '@/slice/policy/policy';
 
@@ -59,7 +60,7 @@ const PolicyTable = () => {
       width: '15%',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-policy/${record._id}`)}
             title="Edit"
@@ -69,7 +70,7 @@ const PolicyTable = () => {
             onConfirm={() => handleDelete(record._id)}
             okButtonProps={{ danger: true, loading: isDeleting }}
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
               title="Delete"
             />

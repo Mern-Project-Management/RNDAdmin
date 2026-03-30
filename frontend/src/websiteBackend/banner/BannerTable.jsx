@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Button, Space, message, Breadcrumb } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, HomeOutlined } from '@ant-design/icons';
+import { PlusOutlined, HomeOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useGetAllBannersQuery, useDeleteBannerMutation } from '../../slice/banner/banner';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -66,11 +67,11 @@ const BannerTable = () => {
       width: '10%',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined 
+          <FaEdit 
              className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-banner-form/${record._id}`)}
           />
-          <DeleteOutlined 
+          <FaTrashAlt 
             className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             onClick={() => handleDelete(record._id)}
           />

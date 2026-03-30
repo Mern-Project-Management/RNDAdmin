@@ -2,7 +2,8 @@
 
 import React, { useEffect } from 'react'
 import { Table, Button, Space, Spin, Popconfirm, message } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom'
 import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from '@/slice/blog/blogCategory'
 
@@ -44,7 +45,7 @@ console.log(categories)
       key: 'actions',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => handleEdit(record._id)}
           />
@@ -54,7 +55,7 @@ console.log(categories)
             okText="Yes"
             cancelText="No"
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
             />
           </Popconfirm>

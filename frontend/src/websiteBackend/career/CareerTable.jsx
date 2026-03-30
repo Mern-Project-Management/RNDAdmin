@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Modal, message, Button } from 'antd';
-import { EditOutlined, DeleteOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { useGetAllApplicationsQuery, useDeleteApplicationMutation, useDeleteMultipleApplicationsMutation } from '../../slice/career/CareerForm';
 
@@ -147,12 +148,12 @@ const CareerTable = () => {
             key: 'actions',
             render: (_, record) => (
                 <div className="flex gap-4">
-                    <EditOutlined
-                        className="text-green-500 cursor-pointer text-lg hover:scale-110 transition-transform hover:text-green-700"
+                    <FaEdit
+                        className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
                         onClick={() => handleEdit(record)}
                     />
-                    <DeleteOutlined
-                        className="text-red-500 cursor-pointer text-lg hover:scale-110 transition-transform"
+                    <FaTrashAlt
+                        className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
                         onClick={() => handleDelete(record._id)}
                     />
                 </div>
@@ -180,7 +181,7 @@ const CareerTable = () => {
                         <Button
                             danger
                             type="primary"
-                            icon={<DeleteOutlined />}
+                            icon={<FaTrashAlt />}
                             onClick={handleBulkDelete}
                         >
                             Delete Selected ({selectedRowKeys.length})

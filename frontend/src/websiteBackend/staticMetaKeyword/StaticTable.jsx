@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Table, Button, Popconfirm, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const MetaList = () => {
   const [metaList, setMetaList] = useState([]);
@@ -71,7 +71,7 @@ const MetaList = () => {
       key: "actions",
       render: (text, record) => (
         <div className="flex space-x-4">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-meta-form/${record._id}`)}
           />
@@ -81,7 +81,7 @@ const MetaList = () => {
             okText="Yes"
             cancelText="No"
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             />
           </Popconfirm>

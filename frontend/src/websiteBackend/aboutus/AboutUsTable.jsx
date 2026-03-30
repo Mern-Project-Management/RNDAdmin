@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Space, message } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useGetAboutUsQuery, useDeleteAboutUsMutation } from '../../slice/aboutUs/aboutUs';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -109,12 +110,12 @@ const AboutUsTable = () => {
       width: '10%',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-about-us-form/${record._id}`)}
             title="Edit"
           />
-          <DeleteOutlined
+          <FaTrashAlt
             className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             onClick={() => handleDelete(record._id)}
             title="Delete"

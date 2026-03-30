@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Plus, Eye } from 'lucide-react';
+import { Plus, Eye } from 'lucide-react';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
 const VideoTable = () => {
@@ -118,14 +119,12 @@ const VideoTable = () => {
                     )}
                   </td>
                   <td className="px-6 py-4 flex gap-4">
-                    <Edit 
-                      className="h-5 w-5 text-green-500 cursor-pointer hover:text-green-700 transition" 
-                      onClick={() => handleEdit(video._id)} 
-                    />
-                    <Trash2 
-                      className="h-5 w-5 text-red-500 cursor-pointer hover:text-red-700 transition" 
-                      onClick={() => handleDelete(video._id)} 
-                    />
+                    <button onClick={() => handleEdit(video._id)} title="Edit">
+                      <FaEdit className="h-5 w-5 text-green-500 hover:text-green-700 transition" />
+                    </button>
+                    <button onClick={() => handleDelete(video._id)} title="Delete">
+                      <FaTrashAlt className="h-5 w-5 text-red-500 hover:text-red-700 transition" />
+                    </button>
                   </td>
                 </tr>
               ))

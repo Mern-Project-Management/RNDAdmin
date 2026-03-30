@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Image, message, Card, Button, Popconfirm, Breadcrumb } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -83,7 +84,7 @@ const SlideShowTable = () => {
       render: (_, record) => (
         <div className="flex gap-4">
           {/* Edit Button */}
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => navigate(`/edit-image/${record._id}`)}
           />
@@ -95,7 +96,7 @@ const SlideShowTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
             />
           </Popconfirm>

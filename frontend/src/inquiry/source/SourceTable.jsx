@@ -6,7 +6,8 @@ import React, { useState } from 'react';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import { SourceForm } from './AddSource';
 import { Table, Breadcrumb, Popconfirm, Space } from 'antd';
-import { HomeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
 const SourceTable = () => {
@@ -47,15 +48,11 @@ const SourceTable = () => {
       key: 'actions',
       width: '15%',
       render: (_, record) => (
-        <Space>
-          <Button
-            variant="outline"
-            size="icon"
+        <Space size="middle">
+          <FaEdit
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => handleEdit(record)}
-            className="w-8 h-8 rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
-          >
-            <EditOutlined />
-          </Button>
+          />
           <Popconfirm
             title="Delete Source"
             description="Are you sure you want to delete this source?"
@@ -63,13 +60,9 @@ const SourceTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button
-              variant="outline"
-              size="icon"
-              className="w-8 h-8 rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-            >
-              <DeleteOutlined />
-            </Button>
+            <FaTrashAlt 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
+            />
           </Popconfirm>
         </Space>
       ),

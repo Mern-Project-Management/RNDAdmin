@@ -6,7 +6,8 @@ import { Plus } from 'lucide-react';
 import { StatusForm } from './AddStatus';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Table, Breadcrumb, Popconfirm, Space } from 'antd';
-import { HomeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
 const StatusTable = () => {
@@ -45,7 +46,7 @@ const StatusTable = () => {
       width: '15%',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined
+          <FaEdit
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => handleEdit(record)}
           />
@@ -56,7 +57,7 @@ const StatusTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
             />
           </Popconfirm>

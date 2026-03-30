@@ -4,7 +4,7 @@ import { Table, Button, Popconfirm, message } from 'antd';
 import WhatsUpInfoForm from './WhatUpForm';
 import { useGetWhatsUpInfoQuery ,useDeleteWhatsUpInfoByIdMutation  } from '@/slice/whatsUpInfo/WhatsUpInfo';
 import EventModal from '@/dashboard/calender/event-modal';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const WhatsUpInfoTable = () => {
     const { data: whatsUpInfo, error, isLoading } = useGetWhatsUpInfoQuery();
@@ -37,7 +37,7 @@ const WhatsUpInfoTable = () => {
             key: 'actions',
             render: (text, record) => (
                 <div className="flex gap-4">
-                    <EditOutlined
+                    <FaEdit
                         className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
                         onClick={() => {
                             setEditingInfo(record);
@@ -50,7 +50,7 @@ const WhatsUpInfoTable = () => {
                         okText="Yes"
                         cancelText="No"
                     >
-                       <DeleteOutlined 
+                       <FaTrashAlt 
                             className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
                        />
                     </Popconfirm>

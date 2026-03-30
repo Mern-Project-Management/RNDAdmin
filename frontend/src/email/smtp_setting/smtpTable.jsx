@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useGetAllServersQuery, useDeleteServerMutation } from '@/slice/smtpSlice/smtp';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom'; // Import Link for navigation
-import { Pencil, Trash2 } from 'lucide-react'; // Import icons for buttons
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const SMTPTable = () => {
   const { data: smtp, isLoading, error } = useGetAllServersQuery();
@@ -55,7 +55,7 @@ const SMTPTable = () => {
                       className="text-green-500 hover:text-green-700 transition"
                       title="Edit"
                     >
-                      <Pencil className="w-5 h-5" />
+                      <FaEdit className="w-5 h-5" />
                     </button>
                   </Link>
                   <button
@@ -63,7 +63,7 @@ const SMTPTable = () => {
                     className="text-red-500 hover:text-red-700 transition"
                     title="Delete"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <FaTrashAlt className="w-5 h-5" />
                   </button>
                 </div>
               </TableCell>

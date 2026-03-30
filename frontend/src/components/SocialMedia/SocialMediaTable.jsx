@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 
 const SocialMediaTable = () => {
   const [data, setData] = useState([]);
@@ -80,7 +80,7 @@ const SocialMediaTable = () => {
                         <FaEdit className="h-5 w-5 text-green-500 hover:text-green-700 transition" title="Edit" />
                       </Link>
                       <button onClick={() => handleDelete(item._id)}>
-                        <FaTrash className="h-5 w-5 text-red-500 hover:text-red-700 transition" title="Delete" />
+                        <FaTrashAlt className="h-5 w-5 text-red-500 hover:text-red-700 transition" title="Delete" />
                       </button>
                     </div>
                   </td>

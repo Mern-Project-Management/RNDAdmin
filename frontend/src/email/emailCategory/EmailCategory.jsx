@@ -1,6 +1,6 @@
 import { useGetEmailCategoriesQuery, useDeleteEmailCategoryMutation } from '@/slice/emailCategory/emailCategory';
 import { Table, Button, Space, Popconfirm, message } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const EmailCategoryTable = ({ onEditClick }) => {
     const { data: categories, isLoading } = useGetEmailCategoriesQuery();
@@ -25,10 +25,9 @@ const EmailCategoryTable = ({ onEditClick }) => {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
-                <Space>
-                    <Button 
-                        icon={<EditOutlined />}
-                        className="text-green-600 hover:!text-green-900 !bg-green-50 hover:!bg-green-100 border-none flex items-center justify-center p-2"
+                <Space size="middle">
+                    <FaEdit 
+                        className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
                         title="Edit"
                         onClick={() => onEditClick(record)}
                     />
@@ -38,9 +37,8 @@ const EmailCategoryTable = ({ onEditClick }) => {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button 
-                            icon={<DeleteOutlined />}
-                            className="text-red-600 hover:!text-red-900 !bg-red-50 hover:!bg-red-100 border-none flex items-center justify-center p-2"
+                        <FaTrashAlt 
+                            className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
                             title="Delete"
                         />
                     </Popconfirm>

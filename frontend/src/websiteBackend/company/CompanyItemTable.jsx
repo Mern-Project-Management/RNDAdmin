@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Button, Space, message, Popconfirm } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useGetAllCompanyItemsQuery, useDeleteCompanyItemMutation } from '../../slice/companyItemSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,7 +58,7 @@ const CompanyItemTable = () => {
             width: '15%',
             render: (_, record) => (
                 <Space size="middle">
-                    <EditOutlined
+                    <FaEdit
                         className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
                         onClick={() => navigate(`/edit-company-item/${record._id}`)}
                     />
@@ -68,7 +69,7 @@ const CompanyItemTable = () => {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <DeleteOutlined 
+                        <FaTrashAlt 
                             className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
                         />
                     </Popconfirm>

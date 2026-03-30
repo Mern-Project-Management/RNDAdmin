@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Space, message, Breadcrumb, Popconfirm } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, HomeOutlined } from '@ant-design/icons';
+import { PlusOutlined, HomeOutlined } from '@ant-design/icons';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -66,7 +67,7 @@ const CounterTable = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined 
+          <FaEdit 
             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-counter/${record._id}`)}
           />
@@ -76,7 +77,7 @@ const CounterTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <DeleteOutlined 
+            <FaTrashAlt 
               className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             />
           </Popconfirm>

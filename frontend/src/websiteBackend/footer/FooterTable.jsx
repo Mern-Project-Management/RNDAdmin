@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
 const FooterTable = () => {
@@ -61,14 +62,12 @@ const FooterTable = () => {
                   <td className="px-6 py-4 truncate max-w-xs">{footer.description}</td>
                   <td className="px-6 py-4">{footer.social?.length || 0}</td>
                   <td className="px-6 py-4 flex gap-4">
-                    <Edit 
-                      className="h-5 w-5 text-green-500 cursor-pointer hover:text-green-700 transition" 
-                      onClick={() => handleEdit(footer._id)} 
-                    />
-                    <Trash2 
-                      className="h-5 w-5 text-red-500 cursor-pointer hover:text-red-700 transition" 
-                      onClick={() => handleDelete(footer._id)} 
-                    />
+                    <button onClick={() => handleEdit(footer._id)}>
+                      <FaEdit className="h-5 w-5 text-green-500 hover:text-green-700 transition" />
+                    </button>
+                    <button onClick={() => handleDelete(footer._id)}>
+                      <FaTrashAlt className="h-5 w-5 text-red-500 hover:text-red-700 transition" />
+                    </button>
                   </td>
                 </tr>
               ))
