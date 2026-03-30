@@ -581,7 +581,7 @@ const ServiceSec1Form = () => {
           <button
             onClick={handleSubmit}
             disabled={loading || !formData.categoryId}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+            className="flex-1 bg-[#ffd333] text-[#1a1a1a] py-3 px-6 rounded-lg font-semibold hover:bg-[#edc32f] disabled:bg-gray-400 disabled:cursor-not-allowed transition"
           >
             {loading ? 'Saving...' : id ? 'Update Data' : 'Create Data'}
           </button>

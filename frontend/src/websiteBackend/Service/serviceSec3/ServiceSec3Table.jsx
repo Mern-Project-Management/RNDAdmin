@@ -210,7 +210,7 @@ const ServiceSec3Table = () => {
 
             <button
               onClick={() => navigate('/service-sec3-form')}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition whitespace-nowrap"
+              className="px-6 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg hover:bg-[#edc32f] transition whitespace-nowrap"
             >
               + Add New
             </button>

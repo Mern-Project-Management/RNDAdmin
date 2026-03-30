@@ -345,7 +345,7 @@ const ServiceSec2Form = () => {
                 onClick={() => handleLevelChange('category')}
                 disabled={isEditMode}
                 className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'category'
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffd333] text-[#1a1a1a]'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
@@ -356,7 +356,7 @@ const ServiceSec2Form = () => {
                 onClick={() => handleLevelChange('subcategory')}
                 disabled={isEditMode}
                 className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'subcategory'
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffd333] text-[#1a1a1a]'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
@@ -367,7 +367,7 @@ const ServiceSec2Form = () => {
                 onClick={() => handleLevelChange('subsubcategory')}
                 disabled={isEditMode}
                 className={`px-4 py-2 rounded font-medium transition ${selectedLevel === 'subsubcategory'
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffd333] text-[#1a1a1a]'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   } ${isEditMode ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
@@ -484,7 +484,7 @@ const ServiceSec2Form = () => {
               <button
                 type="button"
                 onClick={addCard}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
+                className="px-4 py-2 bg-[#ffd333] text-[#1a1a1a] rounded-lg font-semibold hover:bg-[#edc32f] transition"
               >
                 + Add Card
               </button>
@@ -614,7 +614,7 @@ const ServiceSec2Form = () => {
               type="button"
               onClick={handleSubmit}
               disabled={saving || !formData.categoryId}
-              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+              className="flex-1 bg-[#ffd333] text-[#1a1a1a] py-3 px-6 rounded-lg font-semibold hover:bg-[#edc32f] disabled:bg-gray-400 disabled:cursor-not-allowed transition"
             >
               {saving ? 'Saving...' : isEditMode ? 'Update Data' : 'Create Data'}
             </button>

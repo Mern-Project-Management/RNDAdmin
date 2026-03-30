@@ -116,7 +116,7 @@ const LogoForm = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
+                        className="w-full bg-[#ffd333] hover:bg-[#edc32f] text-[#1a1a1a] font-semibold py-2 px-4 rounded-md transition duration-300">
                         {isLoading ? 'Updating...' : 'Update Logo'}
                     </button>
                 </form>
