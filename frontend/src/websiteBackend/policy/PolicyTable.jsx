@@ -58,19 +58,21 @@ const PolicyTable = () => {
       key: 'actions',
       width: '15%',
       render: (_, record) => (
-        <Space>
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
+        <Space size="middle">
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-policy/${record._id}`)}
+            title="Edit"
           />
           <Popconfirm
             title="Delete policy?"
-            description="This action cannot be undone."
             onConfirm={() => handleDelete(record._id)}
             okButtonProps={{ danger: true, loading: isDeleting }}
           >
-            <Button danger icon={<DeleteOutlined />} />
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
+              title="Delete"
+            />
           </Popconfirm>
         </Space>
       ),

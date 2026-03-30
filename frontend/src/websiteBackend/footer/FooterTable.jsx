@@ -60,13 +60,15 @@ const FooterTable = () => {
                 <tr key={footer._id} className="border-b hover:bg-gray-50">
                   <td className="px-6 py-4 truncate max-w-xs">{footer.description}</td>
                   <td className="px-6 py-4">{footer.social?.length || 0}</td>
-                  <td className="px-6 py-4 flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(footer._id)}>
-                      <Edit className="h-4 w-4 text-blue-600" />
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleDelete(footer._id)}>
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
+                  <td className="px-6 py-4 flex gap-4">
+                    <Edit 
+                      className="h-5 w-5 text-green-500 cursor-pointer hover:text-green-700 transition" 
+                      onClick={() => handleEdit(footer._id)} 
+                    />
+                    <Trash2 
+                      className="h-5 w-5 text-red-500 cursor-pointer hover:text-red-700 transition" 
+                      onClick={() => handleDelete(footer._id)} 
+                    />
                   </td>
                 </tr>
               ))

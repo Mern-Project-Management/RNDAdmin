@@ -53,13 +53,14 @@ const CategoryRow = ({ item, level, parentIds = {} }) => {
 </div>
         </TableCell>
         <TableCell>
-          <div className="flex justify-start ">
-            <Button variant="ghost" size="icon" onClick={handleEdit}>
-              <Edit className="h-4 w-4 text-blue-600" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Trash2 className="h-4 w-4 text-red-600" />
-            </Button>
+          <div className="flex justify-start gap-4">
+            <Edit
+              className="h-5 w-5 text-green-500 cursor-pointer hover:text-green-700 transition"
+              onClick={handleEdit}
+            />
+            <Trash2
+              className="h-5 w-5 text-red-500 cursor-pointer hover:text-red-700 transition"
+            />
           </div>
         </TableCell>
       </TableRow>

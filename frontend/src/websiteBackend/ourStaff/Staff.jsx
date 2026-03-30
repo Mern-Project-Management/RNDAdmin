@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaArrowUp, FaArrowDown, FaPlus } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
@@ -94,7 +94,7 @@ const StaffTable = () => {
         Header: "Options",
         Cell: ({ row }) => (
           <div className="flex  gap-4">
-            <button className="text-blue-500 hover:text-blue-700 transition">
+            <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/edit-our-staff-form/${row.original._id}`}><FaEdit /></Link>
             </button>
             <button className="text-red-500 hover:text-red-700 transition" onClick={() => deleteStaff(row.original._id)}>

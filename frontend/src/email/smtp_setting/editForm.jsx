@@ -158,7 +158,7 @@ const EditSMTP = () => {
             variant="primary"
             type="submit"
             disabled={isUpdating}
-            className="w-full"
+            className="w-full bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] font-semibold border-none shadow-sm transition duration-200"
           >
             {isUpdating ? 'Updating...' : 'Update SMTP Server'}
           </Button>

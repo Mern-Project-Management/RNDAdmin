@@ -51,10 +51,9 @@ const CoreValueTable = () => {
       key: 'actions',
       width: '10%',
       render: (_, record) => (
-        <Space>
-          <Button 
-            type="primary" 
-            icon={<EditOutlined />}
+        <Space size="middle">
+          <EditOutlined 
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-core-value/${record._id}`)}
           />
           <Popconfirm
@@ -64,7 +63,9 @@ const CoreValueTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button danger icon={<DeleteOutlined />} />
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
+            />
           </Popconfirm>
         </Space>
       ),

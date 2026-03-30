@@ -44,15 +44,11 @@ const StatusTable = () => {
       key: 'actions',
       width: '15%',
       render: (_, record) => (
-        <Space>
-          <Button
-            variant="outline"
-            size="icon"
+        <Space size="middle">
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => handleEdit(record)}
-            className="w-8 h-8 rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
-          >
-            <EditOutlined />
-          </Button>
+          />
           <Popconfirm
             title="Delete Status"
             description="Are you sure you want to delete this status?"
@@ -60,13 +56,9 @@ const StatusTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button
-              variant="outline"
-              size="icon"
-              className="w-8 h-8 rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-            >
-              <DeleteOutlined />
-            </Button>
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
+            />
           </Popconfirm>
         </Space>
       ),

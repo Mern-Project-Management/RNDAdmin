@@ -188,11 +188,10 @@ const BlogTable = () => {
       width: 120,
       fixed: 'right',
       render: (_, record) => (
-        <div className="flex space-x-2">
-          <Button
-            icon={<EditOutlined />}
+        <div className="flex space-x-4">
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => navigate(`/edit-blog-form/${record._id}`)}
-            size="small"
           />
           <Popconfirm
             title="Are you sure you want to delete this blog?"
@@ -201,7 +200,9 @@ const BlogTable = () => {
             cancelText="No"
             disabled={isDeleting}
           >
-            <Button danger icon={<DeleteOutlined />} size="small" loading={isDeleting} />
+            <DeleteOutlined 
+              className={`text-red-500 cursor-pointer text-lg hover:text-red-700 transition ${isDeleting ? 'opacity-50' : ''}`}
+            />
           </Popconfirm>
         </div>
       ),

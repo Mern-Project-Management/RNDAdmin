@@ -65,15 +65,13 @@ const BannerTable = () => {
       key: 'actions',
       width: '10%',
       render: (_, record) => (
-        <Space>
-          <Button 
-            type="primary" 
-            icon={<EditOutlined />}
+        <Space size="middle">
+          <EditOutlined 
+             className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-banner-form/${record._id}`)}
           />
-          <Button 
-            danger 
-            icon={<DeleteOutlined />}
+          <DeleteOutlined 
+            className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             onClick={() => handleDelete(record._id)}
           />
         </Space>

@@ -1,7 +1,8 @@
-﻿import React from "react";
+import React from "react";
 import { useGetAllTemplatesQuery, useDeleteTemplateMutation } from "@/slice/template/emailTemplate";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { Pencil, Trash2 } from "lucide-react";
 
 const TemplateTable = () => {
   const { data: apiResponse, error, isLoading } = useGetAllTemplatesQuery();
@@ -80,7 +81,7 @@ const TemplateTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">Email Templates</h1>
         <Link to="/add-template">
-          <Button className="bg-[#ffcc00]-[#1a1a1a] hover:bg-purple-700" variant="primary">
+          <Button className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] font-semibold" variant="primary">
             Add Template
           </Button>
         </Link>
@@ -116,30 +117,29 @@ const TemplateTable = () => {
                   {template.body && template.body.length > 100 && (
                     <Button
                       variant="link"
-                      className="text-[#7a6b00] p-0 h-auto font-medium"
+                      className="text-[#dbaf00] p-0 h-auto font-medium hover:text-[#edc32f]"
                       onClick={() => toggleRowExpansion(template._id)}
                     >
                       {expandedRows[template._id] ? 'Show Less' : 'Read More'}
                     </Button>
                   )}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="secondary" 
-                      className="hover:bg-[#4f359c]" 
-                      size="sm" 
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  <div className="flex gap-4 justify-center items-center">
+                    <button 
+                      className="text-green-500 hover:text-green-700 transition-colors" 
                       onClick={() => handleEdit(template._id)}
+                      title="Edit"
                     >
-                      Edit
-                    </Button>
-                    <Button 
-                      variant="destructive" 
-                      size="sm" 
+                      <Pencil className="w-5 h-5" />
+                    </button>
+                    <button 
+                      className="text-red-500 hover:text-red-700 transition-colors" 
                       onClick={() => handleDelete(template._id)}
+                      title="Delete"
                     >
-                      Delete
-                    </Button>
+                      <Trash2 className="w-5 h-5" />
+                    </button>
                   </div>
                 </td>
               </tr>

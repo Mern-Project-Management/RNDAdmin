@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp, EllipsisVertical, MoreVertical, Plus } from "lucide-react";
 import FollowUpModal from "./FollowUpModel";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useDeleteInquiryMutation, useDeleteMultipleInquiriesMutation } from "@/slice/inquiry/inquiry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useGetInquiriesQuery } from "@/slice/inquiry/inquiry";
@@ -391,26 +392,24 @@ export default function InquiryList() {
                                 />
                             </TableCell>
                             <TableCell className="text-center">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <button className="h-9 w-9 p-0 hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors">
-                                            <EllipsisVertical className="h-5 w-5 text-gray-500" />
-                                        </button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-[180px] p-1 shadow-xl">
-                                        <Link to={`/edit-inquiry/${item._id}`}>
-                                            <DropdownMenuItem className="cursor-pointer font-medium py-2">
-                                                Edit Inquiry
-                                            </DropdownMenuItem>
-                                        </Link>
-                                        <DropdownMenuItem 
-                                            onClick={() => handleDelete(item._id)}
-                                            className="text-red-600 focus:text-red-700 cursor-pointer font-bold py-2"
-                                        >
-                                            Delete Inquiry
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                <div className="flex gap-4 justify-center items-center">
+                                    <EyeOutlined
+                                        className={`cursor-pointer text-lg transition-colors ${expandedRowId === item._id ? 'text-blue-500' : 'text-slate-800 hover:text-slate-600'}`}
+                                        onClick={() => toggleRowExpand(item._id)}
+                                        title="View Details"
+                                    />
+                                    <Link to={`/edit-inquiry/${item._id}`}>
+                                        <EditOutlined 
+                                            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
+                                            title="Edit Inquiry"
+                                        />
+                                    </Link>
+                                    <DeleteOutlined
+                                        onClick={() => handleDelete(item._id)}
+                                        className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
+                                        title="Delete Inquiry"
+                                    />
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}

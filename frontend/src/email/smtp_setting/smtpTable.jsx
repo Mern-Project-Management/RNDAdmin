@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useGetAllServersQuery, useDeleteServerMutation } from '@/slice/smtpSlice/smtp';
 import { Button } from '@/components/ui/button';
@@ -30,7 +30,7 @@ const SMTPTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">SMTP Settings</h1>
         <Link to="/add-smtp">
-          <Button className="bg-[#ffcc00]-[#1a1a1a] hover:bg-purple-700" variant="primary">Add SMTP</Button>
+          <Button className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] font-semibold border-none" variant="primary">Add SMTP</Button>
         </Link>
       </div>
       <hr className='mb-5' />
@@ -48,25 +48,23 @@ const SMTPTable = () => {
         <TableBody>
           {smtp?.data?.map((server) => (
             <TableRow key={server._id}>
-              <TableCell>
-                <div className="flex gap-2">
+              <TableCell className="text-center">
+                <div className="flex gap-4 justify-center items-center">
                   <Link to={`/edit-smtp-form/${server._id}`}>
-                  <Button
-                    className="bg-green-500 hover:bg-green-600"
-                    size="sm"
-                  >
-                    <Pencil className="h-4 w-4" />
-                    Edit
-                  </Button>
+                    <button
+                      className="text-green-500 hover:text-green-700 transition"
+                      title="Edit"
+                    >
+                      <Pencil className="w-5 h-5" />
+                    </button>
                   </Link>
-                  <Button
+                  <button
                     onClick={() => handleDelete(server._id)}
-                    variant="destructive"
-                    size="sm"
+                    className="text-red-500 hover:text-red-700 transition"
+                    title="Delete"
                   >
-                    <Trash2 className="h-4 w-4" />
-                    Delete
-                  </Button>
+                    <Trash2 className="w-5 h-5" />
+                  </button>
                 </div>
               </TableCell>
               <TableCell>{server.host}</TableCell>

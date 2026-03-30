@@ -59,19 +59,19 @@ const MenuListingTable = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <Space>
-          <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.key)}>
-            <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
-          </Popconfirm>
-
+        <Space size="middle">
           {!record.name.includes('└──') && (
-            <Button
-              type="primary"
-              shape="circle"
-              icon={<EditOutlined />}
+            <EditOutlined 
+              className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
               onClick={() => handleEdit(record.key)}
             />
           )}
+
+          <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.key)}>
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
+            />
+          </Popconfirm>
         </Space>
       ),
     },

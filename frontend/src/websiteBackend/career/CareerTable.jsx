@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Table, Modal, message, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -148,7 +148,7 @@ const CareerTable = () => {
             render: (_, record) => (
                 <div className="flex gap-4">
                     <EditOutlined
-                        className="text-blue-600 cursor-pointer text-lg hover:scale-110 transition-transform"
+                        className="text-green-500 cursor-pointer text-lg hover:scale-110 transition-transform hover:text-green-700"
                         onClick={() => handleEdit(record)}
                     />
                     <DeleteOutlined

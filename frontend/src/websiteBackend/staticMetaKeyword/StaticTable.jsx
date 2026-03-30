@@ -70,10 +70,9 @@ const MetaList = () => {
       title: "Actions",
       key: "actions",
       render: (text, record) => (
-        <div className="flex space-x-2">
-          <Button
-            type="link"
-            icon={<EditOutlined />}
+        <div className="flex space-x-4">
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-meta-form/${record._id}`)}
           />
           <Popconfirm
@@ -82,7 +81,9 @@ const MetaList = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="link" danger icon={<DeleteOutlined />} />
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
+            />
           </Popconfirm>
         </div>
       ),

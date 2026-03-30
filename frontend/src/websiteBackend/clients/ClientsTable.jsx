@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Edit, Trash2, ArrowUp, ArrowDown, Plus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -78,7 +78,7 @@ const ClientsTable = () => {
         Header: "Options",
         Cell: ({ row }) => (
           <div className="flex gap-4">
-            <button className="text-blue-500 hover:text-blue-700 transition">
+            <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/edit-client/${row.original._id}`}>
                 <Edit />
               </Link>

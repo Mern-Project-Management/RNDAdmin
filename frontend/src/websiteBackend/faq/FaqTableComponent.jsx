@@ -54,12 +54,12 @@ export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, dele
         Cell: ({ row }) => (
           <div className="flex gap-4">
             <button
-              className="text-gray-600 hover:text-gray-800 transition"
+              className="text-slate-800 hover:text-slate-600 transition"
               onClick={() => handleView(row.original)}
             >
               <FaEye />
             </button>
-            <button className="text-blue-500 hover:text-blue-700 transition">
+            <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/faq/editFAQ/${row.original._id}`}>
                 <FaEdit />
               </Link>

@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import {
   Edit,
@@ -108,10 +108,10 @@ const CareerOptionTable = () => {
         Header: "Options",
         Cell: ({ row }) => (
           <div className="flex gap-4">
-            <button className="text-blue-500 hover:text-blue-700 transition" onClick={() => handleView(row.original)}>
+            <button className="text-slate-800 hover:text-slate-600 transition" onClick={() => handleView(row.original)}>
               <Eye />
             </button>
-            <button className="text-blue-500 hover:text-blue-700 transition">
+            <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/careeroption/editCareerOption/${row.original._id}`}><Edit /></Link>
             </button>
             <button className="text-red-500 hover:text-red-700 transition" onClick={() => deleteCareerOption(row.original._id)}>

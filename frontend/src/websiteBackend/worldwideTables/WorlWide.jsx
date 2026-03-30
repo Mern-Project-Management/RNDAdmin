@@ -52,7 +52,7 @@ const WorldWideBackend = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <EditOutlined 
-                        className={`${iconClass} text-blue-500`} 
+                        className={`${iconClass} text-green-500 hover:text-green-700`} 
                         onClick={() => handleEdit(record)} 
                     />
                     <DeleteOutlined 
@@ -82,7 +82,7 @@ const WorldWideBackend = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <EditOutlined 
-                        className={`${iconClass} text-blue-500`} 
+                        className={`${iconClass} text-green-500 hover:text-green-700`} 
                         onClick={() => handleEdit(record)} 
                     />
                     <DeleteOutlined 

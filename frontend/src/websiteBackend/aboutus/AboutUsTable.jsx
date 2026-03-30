@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button, Space, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useGetAboutUsQuery, useDeleteAboutUsMutation } from '../../slice/aboutUs/aboutUs';
@@ -108,19 +108,17 @@ const AboutUsTable = () => {
       key: 'actions',
       width: '10%',
       render: (_, record) => (
-        <Space>
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
+        <Space size="middle">
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition-colors"
             onClick={() => navigate(`/edit-about-us-form/${record._id}`)}
-          >
-          </Button>
-          <Button
-            danger
-            icon={<DeleteOutlined />}
+            title="Edit"
+          />
+          <DeleteOutlined
+            className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition-colors"
             onClick={() => handleDelete(record._id)}
-          >
-          </Button>
+            title="Delete"
+          />
         </Space>
       ),
     },
@@ -190,10 +188,9 @@ const AboutUsTable = () => {
         </div>
         <div>
           <Button
-            type="primary"
             icon={<PlusOutlined />}
             onClick={() => navigate('/about-us-form')}
-            className='mb-4'
+            className='mb-4 bg-[#ffd333] text-[#1a1a1a] hover:!bg-[#edc32f] hover:!text-[#1a1a1a] border-none font-semibold flex items-center gap-1 h-10'
           >
             Add About Us
           </Button>

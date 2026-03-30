@@ -81,11 +81,10 @@ const SlideShowTable = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           {/* Edit Button */}
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => navigate(`/edit-image/${record._id}`)}
           />
 
@@ -96,7 +95,9 @@ const SlideShowTable = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="danger" icon={<DeleteOutlined />} />
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
+            />
           </Popconfirm>
         </div>
       ),

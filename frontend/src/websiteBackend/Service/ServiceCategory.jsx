@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Edit, Trash2, ArrowUp, ArrowDown, Plus, X } from 'lucide-react';
 import { BsArrowReturnRight } from "react-icons/bs";
@@ -105,7 +105,7 @@ const CategoryTable = () => {
         Header: "Options",
         Cell: ({ row }) => (
           <div className="flex gap-4">
-            <button className="text-blue-500 hover:text-blue-700 transition">
+            <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/edit-service-category/${row.original.slug}`}>
                 <Edit />
               </Link>
@@ -338,7 +338,7 @@ const CategoryTable = () => {
                           </td>
                           <td className="py-2 px-4">
                             <div className="flex gap-4">
-                              <button className="text-blue-500 hover:text-blue-700 transition">
+                            <button className="text-green-500 hover:text-green-700 transition">
                                 <Link to={`/edit-service-category/${row.original.slug}/${subcategory.slug}`}>
                                   <Edit />
                                 </Link>
@@ -377,7 +377,7 @@ const CategoryTable = () => {
                             </td>
                             <td className="py-2 px-4">
                               <div className="flex gap-4">
-                                <button className="text-blue-500 hover:text-blue-700 transition">
+                                <button className="text-green-500 hover:text-green-700 transition">
                                   <Link to={`/edit-service-category/${row.original.slug}/${subcategory.slug}/${subSubcategory.slug}`}>
                                     <Edit />
                                   </Link>

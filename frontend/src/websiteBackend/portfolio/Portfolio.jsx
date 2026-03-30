@@ -82,7 +82,7 @@ const PortfolioTable = () => {
           return (
             <div className="flex gap-4 items-center">
               <button
-                className={`transition-colors duration-200 ${isExpanded ? 'text-[#7a6b00]' : 'text-gray-400 hover:text-gray-600'}`} 
+                className={`transition-colors duration-200 ${isExpanded ? 'text-[#7a6b00]' : 'text-slate-800 hover:text-slate-600'}`} 
                 onClick={() => toggleRowExpansion(row.original._id)}
                 title={isExpanded ? "Hide Details" : "View Details"}
               >
@@ -90,7 +90,8 @@ const PortfolioTable = () => {
               </button>
               <Link 
                 to={`/edit-portfolio/${row.original._id}`}
-                className="text-blue-500 hover:text-blue-700 transition"
+                className="text-green-500 hover:text-green-700 p-1 transition-colors"
+                title="Edit"
               >
                 <FaEdit size={16} />
               </Link>

@@ -100,7 +100,7 @@ console.log(categories)
       
         <button
           type="submit"
-          className={`w-1/4 bg-blue-500 text-white px-4 py-2 rounded ${isUpdating ? "opacity-50" : ""}`}
+          className={`w-1/4 bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] px-4 py-2 rounded font-semibold transition duration-200 shadow-sm ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
           disabled={isUpdating}
         >
           {isUpdating ? "Updating..." : "Update Template"}

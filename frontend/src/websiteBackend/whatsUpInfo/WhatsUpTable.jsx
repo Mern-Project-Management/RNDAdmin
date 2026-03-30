@@ -4,6 +4,7 @@ import { Table, Button, Popconfirm, message } from 'antd';
 import WhatsUpInfoForm from './WhatUpForm';
 import { useGetWhatsUpInfoQuery ,useDeleteWhatsUpInfoByIdMutation  } from '@/slice/whatsUpInfo/WhatsUpInfo';
 import EventModal from '@/dashboard/calender/event-modal';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const WhatsUpInfoTable = () => {
     const { data: whatsUpInfo, error, isLoading } = useGetWhatsUpInfoQuery();
@@ -35,25 +36,23 @@ const WhatsUpInfoTable = () => {
             title: 'Actions',
             key: 'actions',
             render: (text, record) => (
-                <div>
-                    <Button
-                        type="link"
+                <div className="flex gap-4">
+                    <EditOutlined
+                        className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
                         onClick={() => {
                             setEditingInfo(record);
                             setIsModalVisible(true);
                         }}
-                    >
-                        Edit
-                    </Button>
+                    />
                     <Popconfirm
                         title="Are you sure to delete this WhatsUp Info?"
                         onConfirm={() => handleDelete(record.id)}
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button type="link" danger>
-                            Delete
-                        </Button>
+                       <DeleteOutlined 
+                            className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
+                       />
                     </Popconfirm>
                 </div>
             ),

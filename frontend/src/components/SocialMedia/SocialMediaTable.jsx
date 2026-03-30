@@ -74,13 +74,15 @@ const SocialMediaTable = () => {
                       {item.status}
                     </span>
                   </td>
-                  <td className="p-4 text-right space-x-3">
-                    <Link to={`/social-media/edit/${item._id}`} className="text-indigo-600 hover:text-indigo-900">
-                      <FaEdit className="inline h-5 w-5" />
-                    </Link>
-                    <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:text-red-900">
-                      <FaTrash className="inline h-5 w-5" />
-                    </button>
+                  <td className="p-4 text-right">
+                    <div className="flex gap-4 justify-end">
+                      <Link to={`/social-media/edit/${item._id}`}>
+                        <FaEdit className="h-5 w-5 text-green-500 hover:text-green-700 transition" title="Edit" />
+                      </Link>
+                      <button onClick={() => handleDelete(item._id)}>
+                        <FaTrash className="h-5 w-5 text-red-500 hover:text-red-700 transition" title="Delete" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

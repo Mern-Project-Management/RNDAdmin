@@ -44,9 +44,8 @@ console.log(categories)
       key: 'actions',
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
+          <EditOutlined
+            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
             onClick={() => handleEdit(record._id)}
           />
           <Popconfirm
@@ -55,10 +54,8 @@ console.log(categories)
             okText="Yes"
             cancelText="No"
           >
-            <Button
-              type="danger"
-              icon={<DeleteOutlined />}
-              loading={isDeleting}
+            <DeleteOutlined 
+              className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
             />
           </Popconfirm>
         </Space>

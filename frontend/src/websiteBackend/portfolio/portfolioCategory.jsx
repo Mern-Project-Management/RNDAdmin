@@ -56,7 +56,7 @@ const PorfolioCategoryTable = () => {
         Header: "Options",
         Cell: ({ row }) => (
           <div className="flex gap-4">
-            <button className="text-blue-500 hover:text-blue-700 transition">
+            <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/portfolio-category/${row.original._id}`}>
                 <Edit />
               </Link>
@@ -236,7 +236,7 @@ const PorfolioCategoryTable = () => {
                               </td>
                               <td className="py-2 px-4">
                                 <div className="flex gap-4">
-                                  <button className="text-blue-500 hover:text-blue-700 transition">
+                                  <button className="text-green-500 hover:text-green-700 transition">
                                     <Link
                                       to={`/portfolio-category/${row.original._id}/${subcategory._id}`}
                                     >
@@ -284,7 +284,7 @@ const PorfolioCategoryTable = () => {
                                   </td>
                                   <td className="py-2 px-4">
                                     <div className="flex gap-4">
-                                      <button className="text-blue-500 hover:text-blue-700 transition">
+                                      <button className="text-green-500 hover:text-green-700 transition">
                                         <Link
                                           to={`/portfolio-category/${row.original._id}/${subcategory._id}/${subSubcategory._id}`}
                                         >

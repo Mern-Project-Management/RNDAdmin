@@ -27,8 +27,9 @@ const EmailCategoryTable = ({ onEditClick }) => {
             render: (_, record) => (
                 <Space>
                     <Button 
-                        type="primary" 
                         icon={<EditOutlined />}
+                        className="text-green-600 hover:!text-green-900 !bg-green-50 hover:!bg-green-100 border-none flex items-center justify-center p-2"
+                        title="Edit"
                         onClick={() => onEditClick(record)}
                     />
                     <Popconfirm
@@ -38,9 +39,9 @@ const EmailCategoryTable = ({ onEditClick }) => {
                         cancelText="No"
                     >
                         <Button 
-                            type="primary" 
-                            danger 
                             icon={<DeleteOutlined />}
+                            className="text-red-600 hover:!text-red-900 !bg-red-50 hover:!bg-red-100 border-none flex items-center justify-center p-2"
+                            title="Delete"
                         />
                     </Popconfirm>
                 </Space>
