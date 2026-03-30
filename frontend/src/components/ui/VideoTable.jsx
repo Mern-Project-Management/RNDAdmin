@@ -49,7 +49,10 @@ const VideoTable = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Video Management</h1>
-        <Button onClick={() => navigate('/video-form')}>
+        <Button 
+          onClick={() => navigate('/video-form')}
+          className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] font-semibold"
+        >
           <Plus className="mr-2 h-4 w-4" /> Add New Video
         </Button>
       </div>

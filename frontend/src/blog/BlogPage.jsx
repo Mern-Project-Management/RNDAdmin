@@ -218,7 +218,7 @@ const BlogTable = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Blogs</h2>
         <Link to="/blog-form">
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button icon={<PlusOutlined />} className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">
             Add Blog
           </Button>
         </Link>

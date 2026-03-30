@@ -71,7 +71,7 @@ console.log(categories)
           <h2 className='text-2xl font-semibold'>Blog Categories</h2>
         </div>
         <Link to="/blog-category-form">
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button icon={<PlusOutlined />} className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">
             Add Category
           </Button>
         </Link>
