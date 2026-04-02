@@ -115,11 +115,12 @@ console.log("Inquiry Data:", inquiryData);
         }
         .email-container {
             max-width: 600px;
-            margin: 30px auto;
+            margin: 20px auto;
             background-color: #ffffff;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eeeeee;
         }
         .header {
             background: #fff8f5;
@@ -197,12 +198,12 @@ console.log("Inquiry Data:", inquiryData);
             border-top: 1px solid #eaeaea;
         }
         .footer {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             padding: 25px 20px;
             text-align: center;
-            color: #6c757d;
+            color: #999999;
             font-size: 13px;
-            border-top: 1px solid #dee2e6;
+            border-top: 1px solid #f0f0f0;
         }
         .footer a {
             color: #ff573c;
@@ -212,14 +213,17 @@ console.log("Inquiry Data:", inquiryData);
 </head>
 <body>
     <div class="email-container">
-        <!-- Branded Header -->
-        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
-            <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft" style="height: 50px;">
+        <!-- Prominent Yellow Header -->
+        <div style="background-color: #f7d400; padding: 40px 25px; text-align: center;">
+            <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1744447985780.webp" alt="RND Technosoft" style="height: 65px; margin-bottom: 5px;">
         </div>
 
         <!-- Main Content -->
         <div class="content">
-            <p class="intro-text">
+            <h2 style="color: #222; margin: 0 0 10px 0; font-size: 24px; font-weight: 700;">New Inquiry Received</h2>
+            <div style="width: 150px; height: 3px; background-color: #f7d400; margin-bottom: 30px;"></div>
+            
+            <p class="intro-text" style="color: #666; font-size: 16px; margin: 25px 0; text-align: left;">
                 A new customer inquiry has been submitted through the website. Please review and respond at the earliest.
             </p>
 

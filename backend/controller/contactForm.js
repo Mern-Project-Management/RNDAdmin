@@ -95,13 +95,14 @@ exports.submitContact = async (req, res) => {
             subject: 'New Contact Form Submission',
             replyTo: email,
             html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-              <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #ff573c;">
-                <img src="${logoImageUrl}" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; border: 1px solid #eeeeee; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+              <div style="background-color: #f7d400; padding: 40px 25px; text-align: center;">
+                <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1744447985780.webp" alt="RND Technosoft Logo" style="height: 65px; margin-bottom: 5px;">
               </div>
-              <div style="padding: 25px; line-height: 1.6; color: #333;">
-                <h2 style="color: #ff573c; margin-top: 0;">New Contact Form Submission</h2>
-                <p>A new contact form was submitted. Details:</p>
+              <div style="padding: 30px; line-height: 1.6; color: #333; background-color: #ffffff;">
+                <h2 style="color: #222; margin: 0 0 10px 0; font-size: 22px; font-weight: 700;">New Contact Form Submission</h2>
+                <div style="width: 120px; height: 3px; background-color: #f7d400; margin-bottom: 25px;"></div>
+                <p style="margin-top: 0; color: #666;">A new contact form was submitted. Details:</p>
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr><td style="padding: 8px 0; font-weight: bold; width: 35%;">Name:</td><td>${firstName} ${lastName}</td></tr>
                     <tr><td style="padding: 8px 0; font-weight: bold;">Organisation:</td><td>${organisation || '—'}</td></tr>
@@ -116,7 +117,7 @@ exports.submitContact = async (req, res) => {
                     ${message ? message.replace(/\n/g, '<br>') : '—'}
                 </div>
               </div>
-              <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 11px; color: #888;">
+              <div style="background-color: #ffffff; padding: 25px 20px; text-align: center; font-size: 11px; color: #999; border-top: 1px solid #f0f0f0;">
                 &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
               </div>
             </div>

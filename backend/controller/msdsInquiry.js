@@ -57,9 +57,10 @@ Message: ${message || '—'}
             max-width: 600px;
             margin: 20px auto;
             background-color: #ffffff;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eeeeee;
         }
         .header {
             background: #f8f9fa;
@@ -131,10 +132,12 @@ Message: ${message || '—'}
             margin: 20px 0;
         }
         .footer {
-            background-color: #f8f9fa;
-            padding: 20px;
+            background-color: #ffffff;
+            padding: 25px 20px;
             text-align: center;
-            border-top: 1px solid #dee2e6;
+            color: #999999;
+            font-size: 13px;
+            border-top: 1px solid #f0f0f0;
         }
         .footer p {
             margin: 0;
@@ -152,17 +155,16 @@ Message: ${message || '—'}
 </head>
 <body>
     <div class="email-container">
-        <div class="header">
-            <!-- <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1764672964886.webp" alt="RND Technosoft" style="height: 50px; margin-bottom: 10px;"> -->
-            <h2>RND Technosoft</h2>
-        </div>
-        
-        <div class="subheader">
-            <h3>📄 Document Request Received</h3>
+        <!-- Prominent Yellow Header -->
+        <div style="background-color: #f7d400; padding: 40px 25px; text-align: center;">
+            <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1744447985780.webp" alt="RND Technosoft" style="height: 65px; margin-bottom: 5px;">
         </div>
         
         <div class="content">
-            <p style="color: #495057; margin-bottom: 20px;">A customer has requested product documentation. Please find the request details below:</p>
+            <h2 style="color: #222; margin: 0 0 10px 0; font-size: 24px; font-weight: 700;">Document Request Received</h2>
+            <div style="width: 150px; height: 3px; background-color: #f7d400; margin-bottom: 25px;"></div>
+            
+            <p style="color: #666; font-size: 15px; margin-bottom: 20px;">A customer has requested product documentation. Please find the request details below:</p>
             
             <div class="request-type">
                 <p>🔔 Request Type: MSDS / Product Specification Document</p>

@@ -111,11 +111,12 @@ const submitApplication = async (req, res) => {
         }
         .email-container {
             max-width: 600px;
-            margin: 30px auto;
+            margin: 20px auto;
             background-color: #ffffff;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eeeeee;
         }
         .header {
             background: #e3e6e4;
@@ -212,12 +213,12 @@ const submitApplication = async (req, res) => {
             border-top: 1px solid #eaeaea;
         }
         .footer {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             padding: 25px 20px;
             text-align: center;
-            color: #6c757d;
+            color: #999999;
             font-size: 13px;
-            border-top: 1px solid #dee2e6;
+            border-top: 1px solid #f0f0f0;
         }
         .footer a {
             color: #ff573c;
@@ -227,21 +228,18 @@ const submitApplication = async (req, res) => {
 </head>
 <body>
     <div class="email-container">
-
-        <!-- Branded Header -->
-        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #f7c600;">
-            <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft" style="height: 50px;">
-        </div>
-
-        <!-- Subheader -->
-        <div class="subheader">
-            <h3>New Career Application</h3>
+        <!-- Prominent Yellow Header -->
+        <div style="background-color: #f7d400; padding: 40px 25px; text-align: center;">
+            <img src="https://www.admin.rndtechnosoft.com/api/logo/download/headerLogo_1744447985780.webp" alt="RND Technosoft" style="height: 65px; margin-bottom: 5px;">
         </div>
 
         <!-- Main Content -->
         <div class="content">
-            <p class="intro-text">
-                A new job application has been submitted through the careers portal. Please review the candidate details below.
+            <h2 style="color: #222; margin: 0 0 10px 0; font-size: 24px; font-weight: 700;">New Career Application</h2>
+            <div style="width: 150px; height: 3px; background-color: #f7d400; margin-bottom: 30px;"></div>
+            
+            <p class="intro-text" style="color: #666; font-size: 16px; margin-bottom: 25px; text-align: left;">
+                A new talent has applied through the careers portal. Review the applicant's details below.
             </p>
 
             <!-- Applicant Details Table -->
@@ -267,8 +265,13 @@ const submitApplication = async (req, res) => {
                     <td><strong>${postAppliedFor || '—'}</strong></td>
                 </tr>
                 <tr>
-                    <td>Resume:</td>
-                    <td>${resumePath ? `<a href="https://www.admin.rndtechnosoft.com/api/image/download/${resumePath}" style="color:#ff573c; text-decoration:none;">${resumePath}</a>` : '—'}</td>
+                    <td style="font-weight: 600; color: #555;">Resume:</td>
+                    <td>
+                        ${resumePath ? `
+                            <a href="https://www.admin.rndtechnosoft.com/api/image/download/${resumePath}" style="color:#007bff; text-decoration:none; font-weight: 600;">View/Download PDF</a>
+                            <div style="font-size: 13px; color: #888; margin-top: 5px;">(${resumePath})</div>
+                        ` : '—'}
+                    </td>
                 </tr>
             </table>
 
@@ -309,13 +312,7 @@ const submitApplication = async (req, res) => {
         to: ownerEmail,
         subject: "New Career Application Received",
         html: ownerEmailBody,
-        replyTo: email || smtpConfig.name,
-        attachments: [
-          {
-            filename: req.files.resumeFile[0].originalname || resumePath,
-            path: path.join(__dirname, '../uploads/documents', resumePath)
-          }
-        ]
+        replyTo: email || smtpConfig.name
       };
 
       await transporter.sendMail(ownerMailOptions);
