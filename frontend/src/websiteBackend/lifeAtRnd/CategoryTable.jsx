@@ -79,9 +79,11 @@ const CategoryTable = () => {
         </div>
         <div>
           <Button 
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => navigate('/life-at-rnd/add-category')}
-            className='mb-4 bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold'
+            className='mb-4 hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold'
+            style={{ backgroundColor: '#ffd333', color: '#1a1a1a' }}
           >
             Add New Category
           </Button>

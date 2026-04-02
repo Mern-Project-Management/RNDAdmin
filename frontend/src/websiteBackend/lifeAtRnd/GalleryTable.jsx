@@ -140,7 +140,7 @@ const GalleryTable = () => {
       dataIndex: 'imageCount',
       key: 'imageCount',
       width: '20%',
-      render: (count) => <Tag color="blue" className="px-3 rounded-full font-normal">{count} Photos</Tag>
+      render: (count) => <Tag color="#ffd333" className="px-3 rounded-full font-normal">{count} Photos</Tag>
     },
     {
       title: 'Status',
@@ -193,7 +193,7 @@ const GalleryTable = () => {
                 type="text"
                 value={heading}
                 onChange={(e) => { setHeading(e.target.value); markChanged(); }}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300 text-sm"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-yellow-400 transition duration-300 text-sm"
                 placeholder="Enter page heading..."
               />
             </div>
@@ -205,7 +205,7 @@ const GalleryTable = () => {
                 type="text"
                 value={subheading}
                 onChange={(e) => { setSubheading(e.target.value); markChanged(); }}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300 text-sm"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-yellow-400 transition duration-300 text-sm"
                 placeholder="Enter sub heading..."
               />
             </div>
@@ -216,7 +216,7 @@ const GalleryTable = () => {
               <input
                 type="file"
                 onChange={handleFileChange}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300 text-sm"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-yellow-400 transition duration-300 text-sm"
               />
               <div className="mt-4">
                 {photo ? (
@@ -243,7 +243,7 @@ const GalleryTable = () => {
                 type="text"
                 value={alt}
                 onChange={(e) => { setAlt(e.target.value); markChanged(); }}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300 text-sm"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-yellow-400 transition duration-300 text-sm"
                 placeholder="Enter alt text..."
               />
             </div>
@@ -255,7 +255,7 @@ const GalleryTable = () => {
                 type="text"
                 value={imgTitle}
                 onChange={(e) => { setImgTitle(e.target.value); markChanged(); }}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 transition duration-300 text-sm"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-yellow-400 transition duration-300 text-sm"
                 placeholder="Enter image title..."
               />
             </div>
@@ -281,9 +281,11 @@ const GalleryTable = () => {
         </div>
         <div>
           <Button 
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => navigate('/life-at-rnd/add-gallery')}
-            className='bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none py-5 px-6 rounded-lg flex items-center shadow-md shadow-yellow-200/50 font-semibold'
+            className='hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none py-5 px-6 rounded-lg flex items-center shadow-md shadow-yellow-200/50 font-semibold'
+            style={{ backgroundColor: '#ffd333', color: '#1a1a1a' }}
           >
             Add New Images
           </Button>

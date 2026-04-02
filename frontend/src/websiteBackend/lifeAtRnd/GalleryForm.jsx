@@ -237,10 +237,10 @@ const GalleryForm = () => {
 
                 {!isEdit && fileList.length > 0 && (
                   <div className="mt-8 space-y-4">
-                    <p className="text-xs text-blue-500 font-medium">Newly Selected Images ({fileList.length})</p>
+                    <p className="text-xs text-yellow-600 font-medium">Newly Selected Images ({fileList.length})</p>
                     {fileList.map((file) => (
-                      <div key={file.uid} className="flex gap-4 p-4 bg-blue-50/30 rounded-xl border border-blue-100 items-center">
-                        <img src={URL.createObjectURL(file.originFileObj || file)} className="w-20 h-20 object-cover rounded-lg border border-blue-100" alt="" />
+                      <div key={file.uid} className="flex gap-4 p-4 bg-yellow-50/20 rounded-xl border border-yellow-100 items-center">
+                        <img src={URL.createObjectURL(file.originFileObj || file)} className="w-20 h-20 object-cover rounded-lg border border-yellow-100" alt="" />
                         <div className="flex-grow">
                           <Form.Item name={`title_${file.uid}`} noStyle>
                             <Input placeholder="Enter caption for upload..." className="mb-1" />
