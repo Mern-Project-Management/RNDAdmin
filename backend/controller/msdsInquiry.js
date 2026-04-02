@@ -223,9 +223,9 @@ Message: ${message || '—'}
     if (!smtpConfig || !smtpConfig.host) {
       console.warn("Falling back to environment variables for SMTP");
       smtpConfig = {
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: parseInt(process.env.SMTP_PORT || '465', 10),
-        isSSL: process.env.SMTP_SECURE === 'true',
+        host: process.env.SMTP_HOST || process.env.EMAIL_HOST || 'smtppro.zoho.in',
+        port: parseInt(process.env.SMTP_PORT || process.env.EMAIL_PORT || '465', 10),
+        isSSL: (process.env.SMTP_SECURE || process.env.EMAIL_SECURE || 'true') === 'true',
         name: process.env.EMAIL_USER,
         password: process.env.EMAIL_PASS
       };

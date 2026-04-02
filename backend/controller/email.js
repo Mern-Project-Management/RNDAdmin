@@ -12,9 +12,9 @@ const sendEmail = async (req, res) => {
 
     // SMTP configuration
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '465', 10),
-      secure: (process.env.SMTP_PORT || '465') === '465',
+      host: process.env.SMTP_HOST || process.env.EMAIL_HOST || 'smtppro.zoho.in',
+      port: parseInt(process.env.SMTP_PORT || process.env.EMAIL_PORT || '465', 10),
+      secure: (process.env.SMTP_PORT || process.env.EMAIL_PORT || '465') === '465',
       auth: {
         user: process.env.EMAIL_USER, // Your SMTP username from .env
         pass: process.env.EMAIL_PASS, // Your SMTP password from .env
