@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Add size constants for clarity
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
-const MAX_FILES = 5;
+const MAX_FILES = 10;
 const MAX_PDF_SIZE = 100 * 1024 * 1024; // 100MB for PDFs
 
 // Set storage engine

@@ -117,6 +117,14 @@ const menuData = [
         ]
       },
       {
+        title: "Life at RND",
+        icon: Image,
+        children: [
+          { title: "Categories", icon: List, url: "/life-at-rnd/categories" },
+          { title: "Gallery", icon: Image, url: "/life-at-rnd/gallery" },
+        ]
+      },
+      {
         title: "Company Dropdown",
         icon: LinkIcon,
         children: [

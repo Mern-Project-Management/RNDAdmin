@@ -129,6 +129,12 @@ const PolicyForm = lazy(() => import('./websiteBackend/policy/PolicyForm'));
 const CompanyItemTable = lazy(() => import('./websiteBackend/company/CompanyItemTable'));
 const CompanyItemForm = lazy(() => import('./websiteBackend/company/CompanyItemForm'));
 
+// Life at RND Management
+const LifeAtRndCategoryTable = lazy(() => import('./websiteBackend/lifeAtRnd/CategoryTable'));
+const LifeAtRndCategoryForm = lazy(() => import('./websiteBackend/lifeAtRnd/CategoryForm'));
+const LifeAtRndGalleryTable = lazy(() => import('./websiteBackend/lifeAtRnd/GalleryTable'));
+const LifeAtRndGalleryForm = lazy(() => import('./websiteBackend/lifeAtRnd/GalleryForm'));
+
 // Non-lazy imports
 import useDocumentTitle from './websiteBackend/staticMetaKeyword/DynamicMeta';
 import CriticalStyles from './website/componets/CriticalStyles';
@@ -507,6 +513,14 @@ function App() {
             { path: 'company-item-table', element: <Suspense fallback={<LoadingFallback />}><CompanyItemTable /></Suspense> },
             { path: 'add-company-item', element: <Suspense fallback={<LoadingFallback />}><CompanyItemForm /></Suspense> },
             { path: 'edit-company-item/:id', element: <Suspense fallback={<LoadingFallback />}><CompanyItemForm /></Suspense> },
+
+            // Life at RND Management Routes
+            { path: 'life-at-rnd/categories', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndCategoryTable /></Suspense> },
+            { path: 'life-at-rnd/add-category', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndCategoryForm /></Suspense> },
+            { path: 'life-at-rnd/edit-category/:id', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndCategoryForm /></Suspense> },
+            { path: 'life-at-rnd/gallery', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndGalleryTable /></Suspense> },
+            { path: 'life-at-rnd/add-gallery', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndGalleryForm /></Suspense> },
+            { path: 'life-at-rnd/edit-gallery/:id', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndGalleryForm /></Suspense> },
 
           ]
         }

@@ -32,6 +32,8 @@ import { policyApi } from '@/slice/policy/policy';
 import { companyItemApi } from '../slice/companyItemSlice';
 import { notificationApi } from '@/slice/notification/notification';
 import { serviceApi } from '../slice/serviceSlice';
+import { lifeAtRndCategoryApi } from '../slice/lifeAtRnd/lifeAtRndCategory';
+import { lifeAtRndGalleryApi } from '../slice/lifeAtRnd/lifeAtRndGallery';
 const store = configureStore({
   reducer: {
     [chemicalApi.reducerPath]: chemicalApi.reducer, // RTK Query reducer for chemicals
@@ -66,7 +68,9 @@ const store = configureStore({
     [policyApi.reducerPath]: policyApi.reducer,
     [companyItemApi.reducerPath]: companyItemApi.reducer,
     [notificationApi.reducerPath]: notificationApi.reducer,
-    [serviceApi.reducerPath]: serviceApi.reducer
+    [serviceApi.reducerPath]: serviceApi.reducer,
+    [lifeAtRndCategoryApi.reducerPath]: lifeAtRndCategoryApi.reducer,
+    [lifeAtRndGalleryApi.reducerPath]: lifeAtRndGalleryApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -104,7 +108,9 @@ const store = configureStore({
       .concat(policyApi.middleware)
       .concat(companyItemApi.middleware)
       .concat(notificationApi.middleware)
-      .concat(serviceApi.middleware),
+      .concat(serviceApi.middleware)
+      .concat(lifeAtRndCategoryApi.middleware)
+      .concat(lifeAtRndGalleryApi.middleware),
 });
 
 export default store;

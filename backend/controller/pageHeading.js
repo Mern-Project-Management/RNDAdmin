@@ -58,9 +58,11 @@ const updatePageHeading = async (req, res) => {
   const { heading, subheading, detail, alt, imgTitle } = req.body;
   let photo;
 
-  // Check if a new file was uploaded
+  // Check if a new file was uploaded (handle single file or upload.fields)
   if (req.file) {
-    photo = req.file.filename; // multer sets the uploaded file to req.file
+    photo = req.file.filename; 
+  } else if (req.files && req.files.photo && req.files.photo[0]) {
+    photo = req.files.photo[0].filename;
   }
 
   try {
@@ -126,9 +128,11 @@ const addPageHeading = async (req, res) => {
   const { pageType, heading, subheading, detail, alt, imgTitle } = req.body;
   let photo;
 
-  // Handle image upload via multer
+  // Handle image upload via multer (handle single file or upload.fields)
   if (req.file) {
     photo = req.file.filename;
+  } else if (req.files && req.files.photo && req.files.photo[0]) {
+    photo = req.files.photo[0].filename;
   }
 
   try {
@@ -187,9 +191,11 @@ const updatePageHeadingById = async (req, res) => {
   const { heading, subheading, detail, alt, imgTitle } = req.body;
   let photo;
 
-  // Check if a new image was uploaded
+  // Check if a new image was uploaded (handle single file or upload.fields)
   if (req.file) {
     photo = req.file.filename; // Multer saves uploaded file to req.file
+  } else if (req.files && req.files.photo && req.files.photo[0]) {
+    photo = req.files.photo[0].filename;
   }
 
   try {
