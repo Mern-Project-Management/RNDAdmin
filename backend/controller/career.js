@@ -1,3 +1,4 @@
+const path = require('path');
 const fs = require('fs');
 const Career = require('../model/career');
 const { default: axios } = require('axios');
@@ -234,7 +235,7 @@ const submitApplication = async (req, res) => {
 
         <!-- Subheader -->
         <div class="subheader">
-            <h3>New Job Application Received</h3>
+            <h3>New Career Application</h3>
         </div>
 
         <!-- Main Content -->
@@ -262,8 +263,12 @@ const submitApplication = async (req, res) => {
                     <td>${address || '—'}</td>
                 </tr>
                 <tr>
-                    <td>Post Applied For:</td>
+                    <td>Position:</td>
                     <td><strong>${postAppliedFor || '—'}</strong></td>
+                </tr>
+                <tr>
+                    <td>Resume:</td>
+                    <td>${resumePath ? `<a href="https://www.admin.rndtechnosoft.com/api/image/download/${resumePath}" style="color:#ff573c; text-decoration:none;">${resumePath}</a>` : '—'}</td>
                 </tr>
             </table>
 
@@ -302,9 +307,15 @@ const submitApplication = async (req, res) => {
       const ownerMailOptions = {
         from: `"RND Technosoft" <${smtpConfig.name}>`,
         to: ownerEmail,
-        subject: "New Application Received",
+        subject: "New Career Application Received",
         html: ownerEmailBody,
-        replyTo: email || smtpConfig.name, // Allow owner to reply
+        replyTo: email || smtpConfig.name,
+        attachments: [
+          {
+            filename: req.files.resumeFile[0].originalname || resumePath,
+            path: path.join(__dirname, '../uploads/documents', resumePath)
+          }
+        ]
       };
 
       await transporter.sendMail(ownerMailOptions);
