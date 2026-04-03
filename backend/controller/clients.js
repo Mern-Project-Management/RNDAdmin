@@ -34,7 +34,7 @@ const addClient = async (req, res) => {
       return res.status(400).json({ message: 'No image files provided' });
     }
 
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
     const { title, alt, color, altName, imgTitle } = req.body;
 
     const newClient = new Clients({ 
@@ -71,7 +71,7 @@ const updateClient = async (req, res) => {
 
     // Process new uploaded photos
     if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
-      const newPhotoPaths = req.files['photo'].map(file => file.filename);
+      const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename);
       updateFields.photo = [...existingClient.photo, ...newPhotoPaths];
     } else {
       updateFields.photo = existingClient.photo;
@@ -102,7 +102,7 @@ const deleteClient = async (req, res) => {
 
     // Delete all associated images
     client.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '../uploads/images', filename);
+      const filePath = path.join(__dirname, '..', filename);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       } else {
@@ -134,7 +134,7 @@ const deleteClientImage = async (req, res) => {
     client.photo = client.photo.filter(photo => photo !== imageFilename);
     client.alt.splice(index, 1);
 
-    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', imageFilename);
 
     // Check if the file exists and delete it
     if (fs.existsSync(filePath)) {
@@ -153,7 +153,7 @@ const deleteClientImage = async (req, res) => {
 // Download client image
 const downloadClientImage = async (req, res) => {
   const { filename } = req.params;
-  const filePath = path.join(__dirname, '../uploads/images', filename);
+  const filePath = path.join(__dirname, '..', filename);
 
   res.download(filePath, (err) => {
     if (err) {

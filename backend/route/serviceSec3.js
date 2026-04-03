@@ -7,7 +7,8 @@ const {
   getSec3,
   deleteSec3,
   getSec3ById,
-  getAllServiceSec3
+  getAllServiceSec3,
+  deleteSec3ById
 } = require('../controller/serviceSec3');
 const { uploadPhoto } = require('../middleware/fileUpload'); // your multer middleware
 
@@ -28,5 +29,8 @@ router.put('/:id', uploadPhoto, updateSec3);
 
 // DELETE ServiceSec3
 router.delete('/', deleteSec3);
+
+// DELETE ServiceSec3 by ID
+router.delete('/:id', deleteSec3ById);
 
 module.exports = router;

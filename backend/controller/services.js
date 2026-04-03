@@ -10,7 +10,7 @@ const serviceCategory = require("../model/serviceCategory");
 const insertService = async (req, res) => {
   try {
     const { title, details,alt,slug, metatitle, metadescription, metakeywords, metacanonical, metalanguage, metaschema, otherMeta,categories, subcategories, subSubcategories, url, priority, changeFreq, status} = req.body;
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
     const service = new Service({
       title,
       details,
@@ -55,7 +55,7 @@ const updateService = async (req, res) => {
 
     // Process new uploaded photos and their alt texts
     if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
-      const newPhotoPaths = req.files['photo'].map(file => file.filename); // Using filename to get the stored file names
+      const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename); 
       updateFields.photo = [...existingService.photo, ...newPhotoPaths];
   
     } else {
@@ -83,7 +83,7 @@ const deleteService = async (req, res) => {
     const service = await Service.findOne({slug:slugs}); 
     
     service.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '../uploads/images', filename);
+      const filePath = path.join(__dirname, '..', filename);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath); // Delete file synchronously if it exists
       } else {
@@ -121,7 +121,7 @@ const deletePhotoAndAltText = async (req, res) => {
 
     await service.save();
 
-    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', imageFilename);
 
         // Check if the file exists and delete it
         if (fs.existsSync(filePath)) {

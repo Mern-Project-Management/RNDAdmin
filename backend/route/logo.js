@@ -3,10 +3,10 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 
-router.get('/download/:filename', (req, res) => {
+router.get('/download/:filename(*)', (req, res) => {
   const { filename } = req.params;
-  const logoPath = path.join(__dirname, '../logos', filename);
-  const tempPath = path.join(__dirname, '../temp', filename);
+  const logoPath = path.join(__dirname, '..', filename);
+  const tempPath = path.join(__dirname, '../temp', path.basename(filename)); // Fallback to filename for temp if path is provided
 
   const serveFile = (filePath) => {
     const ext = path.extname(filePath).toLowerCase();

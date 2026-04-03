@@ -16,7 +16,7 @@ const uploadImage = async (req, res) => {
             return res.status(400).json({ error: 'Alt text and title are required' });
         }
 
-        const image = req.file.filename;
+        const image = 'uploads/images/' + req.file.filename;
 
         // Save image details to MongoDB
         const newImage = new Image({ image, altText, title });
@@ -58,7 +58,7 @@ const updateImage = async (req, res) => {
         const updatedData = { altText, title };
 
         if (req.file) {
-            updatedData.image = req.file.filename;
+            updatedData.image = 'uploads/images/' + req.file.filename;
         }
 
         const updatedImage = await Image.findByIdAndUpdate(req.query.id, updatedData, { new: true });
@@ -77,7 +77,7 @@ const deleteImage = async (req, res) => {
         if (!image) return res.status(404).json({ error: 'Image not found' });
 
         // Delete image file
-        const filePath = path.join(uploadDir, image.image);
+        const filePath = path.join(__dirname, '..', image.image);
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
         }

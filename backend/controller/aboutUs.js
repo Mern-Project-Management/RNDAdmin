@@ -11,7 +11,7 @@ const generateSlug = (section) => {
 const createAboutUs = async (req, res) => {
     try {
         const { title, shortDescription, description, imageTitle, altName, section } = req.body;
-        const image = req.files?.image?.[0]?.filename;
+        const image = req.files?.image?.[0]?.filename ? 'uploads/images/' + req.files.image[0].filename : null;
 
         if (!title || !description || !shortDescription || !section) {
             return res.status(400).json({ error: 'Title, short description, description, and section are required' });
@@ -102,12 +102,12 @@ const updateAboutUs = async (req, res) => {
         if (req.files?.image?.[0]) {
             const oldAboutUs = await AboutUs.findById(id);
             if (oldAboutUs?.image) {
-                const imagePath = path.join('uploads', 'images', oldAboutUs.image);
+                const imagePath = path.join(__dirname, '..', oldAboutUs.image);
                 if (fs.existsSync(imagePath)) {
                     fs.unlinkSync(imagePath);
                 }
             }
-            updateData.image = req.files.image[0].filename;
+            updateData.image = 'uploads/images/' + req.files.image[0].filename;
         }
 
         const aboutUs = await AboutUs.findByIdAndUpdate(
@@ -136,7 +136,7 @@ const deleteAboutUs = async (req, res) => {
         }
 
         if (aboutUs.image) {
-            const imagePath = path.join('uploads', 'images', aboutUs.image);
+            const imagePath = path.join(__dirname, '..', aboutUs.image);
             if (fs.existsSync(imagePath)) {
                 fs.unlinkSync(imagePath);
             }

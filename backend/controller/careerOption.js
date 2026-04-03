@@ -9,7 +9,7 @@ exports.createCareer = async (req, res) => {
         console.log(req.body);
         console.log(req.files);
         const { jobtitle, department, jobType, employmentType, requirement, description, alt, imgTitle, priority } = req.body
-        const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+        const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
         const newCareer = new CareerDetails({
             jobtitle,
             department,
@@ -99,7 +99,7 @@ console.log(req.files);
 
         // Handle photo update logic
         if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
-            const newPhotoPaths = req.files['photo'].map(file => file.filename);
+            const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename);
             updateFields.photo = [...existingCareerOption.photo, ...newPhotoPaths];
         } else {
             updateFields.photo = existingCareerOption.photo;
@@ -138,7 +138,7 @@ exports.deletePhotoAndAltText = async (req, res) => {
 
         await careerOption.save();
 
-        const filePath = path.join(__dirname, '..', 'images', imageFilename);
+        const filePath = path.join(__dirname, '..', imageFilename);
 
         // Check if the file exists and delete it
         if (fs.existsSync(filePath)) {

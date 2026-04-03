@@ -13,10 +13,18 @@ const cache = new NodeCache({
   maxKeys: 1000,
 });
 
-router.get('/download/:filename', async (req, res) => {
+router.get('/download/:filename(*)', async (req, res) => {
   const { filename } = req.params;
   const { w = 1200, q = 80 } = req.query;
-  let originalPath = path.join(__dirname, '../uploads/images', filename);
+  let originalPath = path.join(__dirname, '..', filename);
+  
+  // If filename doesn't start with 'uploads/', try prepending it (legacy support)
+  if (!filename.startsWith('uploads/') && !fs.existsSync(originalPath)) {
+    const legacyPath = path.join(__dirname, '../uploads/images', filename);
+    if (fs.existsSync(legacyPath)) {
+      originalPath = legacyPath;
+    }
+  }
   
   // Fallback chain for different directory naming conventions
   if (!fs.existsSync(originalPath)) {
@@ -48,7 +56,15 @@ router.get('/download/:filename', async (req, res) => {
       return res.sendFile(originalPath);
     }
 
-    let filePath = path.join(__dirname, '../uploads/images', `${filename.split('.')[0]}-${w}.webp`);
+    let filePath = path.join(__dirname, '..', `${filename.split('.')[0]}-${w}.webp`);
+    
+    // Legacy fallback
+    if (!filename.startsWith('uploads/') && !fs.existsSync(filePath)) {
+      const legacyWebpPath = path.join(__dirname, '../uploads/images', `${filename.split('.')[0]}-${w}.webp`);
+      if (fs.existsSync(legacyWebpPath)) {
+        filePath = legacyWebpPath;
+      }
+    }
     
     // Fallback chain for pre-generated webp files
     if (!fs.existsSync(filePath)) {
@@ -102,9 +118,16 @@ router.get('/download/:filename', async (req, res) => {
     res.status(500).json({ message: 'File download failed' });
   }
 });
-router.get('/view/:filename', (req, res) => {
+router.get('/view/:filename(*)', (req, res) => {
   const { filename } = req.params;
-  let filePath = path.join(__dirname, '../uploads/images', filename);
+  let filePath = path.join(__dirname, '..', filename);
+  
+  if (!filename.startsWith('uploads/') && !fs.existsSync(filePath)) {
+    const legacyPath = path.join(__dirname, '../uploads/images', filename);
+    if (fs.existsSync(legacyPath)) {
+      filePath = legacyPath;
+    }
+  }
 
   // Fallback for nested 'images/images' directory
   if (!fs.existsSync(filePath)) {

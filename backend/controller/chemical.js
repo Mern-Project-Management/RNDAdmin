@@ -28,7 +28,7 @@ exports.createChemical = async (req, res) => {
       const imageFiles = Array.isArray(req.files.images) ? req.files.images : [req.files.images];
       
       images = imageFiles.map((file, index) => ({
-        url: path.basename(file.path),
+        url: 'uploads/images/' + path.basename(file.path),
         altText: req.body[`altText-${index}`] || '',
         title: req.body[`title-${index}`] || ''
       }));
@@ -176,7 +176,7 @@ exports.updateChemical = async (req, res) => {
     if (req.files?.images) {
       req.files.images.forEach((file, index) => {
         images.push({
-          url: file.filename,
+          url: 'uploads/images/' + file.filename,
           altText: req.body[`altText-${index + 1}`] || 'Default Alt Text',
           title: req.body[`title-${index + 1}`] || 'Default Title'
         });
@@ -195,7 +195,7 @@ exports.updateChemical = async (req, res) => {
       imagesToDelete.forEach(imageId => {
         const image = existingChemical.images.find(img => img._id.toString() === imageId);
         if (image) {
-          const imagePath = path.join(__dirname, '../uploads/images', image.url);
+          const imagePath = path.join(__dirname, '..', image.url);
           fs.unlink(imagePath, (err) => {
             if (err) console.error('Failed to delete image file:', err);
           });
@@ -331,7 +331,7 @@ exports.deleteProduct = async (req, res) => {
       const product = await Chemical.findOne({slug:slugs});
   
       product.photo.forEach(filename => {
-        const filePath = path.join(__dirname, '../uploads/images', filename);
+        const filePath = path.join(__dirname, '..', filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
         } else {
@@ -588,7 +588,7 @@ exports.updateChemical = async (req, res) => {
     if (req.files?.images) {
       req.files.images.forEach((file, index) => {
         images.push({
-          url: file.filename,
+          url: 'uploads/images/' + file.filename,
           altText: req.body[`altText-${index + 1}`] || 'Default Alt Text',
           title: req.body[`title-${index + 1}`] || 'Default Title'
         });
@@ -607,7 +607,7 @@ exports.updateChemical = async (req, res) => {
       imagesToDelete.forEach(imageId => {
         const image = existingChemical.images.find(img => img._id.toString() === imageId);
         if (image) {
-          const imagePath = path.join(__dirname, '../uploads/images', image.url);
+          const imagePath = path.join(__dirname, '..', image.url);
           fs.unlink(imagePath, (err) => {
             if (err) console.error('Failed to delete image file:', err);
           });

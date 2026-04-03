@@ -7,7 +7,7 @@ const fs = require('fs')
 const insertPortfolio = async (req, res) => {
   try {
     const { title, details, status, link, alt, imgtitle, slug } = req.body;
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
 
     const parseField = (field) => {
       if (typeof field === 'string') {
@@ -269,10 +269,10 @@ const updatePortfolio = async (req, res) => {
     // Process new uploaded photos
     if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
       if (existingPortfolio.photo && existingPortfolio.photo.length > 0) {
-        const newPhotoPaths = req.files['photo'].map(file => file.filename);
+        const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename);
         updateFields.photo = [...existingPortfolio.photo, ...newPhotoPaths];
       } else {
-        updateFields.photo = req.files['photo'].map(file => file.filename);
+        updateFields.photo = req.files['photo'].map(file => 'uploads/images/' + file.filename);
       }
     } else {
       if (updateFields.photo === undefined) {
@@ -310,7 +310,7 @@ const deletePortfolio = async (req, res) => {
 
     if (portfolio && portfolio.photo) {
       portfolio.photo.forEach(filename => {
-        const filePath = path.join(__dirname, '../uploads/images', filename);
+        const filePath = path.join(__dirname, '..', filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
         } else {
@@ -344,7 +344,7 @@ const deleteMultiplePortfolios = async (req, res) => {
     portfolios.forEach(portfolio => {
       if (portfolio.photo && portfolio.photo.length > 0) {
         portfolio.photo.forEach(filename => {
-          const filePath = path.join(__dirname, '../uploads/images', filename);
+          const filePath = path.join(__dirname, '..', filename);
           if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
           }
@@ -407,7 +407,7 @@ console.log(req.params)
 
     await portfolio.save();
 
-    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', imageFilename);
 
     // Check if the file exists and delete it
     if (fs.existsSync(filePath)) {

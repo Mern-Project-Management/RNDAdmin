@@ -31,9 +31,17 @@ router.get('/getVideoBySlug', videoController.getVideoBySlug);
 router.put('/updateVideo', uploadFields, videoController.updateVideo);
 router.delete('/deleteVideo', videoController.deleteVideo);
 
-router.get('/download/:filename', (req, res) => {
+router.get('/download/:filename(*)', (req, res) => {
   const { filename } = req.params;
-  const filePath = path.join(__dirname, '../uploads', filename);
+  let filePath = path.join(__dirname, '..', filename);
+  
+  // Legacy fallback
+  if (!filename.startsWith('uploads/') && !fs.existsSync(filePath)) {
+    const legacyPath = path.join(__dirname, '../uploads', filename);
+    if (fs.existsSync(legacyPath)) {
+      filePath = legacyPath;
+    }
+  }
 
   try {
     if (!fs.existsSync(filePath)) {

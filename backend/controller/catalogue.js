@@ -1,4 +1,6 @@
 const Catalogue = require('../model/catalogue');
+const fs = require('fs');
+const path = require('path');
 
 // Create a new catalogue
 const createCatalogue = async (req, res) => {
@@ -15,8 +17,8 @@ const createCatalogue = async (req, res) => {
       return res.status(400).json({ error: "No image file uploaded" });
     }
 
-    const catalog = req.files.catalog[0].filename;
-    const image = req.files.image[0].filename;
+    const catalog = 'uploads/catalogs/' + req.files.catalog[0].filename;
+    const image = 'uploads/images/' + req.files.image[0].filename;
 
     const newCatalogue = new Catalogue({ title, catalogue: catalog, image });
 
@@ -58,8 +60,8 @@ const updateCatalogue = async (req, res) => {
     const catalog = req.files?.catalog ? req.files.catalog[0].filename : undefined;
     const image = req.files?.image ? req.files.image[0].filename : undefined;
     const updateData = { title };
-    if (catalog) updateData.catalogue = catalog;
-    if (image) updateData.image = image;
+    if (catalog) updateData.catalogue = 'uploads/catalogs/' + catalog;
+    if (image) updateData.image = 'uploads/images/' + image;
     const updatedCatalogue = await Catalogue.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!updatedCatalogue) {
       return res.status(404).json({ error: 'Catalogue not found' });
@@ -73,10 +75,21 @@ const updateCatalogue = async (req, res) => {
 // Delete a catalogue by ID
 const deleteCatalogue = async (req, res) => {
   try {
-    const catalogue = await Catalogue.findByIdAndDelete(req.params.id);
+    const catalogue = await Catalogue.findById(req.params.id);
     if (!catalogue) {
       return res.status(404).json({ error: 'Catalogue not found' });
     }
+
+    // Deleteassociated files
+    const filesToDelete = [catalogue.catalogue, catalogue.image];
+    filesToDelete.forEach(filePath => {
+      if (filePath) {
+        const fullPath = path.join(__dirname, '..', filePath);
+        if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+      }
+    });
+
+    await Catalogue.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Catalogue deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete catalogue', details: error.message });

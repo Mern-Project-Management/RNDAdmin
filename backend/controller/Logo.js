@@ -17,10 +17,10 @@ const addLogo = async (req, res) => {
 
         // Create a new logo record
         const logo = await Logo.create({
-            headerLogo: req.files.headerLogo[0].filename,
+            headerLogo: 'logos/' + req.files.headerLogo[0].filename,
             headerLogoName: req.body.headerLogoName || '',
             headerLogoAltName: req.body.headerLogoAltName || '',
-            favIcon: req.files.favIcon[0].filename,
+            favIcon: 'logos/' + req.files.favIcon[0].filename,
             favIconName: req.body.favIconName || '',
             favIconAltName: req.body.favIconAltName || ''
         });
@@ -50,7 +50,7 @@ const updateLogo = async (req, res) => {
 
             const deleteFile = (filePath) => {
                 if (!filePath) return;
-                const fullPath = path.join(__dirname, '..', 'logos', filePath);
+                const fullPath = path.join(__dirname, '..', filePath);
                 if (fs.existsSync(fullPath)) {
                     fs.unlink(fullPath, (err) => {
                         if (err) console.error(`Error deleting old file: ${fullPath}`, err);
@@ -64,8 +64,8 @@ const updateLogo = async (req, res) => {
         }
 
         // Assign new values from the request, falling back to existing values
-        logo.headerLogo = req.files?.headerLogo ? req.files.headerLogo[0].filename : logo.headerLogo;
-        logo.favIcon = req.files?.favIcon ? req.files.favIcon[0].filename : logo.favIcon;
+        logo.headerLogo = req.files?.headerLogo ? 'logos/' + req.files.headerLogo[0].filename : logo.headerLogo;
+        logo.favIcon = req.files?.favIcon ? 'logos/' + req.files.favIcon[0].filename : logo.favIcon;
         logo.headerLogoName = req.body.headerLogoName ?? logo.headerLogoName;
         logo.headerLogoAltName = req.body.headerLogoAltName ?? logo.headerLogoAltName;
         logo.favIconName = req.body.favIconName ?? logo.favIconName;
@@ -107,7 +107,7 @@ const deleteLogo = async (req, res) => {
 
         // Delete associated files
         const deleteFile = (filePath) => {
-            const fullPath = path.join(__dirname, '..', 'logos', filePath);
+            const fullPath = path.join(__dirname, '..', filePath);
             if (fs.existsSync(fullPath)) fs.unlink(fullPath, (err) => console.error(`Error deleting file:`, err));
         };
 

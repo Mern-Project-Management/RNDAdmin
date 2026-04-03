@@ -257,31 +257,32 @@ const ServiceSec1Form = () => {
     setMessage({ type: '', text: '' });
 
     try {
-      const submitData = {
-        categoryId: formData.categoryId,
-        heading: formData.heading,
-        subheading: formData.subheading,
-        details: formData.details,
-        photo: formData.photo,
-        alt: formData.alt,
-        imgTitle: formData.imgTitle
-      };
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append('categoryId', formData.categoryId);
+      formDataToSubmit.append('heading', formData.heading);
+      formDataToSubmit.append('subheading', formData.subheading);
+      formDataToSubmit.append('details', formData.details);
+      formDataToSubmit.append('alt', formData.alt);
+      formDataToSubmit.append('imgTitle', formData.imgTitle);
+
+      if (selectedFile) {
+        formDataToSubmit.append('photo', selectedFile);
+      } else {
+        formDataToSubmit.append('photo', formData.photo);
+      }
 
       if (selectedLevel === 'subcategory' && formData.subCategoryId) {
-        submitData.subCategoryId = formData.subCategoryId;
+        formDataToSubmit.append('subCategoryId', formData.subCategoryId);
       } else if (selectedLevel === 'subsubcategory' && formData.subSubCategoryId) {
-        submitData.subCategoryId = formData.subCategoryId;
-        submitData.subSubCategoryId = formData.subSubCategoryId;
+        formDataToSubmit.append('subCategoryId', formData.subCategoryId);
+        formDataToSubmit.append('subSubCategoryId', formData.subSubCategoryId);
       }
 
       const url = id ? `/api/servicesec1/${id}` : '/api/servicesec1';
 
       const response = await fetch(url, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submitData)
+        body: formDataToSubmit
       });
 
       const data = await response.json();

@@ -6,7 +6,7 @@ const insertStaff = async (req, res) => {
   try {
     const { S_id, name, alt, status, imgtitle, jobTitle, details } = req.body;
     let { socials } = req.body;
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
 
     if (socials) {
       socials = JSON.parse(socials);
@@ -69,7 +69,7 @@ const updateStaff = async (req, res) => {
 
     // Process new uploaded photos
     if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
-      const newPhotoPaths = req.files['photo'].map(file => file.filename); // Using filename to get the stored file names
+      const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename); // Using filename to get the stored file names
       updateFields.photo = [...existingStaff.photo, ...newPhotoPaths];
     } else {
       updateFields.photo = existingStaff.photo; // Keep existing photos if no new photos are uploaded
@@ -151,7 +151,7 @@ const deletePhotoAndAltText = async (req, res) => {
     ourStaff.imgtitle.splice(index, 1);
     await ourStaff.save();
 
-    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', imageFilename);
 
     // Check if the file exists and delete it
     if (fs.existsSync(filePath)) {

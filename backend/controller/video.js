@@ -12,10 +12,10 @@ exports.createVideo = async (req, res) => {
 
     if (req.files) {
       if (req.files.video && req.files.video[0]) {
-        video = req.files.video[0].filename;
+        video = 'uploads/' + req.files.video[0].filename;
       }
       if (req.files.image && req.files.image[0]) {
-        image = req.files.image[0].filename;
+        image = 'uploads/' + req.files.image[0].filename;
       }
     }
 
@@ -87,19 +87,19 @@ exports.updateVideo = async (req, res) => {
       if (req.files.video && req.files.video[0]) {
         // Delete old video if exists
         if (videoDoc.video) {
-          const oldVideoPath = path.join('uploads/', videoDoc.video);
+          const oldVideoPath = path.join(__dirname, '..', videoDoc.video);
           if (fs.existsSync(oldVideoPath)) fs.unlinkSync(oldVideoPath);
         }
-        updateData.video = req.files.video[0].filename;
+        updateData.video = 'uploads/' + req.files.video[0].filename;
       }
 
       if (req.files.image && req.files.image[0]) {
         // Delete old image if exists
         if (videoDoc.image) {
-          const oldImagePath = path.join('uploads/', videoDoc.image);
+          const oldImagePath = path.join(__dirname, '..', videoDoc.image);
           if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
         }
-        updateData.image = req.files.image[0].filename;
+        updateData.image = 'uploads/' + req.files.image[0].filename;
       }
     }
 
@@ -127,11 +127,11 @@ exports.deleteVideo = async (req, res) => {
 
     // Delete associated files
     if (videoDoc.video) {
-      const videoPath = path.join('uploads/', videoDoc.video);
+      const videoPath = path.join(__dirname, '..', videoDoc.video);
       if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
     }
     if (videoDoc.image) {
-      const imagePath = path.join('uploads/', videoDoc.image);
+      const imagePath = path.join(__dirname, '..', videoDoc.image);
       if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
     }
 

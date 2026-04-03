@@ -3,7 +3,7 @@ const CoreValue = require('../model/CoreValue');
 // Create new core value
 exports.createCoreValue = async (req, res) => {
     try {
-        const image = req.files['image'] ? req.files['image'][0].filename : null;
+        const image = req.files['image'] ? 'uploads/images/' + req.files['image'][0].filename : null;
 
         const coreValue = new CoreValue({
             image: image,
@@ -69,7 +69,7 @@ exports.updateCoreValue = async (req, res) => {
 
         // Handle image update if new image is uploaded
         if (req.files && req.files['image']) {
-            updateData.image = req.files['image'][0].filename;
+            updateData.image = 'uploads/images/' + req.files['image'][0].filename;
         }
 
         const updatedCoreValue = await CoreValue.findByIdAndUpdate(

@@ -23,8 +23,8 @@ const storage = multer.diskStorage({
       cb(null, catalogueDir);
     } else if (file.fieldname === 'resume') {
       cb(null, resumeDir);
-    } else if (file.fieldname === 'photo' || file.fieldname.startsWith('cards[')) {
-      // Accept both 'photo' and any 'cards[x][photo]'
+    } else if (file.fieldname === 'photo' || file.fieldname === 'mainPhoto' || file.fieldname.startsWith('cards[')) {
+      // Accept 'photo', 'mainPhoto', and any 'cards[x][photo]'
       cb(null, tempDir); // Save temporarily
     } else {
       cb(new Error('Unexpected field'));
@@ -133,6 +133,10 @@ const uploadPhoto = (req, res, next) => {
 
     if (req.files['photo']) {
       photoFiles.push(...req.files['photo']);
+    }
+
+    if (req.files['mainPhoto']) {
+      photoFiles.push(...req.files['mainPhoto']);
     }
 
     // Find all fields that start with 'cards[' and end with '[photo]'

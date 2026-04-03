@@ -60,9 +60,9 @@ const updatePageHeading = async (req, res) => {
 
   // Check if a new file was uploaded (handle single file or upload.fields)
   if (req.file) {
-    photo = req.file.filename; 
+    photo = 'uploads/images/' + req.file.filename; 
   } else if (req.files && req.files.photo && req.files.photo[0]) {
-    photo = req.files.photo[0].filename;
+    photo = 'uploads/images/' + req.files.photo[0].filename;
   }
 
   try {
@@ -130,9 +130,9 @@ const addPageHeading = async (req, res) => {
 
   // Handle image upload via multer (handle single file or upload.fields)
   if (req.file) {
-    photo = req.file.filename;
+    photo = 'uploads/images/' + req.file.filename;
   } else if (req.files && req.files.photo && req.files.photo[0]) {
-    photo = req.files.photo[0].filename;
+    photo = 'uploads/images/' + req.files.photo[0].filename;
   }
 
   try {
@@ -193,9 +193,9 @@ const updatePageHeadingById = async (req, res) => {
 
   // Check if a new image was uploaded (handle single file or upload.fields)
   if (req.file) {
-    photo = req.file.filename; // Multer saves uploaded file to req.file
+    photo = 'uploads/images/' + req.file.filename; // Multer saves uploaded file to req.file
   } else if (req.files && req.files.photo && req.files.photo[0]) {
-    photo = req.files.photo[0].filename;
+    photo = 'uploads/images/' + req.files.photo[0].filename;
   }
 
   try {

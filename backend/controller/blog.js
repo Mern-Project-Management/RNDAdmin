@@ -1,41 +1,40 @@
 const Blog = require('../model/blog'); // Import the Blog model
 const BlogCategory = require('../model/blogCategory'); // Import the BlogCategory model
+const fs = require('fs');
+const path = require('path');
 
 // Create a new blog
 const createBlog = async (req, res) => {
-  console.log("Request Body:", req.body);
-  console.log("Uploaded Files:", req.files);
-
-  const {
-      title,
-      date,
-      details,
-      alt, imageTitle,
-      postedBy,
-      slug,
-      metatitle,
-      metadescription,
-      metakeywords,
-      metacanonical,
-      metalanguage,
-      metaschema,
-      otherMeta,
-      url,
-      priority,
-      changeFreq,
-      status,
-      category,
-  } = req.body;
-
-  // Handle file uploads correctly
-  let imagePaths = [];
-  if (req.files && Array.isArray(req.files)) {
-      imagePaths = req.files.map(file => file.filename);
-  } else if (req.file) {
-      imagePaths = [req.file.filename]; // Single file upload
-  }
-  
   try {
+    const {
+        title,
+        date,
+        details,
+        alt, imageTitle,
+        postedBy,
+        slug,
+        metatitle,
+        metadescription,
+        metakeywords,
+        metacanonical,
+        metalanguage,
+        metaschema,
+        otherMeta,
+        url,
+        priority,
+        changeFreq,
+        status,
+        category,
+    } = req.body;
+
+    // Handle file uploads correctly
+    let imagePaths = [];
+    if (req.files && req.files['image']) {
+        imagePaths = req.files['image'].map(file => 'uploads/images/' + file.filename);
+    } else if (req.file) {
+        imagePaths = ['uploads/images/' + req.file.filename]; 
+    }
+    
     const newBlog = new Blog({
         title,
         date,
@@ -54,15 +53,15 @@ const createBlog = async (req, res) => {
         url,
         priority,
         changeFreq,
-        status,
+        status: status || 'active',
         category,
     });
 
     const savedBlog = await newBlog.save();
     res.status(201).json(savedBlog);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ message: 'Server error', error });
+    console.error("Error creating blog:", error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
@@ -145,8 +144,8 @@ const updateBlog = async (req, res) => {
       // Handle multiple images - adjusted for req.files.image structure
       if (req.files && req.files.image) {
         const newImagePaths = Array.isArray(req.files.image) 
-          ? req.files.image.map(file => file.filename)
-          : [req.files.image.filename];
+          ? req.files.image.map(file => 'uploads/images/' + file.filename)
+          : ['uploads/images/' + req.files.image.filename];
         updateData.image = newImagePaths;
       }
 
@@ -173,13 +172,24 @@ const deleteBlog = async (req, res) => {
   const { id } = req.query;
 
   try {
-    const deletedBlog = await Blog.findByIdAndDelete(id);
-    if (!deletedBlog) {
+    const blog = await Blog.findById(id);
+    if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
     }
+
+    // Delete physical files
+    if (blog.image && Array.isArray(blog.image)) {
+      blog.image.forEach(imagePath => {
+        const fullPath = path.join(__dirname, '..', imagePath);
+        if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+      });
+    }
+
+    await Blog.findByIdAndDelete(id);
     res.status(200).json({ message: 'Blog deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error("Error deleting blog:", error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 

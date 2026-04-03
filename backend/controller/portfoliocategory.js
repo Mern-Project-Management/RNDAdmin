@@ -31,7 +31,7 @@ const insertCategory = async (req, res) => {
     changeFreq,
   } = req.body;
 
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.files && req.files['photo'] ? 'logos/' + req.files['photo'][0].filename : null;
   const component = "ProjectSection"; // Hardcoding the component field
 
   try {
@@ -98,7 +98,7 @@ const insertSubCategory = async (req, res) => {
     priority,
     changeFreq,
   } = req.body;
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.files && req.files['photo'] ? 'logos/' + req.files['photo'][0].filename : null;
   const component = "SubPortfolio"; // Hardcoding the component field
 
   try {
@@ -183,7 +183,7 @@ const insertSubSubCategory = async (req, res) => {
     priority,
     changeFreq,
   } = req.body;
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.files && req.files['photo'] ? 'logos/' + req.files['photo'][0].filename : null;
 
   try {
     const categoryDoc = await PortfolioCategory.findById(categoryId);
@@ -280,8 +280,8 @@ const updateCategory = async (req, res) => {
 
   // Check for photo file
   let photo;
-  if (req.file) {
-    photo = req.file.filename;
+  if (req.files && req.files['photo']) {
+    photo = 'logos/' + req.files['photo'][0].filename;
   }
 
   // Prepare update object
@@ -352,9 +352,9 @@ const updateSubCategory = async (req, res) => {
   
   let photo = req.body.photo;
 
-  // Check if there's a file in req.file (i.e., if photo was uploaded)
-  if (req.file) {
-    photo = req.file.filename;
+  // Check if there's a file in req.files (i.e., if photo was uploaded)
+  if (req.files && req.files['photo']) {
+    photo = 'logos/' + req.files['photo'][0].filename;
   }
 
   try {
@@ -364,8 +364,8 @@ const updateSubCategory = async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    // Find the subcategory based on the subCategoryId (using `slug` for matching)
-    const subCategory = categoryDoc.subCategories.find(sub => sub._id === subCategoryId);
+    // Find the subcategory based on the subCategoryId
+    const subCategory = categoryDoc.subCategories.find(sub => sub._id.toString() === subCategoryId);
     if (!subCategory) {
       return res.status(404).json({ message: "Subcategory not found" });
     }
@@ -423,8 +423,8 @@ const updatesubsubcategory = async (req, res) => {
   let photo = req.body.photo;
 
   // If a new photo is uploaded, update the photo filename
-  if (req.file) {
-    photo = req.file.filename;
+  if (req.files && req.files['photo']) {
+    photo = 'logos/' + req.files['photo'][0].filename;
   }
 
   try {
@@ -440,8 +440,8 @@ const updatesubsubcategory = async (req, res) => {
       return res.status(404).json({ message: "Subcategory not found" });
     }
 
-    // Find the sub-subcategory by slug (subSubCategoryId)
-    const subSubCategory = subCategory.subSubCategories.find(subSub => subSub.slug === subSubCategoryId);
+    // Find the sub-subcategory
+    const subSubCategory = subCategory.subSubCategory.find(subSub => subSub._id.toString() === subSubCategoryId || subSub.slug === subSubCategoryId);
     if (!subSubCategory) {
       return res.status(404).json({ message: "Sub-subcategory not found" });
     }
@@ -504,7 +504,7 @@ const deletecategory = async (req, res) => {
 
     // Ensure the photo exists before attempting to delete
     if (category.photo) {
-      const photoPath = path.join(__dirname, '../logos', category.photo);
+      const photoPath = path.join(__dirname, '..', category.photo);
       deleteFile(photoPath);
     } else {
       console.warn('No photo found for this category');
@@ -571,7 +571,7 @@ const deletesubcategory = async (req, res) => {
 
     // 4️⃣ Delete photo if exists
     if (subCategory.photo) {
-      const photoPath = path.join(__dirname, "../logos", subCategory.photo);
+      const photoPath = path.join(__dirname, "..", subCategory.photo);
       console.log("Deleting photo:", photoPath);
       deleteFile(photoPath);
     }
@@ -654,7 +654,7 @@ const deletesubsubcategory = async (req, res) => {
 
     // Get the photo file path and delete the file
     if (subSubCategoryToDelete.photo) {
-      const photoPath = path.join(__dirname, '../logos', subSubCategoryToDelete.photo);
+      const photoPath = path.join(__dirname, '..', subSubCategoryToDelete.photo);
       console.log('Attempting to delete file:', photoPath);
       deleteFile(photoPath); // Delete the file associated with the sub-subcategory
     }

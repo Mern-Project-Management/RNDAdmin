@@ -1,4 +1,6 @@
 const MenuListing = require('../model/menuListing');
+const fs = require('fs');
+const path = require('path');
 
 // Create a new menu listing
 exports.createMenuListing = async (req, res) => {
@@ -18,7 +20,7 @@ exports.createMenuListing = async (req, res) => {
         if (req.files) {
             // Parent photo (field name: 'photo')
             if (req.files['photo'] && req.files['photo'][0]) {
-                parent.photo = req.files['photo'][0].filename;
+                parent.photo = 'uploads/images/' + req.files['photo'][0].filename;
             }
 
             // Dynamic child/subChild photo fields may be named in different patterns.
@@ -27,7 +29,7 @@ exports.createMenuListing = async (req, res) => {
                 const childPhotoMatch = fieldName.match(/^children\[(\d+)\]\[photo\]$/);
                 if (childPhotoMatch) {
                     const idx = Number(childPhotoMatch[1]);
-                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    if (children[idx]) children[idx].photo = 'uploads/images/' + req.files[fieldName][0].filename;
                     return;
                 }
 
@@ -38,7 +40,7 @@ exports.createMenuListing = async (req, res) => {
                     const sIdx = Number(subChildMatch[2]);
                     if (children[pIdx] && Array.isArray(children[pIdx].subChildren)) {
                         if (children[pIdx].subChildren[sIdx]) {
-                            children[pIdx].subChildren[sIdx].photo = req.files[fieldName][0].filename;
+                            children[pIdx].subChildren[sIdx].photo = 'uploads/images/' + req.files[fieldName][0].filename;
                         }
                     }
                     return;
@@ -48,7 +50,7 @@ exports.createMenuListing = async (req, res) => {
                 const cardsMatch = fieldName.match(/^cards\[(\d+)\]\[photo\]$/);
                 if (cardsMatch) {
                     const idx = Number(cardsMatch[1]);
-                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    if (children[idx]) children[idx].photo = 'uploads/images/' + req.files[fieldName][0].filename;
                     return;
                 }
             });
@@ -136,14 +138,14 @@ exports.updateMenuListing = async (req, res) => {
 
         if (req.files) {
             if (req.files['photo'] && req.files['photo'][0]) {
-                parent.photo = req.files['photo'][0].filename;
+                parent.photo = 'uploads/images/' + req.files['photo'][0].filename;
             }
 
             Object.keys(req.files).forEach(fieldName => {
                 const childPhotoMatch = fieldName.match(/^children\[(\d+)\]\[photo\]$/);
                 if (childPhotoMatch) {
                     const idx = Number(childPhotoMatch[1]);
-                    if (children[idx]) children[idx].photo = req.files[fieldName][0].filename;
+                    if (children[idx]) children[idx].photo = 'uploads/images/' + req.files[fieldName][0].filename;
                     return;
                 }
 
@@ -153,7 +155,7 @@ exports.updateMenuListing = async (req, res) => {
                     const sIdx = Number(subChildMatch[2]);
                     if (children[pIdx] && Array.isArray(children[pIdx].subChildren)) {
                         if (children[pIdx].subChildren[sIdx]) {
-                            children[pIdx].subChildren[sIdx].photo = req.files[fieldName][0].filename;
+                            children[pIdx].subChildren[sIdx].photo = 'uploads/images/' + req.files[fieldName][0].filename;
                         }
                     }
                     return;
@@ -202,18 +204,41 @@ exports.deleteMenuListing = async (req, res) => {
             return res.status(404).json({ success: false, message: "Menu listing not found" });
         }
 
-        // If the ID matches the parent, delete the entire menu
+        // Delete physical photo if it exists for the deleted parent/item
+        const deleteItemPhoto = (item) => {
+            if (item && item.photo) {
+                const fullPath = path.join(__dirname, '..', item.photo);
+                if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+            }
+        };
+
+        // If the ID matches the parent, delete the entire menu and its files
         if (menu._id.toString() === id) {
+            if (menu.parent) deleteItemPhoto(menu.parent);
+            // Also delete photos of all children and subchildren
+            menu.children.forEach(child => {
+                deleteItemPhoto(child);
+                child.subChildren.forEach(sub => deleteItemPhoto(sub));
+            });
             await MenuListing.findByIdAndDelete(id);
             return res.status(200).json({ success: true, message: "Parent menu deleted successfully" });
         }
 
-        // If the ID matches a child, remove it from the children array
-        menu.children = menu.children.filter(child => child._id.toString() !== id);
-
-        // If the ID matches a sub-child, remove it from the subChildren array
-        menu.children.forEach(child => {
-            child.subChildren = child.subChildren.filter(subChild => subChild._id.toString() !== id);
+        // If the ID matches a child or sub-child, find it, delete its photo, then remove from array
+        menu.children = menu.children.filter(child => {
+            if (child._id.toString() === id) {
+                deleteItemPhoto(child);
+                child.subChildren.forEach(sub => deleteItemPhoto(sub));
+                return false;
+            }
+            child.subChildren = child.subChildren.filter(subChild => {
+                if (subChild._id.toString() === id) {
+                    deleteItemPhoto(subChild);
+                    return false;
+                }
+                return true;
+            });
+            return true;
         });
 
         // Save the updated menu

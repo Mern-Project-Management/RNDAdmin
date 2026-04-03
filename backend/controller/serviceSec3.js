@@ -9,7 +9,8 @@ const photoDir = path.join(__dirname, '../uploads/images');
 
 // Helper to delete file if exists
 const deleteFile = (filePath) => {
-  const fullPath = path.join(photoDir, filePath);
+  if (!filePath) return;
+  const fullPath = path.join(__dirname, '..', filePath);
   if (fs.existsSync(fullPath)) {
     fs.unlink(fullPath, (err) => {
       if (err) console.error('Error deleting file:', err);
@@ -37,11 +38,11 @@ const processCards = (cards, files) => {
     // 1. Check for specific field name: cards[index][photo]
     const specificField = `cards[${index}][photo]`;
     if (files?.[specificField] && files[specificField][0]) {
-      finalPhoto = files[specificField][0].filename;
+      finalPhoto = 'uploads/images/' + files[specificField][0].filename;
     }
     // 2. Fallback to 'photo' array if specific field is not found (matching old behavior if needed)
     else if (files?.['photo'] && files['photo'][index]) {
-      finalPhoto = files['photo'][index].filename;
+      finalPhoto = 'uploads/images/' + files['photo'][index].filename;
     }
 
     return {
@@ -349,5 +350,30 @@ exports.getAllServiceSec3 = async (req, res) => {
       message: 'Server error',
       error: error.message,
     });
+  }
+};
+
+// DELETE ServiceSec3 by ID
+exports.deleteSec3ById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid ID' });
+    }
+    const sec3 = await ServiceSec3.findByIdAndDelete(id);
+    if (!sec3) {
+      return res.status(404).json({ success: false, message: 'Service Section 3 not found' });
+    }
+    if (sec3.cards && Array.isArray(sec3.cards)) {
+      sec3.cards.forEach((card) => {
+        if (card.photo) {
+          deleteFile(card.photo);
+        }
+      });
+    }
+    res.status(200).json({ success: true, message: 'Service Section 3 deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting Sec3 by ID:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };

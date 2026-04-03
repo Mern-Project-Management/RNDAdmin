@@ -15,7 +15,7 @@ const insertCategory = async (req, res) => {
   const { category,details,
     alt,imgtitle,slug, metatitle, metadescription, metakeywords, metacanonical, metalanguage, metaschema, otherMeta, url, priority, changeFreq } = req.body;
 
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.file ? 'logos/' + req.file.filename : null;
 
   try {
     const existingCategory = await ProductCategory.findOne({ category });
@@ -56,7 +56,7 @@ const insertSubCategory = async (req, res) => {
     // Handle the photo upload if there's a file in the request
     let photo = null;
     if (req.file) {
-      photo = req.file.filename; // Assuming you're using multer for handling file uploads
+      photo = 'logos/' + req.file.filename; // Assuming you're using multer for handling file uploads
     }
 
     // Push the new subcategory to the category document
@@ -78,7 +78,7 @@ const insertSubSubCategory = async (req, res) => {
   const { categoryId, subCategoryId } = req.query;
   const { category,alt,imgtitle,slug,details,
      metatitle, metadescription, metakeywords, metacanonical, metalanguage, metaschema, otherMeta, url, priority, changeFreq } = req.body;
-  const photo=req.file.filename
+  const photo = 'logos/' + req.file.filename;
   try {
     const categoryDoc = await ProductCategory.findById(categoryId);
 
@@ -206,7 +206,7 @@ const updateCategory = async (req, res) => {
       await processImage(req.file.path, finalPath);
 
       // Set new photo name
-      photo = req.file.filename;
+      photo = 'logos/' + req.file.filename;
 
       // Delete temp file after processing
       fs.unlink(req.file.path, (e) => e && console.log("Temp delete failed"));
@@ -216,7 +216,7 @@ const updateCategory = async (req, res) => {
     // 3.2 DELETE OLD IMAGE IF NEW UPLOADED
     // ---------------------------------------------
     if (req.file && existing.photo) {
-      const oldPath = path.join(uploadDir, existing.photo);
+      const oldPath = path.join(__dirname, '..', existing.photo);
       if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
     }
 
@@ -262,7 +262,7 @@ const updateSubCategory = async (req, res) => {
   let photo = req.body.photo; 
 
   if (req.file) {
-    photo = req.file.filename; 
+    photo = 'logos/' + req.file.filename; 
   }
 
   try {
@@ -316,7 +316,7 @@ const updatesubsubcategory = async (req, res) => {
   let photo = req.body.photo; 
 
   if (req.file) {
-    photo = req.file.filename; 
+    photo = 'logos/' + req.file.filename; 
   }
   try {
     const categoryDoc = await ProductCategory.findById(categoryId);
@@ -379,7 +379,7 @@ const deletecategory = async (req, res) => {
     }
 
     
-    const photoPath = path.join(__dirname, '../logos', category.photo);
+    const photoPath = path.join(__dirname, '..', category.photo);
     deleteFile(photoPath);
 
 
@@ -429,7 +429,7 @@ const deletesubcategory = async (req, res) => {
       return res.status(400).json({ message: 'Subcategory has associated sub-subcategories and cannot be deleted' });
     }
 
-    const photoPath = path.join(__dirname, '../logos', subCategory.photo);
+    const photoPath = path.join(__dirname, '..', subCategory.photo);
     deleteFile(photoPath);
 
     // Remove the subcategory from the array
@@ -474,7 +474,7 @@ const deletesubsubcategory = async (req, res) => {
       return res.status(404).json({ message: 'Sub-subcategory not found' });
     }
 
-    const photoPath = path.join(__dirname, '../logos', subCategory.subSubCategory[subSubCategoryIndex].photo);
+    const photoPath = path.join(__dirname, '..', subCategory.subSubCategory[subSubCategoryIndex].photo);
     deleteFile(photoPath);
 
    

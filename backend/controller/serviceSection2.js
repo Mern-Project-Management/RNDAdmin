@@ -8,7 +8,8 @@ const photoDir = path.join(__dirname, '../uploads/images');
 
 // Helper to delete file if exists
 const deleteFile = (filePath) => {
-  const fullPath = path.join(photoDir, filePath);
+  if (!filePath) return;
+  const fullPath = path.join(__dirname, '..', filePath);
   if (fs.existsSync(fullPath)) {
     fs.unlink(fullPath, (err) => {
       if (err) console.error('Error deleting file:', err);
@@ -36,11 +37,11 @@ const processCards = (cards, files) => {
     // 1. Check for specific field name: cards[index][photo]
     const specificField = `cards[${index}][photo]`;
     if (files?.[specificField] && files[specificField][0]) {
-      finalPhoto = files[specificField][0].filename;
+      finalPhoto = 'uploads/images/' + files[specificField][0].filename;
     }
     // 2. Fallback to 'photo' array
     else if (files?.['photo'] && files['photo'][index]) {
-      finalPhoto = files['photo'][index].filename;
+      finalPhoto = 'uploads/images/' + files['photo'][index].filename;
     }
 
     return {
@@ -185,11 +186,13 @@ exports.deleteSec2 = async (req, res) => {
     }
 
     // Delete associated card images
-    sec1.cards.forEach((card) => {
-      if (card.photo) {
-        deleteFile(card.photo);
-      }
-    });
+    if (sec1.cards && Array.isArray(sec1.cards)) {
+      sec1.cards.forEach((card) => {
+        if (card.photo) {
+          deleteFile(card.photo);
+        }
+      });
+    }
 
     res.status(200).json({ message: 'Section deleted successfully' });
   } catch (error) {
@@ -294,5 +297,30 @@ exports.getAllServiceSec2 = async (req, res) => {
       message: 'Server error',
       error: error.message,
     });
+  }
+};
+
+// DELETE ServiceSec2 by ID
+exports.deleteSec2ById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid ID' });
+    }
+    const sec2 = await ServiceSec2.findByIdAndDelete(id);
+    if (!sec2) {
+      return res.status(404).json({ success: false, message: 'Service Section 2 not found' });
+    }
+    if (sec2.cards && Array.isArray(sec2.cards)) {
+      sec2.cards.forEach((card) => {
+        if (card.photo) {
+          deleteFile(card.photo);
+        }
+      });
+    }
+    res.status(200).json({ success: true, message: 'Service Section 2 deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting Sec2 by ID:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };

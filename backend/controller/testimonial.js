@@ -91,7 +91,7 @@ const insertTestimonial = async (req, res) => {
       priority
     } = req.body;
 
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
     const video = req.files['video'] ? req.files['video'][0].filename : ''; // Assuming only one video file
 
        // Fetch the category and get the slug
@@ -148,7 +148,7 @@ const insertTestimonialForSubCategory = async (req, res) => {
       priority
     } = req.body;
 
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
     const video = req.files['video'] ? req.files['video'][0].filename : ''; // Assuming only one video file
 
     // Fetch the category by ID
@@ -218,7 +218,7 @@ const insertTestimonialForSubSubCategory = async (req, res) => {
       priority
     } = req.body;
 
-    const photo = req.files['photo'] ? req.files['photo'].map(file => file.filename) : [];
+    const photo = req.files['photo'] ? req.files['photo'].map(file => 'uploads/images/' + file.filename) : [];
     const video = req.files['video'] ? req.files['video'][0].filename : ''; // Assuming only one video file
 
     // Fetch the category by ID
@@ -472,7 +472,7 @@ const updateTestimonial = async (req, res) => {
 
     // Process new uploaded photos
     if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
-      const newPhotoPaths = req.files['photo'].map(file => file.filename); // Using filename to get the stored file names
+      const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename); 
       updateFields.photo = [...existingTestimonial.photo, ...newPhotoPaths];
     } else {
       updateFields.photo = existingTestimonial.photo; // Keep existing photos if no new photos are uploaded
@@ -516,7 +516,7 @@ const deleteTestimonial = async (req, res) => {
     const testimonial = await Testimonial.findById(id); 
     
     testimonial.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '../uploads/images', filename);
+      const filePath = path.join(__dirname, '..', filename);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath); // Delete file synchronously if it exists
       } else {
@@ -580,7 +580,7 @@ const deletePhotoAndAltText = async (req, res) => {
     testimonial.imgtitle.splice(index, 1);
     await testimonial.save();
 
-    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', imageFilename);
 
         // Check if the file exists and delete it
         if (fs.existsSync(filePath)) {

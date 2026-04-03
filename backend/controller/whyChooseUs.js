@@ -5,7 +5,7 @@ const fs = require('fs');
 // Helper function to delete old images
 const deleteImage = (imagePath) => {
   if (imagePath) {
-    const fullPath = path.join(__dirname, '../uploads/images', path.basename(imagePath));
+    const fullPath = path.join(__dirname, '..', imagePath);
     if (fs.existsSync(fullPath)) {
       fs.unlinkSync(fullPath);
     }
@@ -26,19 +26,27 @@ const processCards = (cards, files) => {
     throw new Error('Cards must be an array or a JSON string');
   }
 
-  const uploadedPhotos = files?.['photo'] || [];
-  if (uploadedPhotos.length > 5) {
-    throw new Error('Maximum 5 photos allowed for cards');
-  }
+  return parsedCards.map((card, index) => {
+    const specificField = `cards[${index}][photo]`;
+    let finalPhoto = card.photo || '';
 
-  return parsedCards.map((card, index) => ({
-    title: card.title || '',
-    subTitle: card.subTitle || '',
-    description: card.description || '',
-    photo: uploadedPhotos[index]?.filename || card.photo || '',
-    alt: card.alt || '',
-    imgTitle: card.imgTitle || '',
-  }));
+    // Check if new photo uploaded for this specific card
+    if (files && files[specificField] && files[specificField][0]) {
+      finalPhoto = 'uploads/images/' + files[specificField][0].filename;
+    } else if (files && files['photo'] && files['photo'][index]) {
+      // Fallback for old frontend format if still used
+      finalPhoto = 'uploads/images/' + files['photo'][index].filename;
+    }
+
+    return {
+      title: card.title || '',
+      subTitle: card.subTitle || '',
+      description: card.description || '',
+      photo: finalPhoto,
+      alt: card.alt || '',
+      imgTitle: card.imgTitle || '',
+    };
+  });
 };
 // Create WhyChooseUs
 exports.createWhyChooseUs = async (req, res) => {
@@ -61,7 +69,7 @@ exports.createWhyChooseUs = async (req, res) => {
 
     // Handle main photo (separate from card photos)
     const mainPhoto = req.files && req.files['mainPhoto'] 
-      ? req.files['mainPhoto'][0].filename 
+      ? 'uploads/images/' + req.files['mainPhoto'][0].filename 
       : '';
 
     // Process cards with up to 5 uploaded photos (field name: 'photo')
@@ -233,7 +241,7 @@ exports.updateWhyChooseUs = async (req, res) => {
       if (whyChooseUs.photo) {
         deleteImage(whyChooseUs.photo);
       }
-      mainPhoto = req.files['mainPhoto'][0].filename;
+      mainPhoto = 'uploads/images/' + req.files['mainPhoto'][0].filename;
     }
 
     /* ---------------- CARDS ---------------- */

@@ -1,9 +1,11 @@
 const CompanyItem = require('../model/companyItem');
+const path = require('path');
+const fs = require('fs');
 
 // Create new company item
 exports.createCompanyItem = async (req, res) => {
     try {
-        const image = req.files['image'] ? req.files['image'][0].filename : null;
+        const image = req.files['image'] ? 'uploads/images/' + req.files['image'][0].filename : null;
 
         const companyItem = new CompanyItem({
             name: req.body.name,
@@ -58,7 +60,7 @@ exports.updateCompanyItem = async (req, res) => {
 
         // Handle image update if new image is uploaded
         if (req.files && req.files['image']) {
-            updateData.image = req.files['image'][0].filename;
+            updateData.image = 'uploads/images/' + req.files['image'][0].filename;
         }
 
         const updatedCompanyItem = await CompanyItem.findByIdAndUpdate(
@@ -84,6 +86,12 @@ exports.deleteCompanyItem = async (req, res) => {
             return res.status(404).json({ message: "Company item not found" });
         }
 
+        if (companyItem.image) {
+            const imagePath = path.join(__dirname, '..', companyItem.image);
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
         await CompanyItem.findByIdAndDelete(id);
         res.status(200).json({ message: "Company item deleted successfully" });
     } catch (err) {

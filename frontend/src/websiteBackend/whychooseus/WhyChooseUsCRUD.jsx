@@ -267,7 +267,7 @@ const WhyChooseUsCRUD = () => {
 
     // Append main photo first
     if (formData.photo instanceof File) {
-      formDataToSend.append("photo", formData.photo);
+      formDataToSend.append("mainPhoto", formData.photo);
     }
 
     // Process cards data (without files)
@@ -284,10 +284,10 @@ const WhyChooseUsCRUD = () => {
 
     formDataToSend.append("cards", JSON.stringify(cardsData));
 
-    // Append all card photos after main photo
-    formData.cards.forEach((card) => {
+    // Append all card photos after main photo using indexed field names
+    formData.cards.forEach((card, index) => {
       if (card.photo instanceof File) {
-        formDataToSend.append("photo", card.photo);
+        formDataToSend.append(`cards[${index}][photo]`, card.photo);
       }
     });
 

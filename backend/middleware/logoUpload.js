@@ -50,11 +50,17 @@ const processLogoImage = async (filePath, mimetype) => {
     if (mimetype === 'image/webp') {
       return;
     }
+
+    // Read the file into a buffer to avoid file locking on Windows
+    const inputBuffer = await fs.promises.readFile(filePath);
+
     // Otherwise, convert to WebP
-    await sharp(filePath)
+    await sharp(inputBuffer)
       .webp({ quality: 80 })
       .toFile(filePath + '.temp');
-    await fs.promises.rename(filePath + '.temp', filePath);
+
+    await fs.promises.unlink(filePath); // Delete original
+    await fs.promises.rename(filePath + '.temp', filePath); // Rename temp to original
   } catch (err) {
     throw new Error(`Failed to process image: ${err.message}`);
   }

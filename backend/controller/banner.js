@@ -15,7 +15,7 @@ const parseArrayField = (field) => {
 // Create new banner
 exports.createBanner = async (req, res) => {
     try {
-        const image = req.files['image'] ? req.files['image'][0].filename : null;
+        const image = req.files['image'] ? 'uploads/images/' + req.files['image'][0].filename : null;
 
         const banner = new Banner({
             image: image,
@@ -103,7 +103,7 @@ exports.updateBanner = async (req, res) => {
 
         // Handle image update if new image is uploaded
         if (req.files && req.files['image']) {
-            updateData.image = req.files['image'][0].filename;
+            updateData.image = 'uploads/images/' + req.files['image'][0].filename;
         }
 
         const updatedBanner = await Banner.findByIdAndUpdate(
