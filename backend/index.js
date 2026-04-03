@@ -145,7 +145,8 @@ const apiRoutes = [
   ['/api/socialMedia', require('./route/socialMedia')],
   ['/api/tracking', require('./route/tracking')],
   ['/api/companyItem', require('./route/companyItem')],
-  ['/api/notification', require('./route/notification')]
+  ['/api/notification', require('./route/notification')],
+  ['/api/alertBar', require('./route/AlertBar')]
 ];
 
 // Apply cache middleware to all API routes

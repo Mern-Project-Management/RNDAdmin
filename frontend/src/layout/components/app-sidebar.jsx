@@ -244,6 +244,11 @@ const menuData = [
           { title: "Terms and Condition", icon: PlusSquare, url: "/terms-and-conditions-form" },
           { title: "Cookies", icon: Lock, url: "/cookies" },
         ]
+      },
+      {
+        title: "Alert Bar",
+        icon: PanelTop,
+        url: "/alert-bar",
       }
     ],
   },

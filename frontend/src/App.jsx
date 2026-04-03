@@ -180,7 +180,7 @@ import CounterTable from './websiteBackend/counter/counterTable';
 import AddCounter from './websiteBackend/counter/AddCounter';
 import EditCounter from './websiteBackend/counter/EditCounter';
 import TextSliderCRUD from "./websiteBackend/textSlider/TextSliderCRUD";
-
+const AlertBarManagement = lazy(() => import('./websiteBackend/AlertBar/AlertBarManagement'));
 
 // Auth Components
 const PrivateRoute = ({ children }) => {
@@ -209,7 +209,7 @@ const AppContent = () => {
       '/menu-listing', '/meta', '/slideShow', '/whatsUpInfo', '/events',
       '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
       '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
-      '/policy', '/counter', '/text-slider', '/staff', '/list', '/table',
+      '/policy', '/counter', '/text-slider', '/alert-bar', '/staff', '/list', '/table',
       '/form', '/add-', '/edit-', '/admin', '/logo-table', '/worldwide-table'
     ];
     
@@ -508,6 +508,9 @@ function App() {
 
             // Text Slider Routes
             { path: 'text-slider', element: <Suspense fallback={<LoadingFallback />}><TextSliderCRUD /></Suspense> },
+
+            // Alert Bar Routes
+            { path: 'alert-bar', element: <Suspense fallback={<LoadingFallback />}><AlertBarManagement /></Suspense> },
 
             // Company Dropdown
             { path: 'company-item-table', element: <Suspense fallback={<LoadingFallback />}><CompanyItemTable /></Suspense> },
