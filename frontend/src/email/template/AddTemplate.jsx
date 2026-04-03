@@ -87,6 +87,20 @@ const AddTemplateForm = () => {
           {errors.subject && <p className="text-red-500 text-sm">{errors.subject.message}</p>}
         </div>
 
+        {/* Recipient Email Field */}
+        <div>
+          <label className="block text-sm font-medium mb-1" htmlFor="toEmail">
+            Recipient Email (Optional)
+          </label>
+          <input
+            id="toEmail"
+            {...register("toEmail")}
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Enter recipient email (if specific)"
+          />
+          {errors.toEmail && <p className="text-red-500 text-sm">{errors.toEmail.message}</p>}
+        </div>
+
         {/* Body Field (ReactQuill) */}
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="body">

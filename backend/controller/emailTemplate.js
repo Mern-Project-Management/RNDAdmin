@@ -3,7 +3,7 @@ const Note = require('../model/emailTemplate');
 // Create a new note
 exports.createNote = async (req, res) => {
   try {
-    const { name, subject, body, category } = req.body;
+    const { name, subject, body, category, toEmail } = req.body;
 
     if (!name || !subject || !body || !category) {
       return res.status(400).json({ message: 'All fields are required' });
@@ -13,7 +13,8 @@ exports.createNote = async (req, res) => {
       name,
       subject,
       body,
-      category
+      category,
+      toEmail
     });
 
     await note.save();
@@ -55,11 +56,11 @@ exports.getNoteById = async (req, res) => {
 exports.updateNote = async (req, res) => {
   try {
     const { id } = req.query;
-    const { name, subject, body, category } = req.body;
+    const { name, subject, body, category, toEmail } = req.body;
 
     const note = await Note.findByIdAndUpdate(
       id,
-      { name, subject, body, category },
+      { name, subject, body, category, toEmail },
       { new: true, runValidators: true }
     ).populate('category', 'emailCategory');
 

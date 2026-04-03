@@ -20,6 +20,7 @@ console.log(categories)
       reset({
         name: template.data.name,
         subject: template.data.subject,
+        toEmail: template.data.toEmail,
         body: template.data.body,
         category: template.data.category?._id || "" // Ensure category is correctly set
       });
@@ -84,6 +85,17 @@ console.log(categories)
             placeholder="Enter template subject"
           />
           {errors.subject && <p className="text-red-500 text-sm">{errors.subject.message}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1" htmlFor="toEmail">Recipient Email (Optional)</label>
+          <input
+            id="toEmail"
+            {...register("toEmail")}
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Enter recipient email (if specific)"
+          />
+          {errors.toEmail && <p className="text-red-500 text-sm">{errors.toEmail.message}</p>}
         </div>
 
         <div>

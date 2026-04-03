@@ -20,6 +20,10 @@ const EmailTemplate = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'EmailCategory',
       required: true
+    },
+    toEmail: {
+      type: String,
+      trim: true
     }
   },
   {
