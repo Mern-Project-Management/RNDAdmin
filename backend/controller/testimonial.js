@@ -516,7 +516,7 @@ const deleteTestimonial = async (req, res) => {
     const testimonial = await Testimonial.findById(id); 
     
     testimonial.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '../images', filename);
+      const filePath = path.join(__dirname, '../uploads/images', filename);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath); // Delete file synchronously if it exists
       } else {
@@ -580,7 +580,7 @@ const deletePhotoAndAltText = async (req, res) => {
     testimonial.imgtitle.splice(index, 1);
     await testimonial.save();
 
-    const filePath = path.join(__dirname, '..', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
 
         // Check if the file exists and delete it
         if (fs.existsSync(filePath)) {

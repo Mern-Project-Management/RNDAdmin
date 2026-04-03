@@ -102,7 +102,7 @@ const deleteClient = async (req, res) => {
 
     // Delete all associated images
     client.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '../images', filename);
+      const filePath = path.join(__dirname, '../uploads/images', filename);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       } else {
@@ -134,7 +134,7 @@ const deleteClientImage = async (req, res) => {
     client.photo = client.photo.filter(photo => photo !== imageFilename);
     client.alt.splice(index, 1);
 
-    const filePath = path.join(__dirname, '..', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
 
     // Check if the file exists and delete it
     if (fs.existsSync(filePath)) {
@@ -153,7 +153,7 @@ const deleteClientImage = async (req, res) => {
 // Download client image
 const downloadClientImage = async (req, res) => {
   const { filename } = req.params;
-  const filePath = path.join(__dirname, '../images', filename);
+  const filePath = path.join(__dirname, '../uploads/images', filename);
 
   res.download(filePath, (err) => {
     if (err) {

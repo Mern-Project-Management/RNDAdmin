@@ -407,7 +407,7 @@ console.log(req.params)
 
     await portfolio.save();
 
-    const filePath = path.join(__dirname, '..', 'images', imageFilename);
+    const filePath = path.join(__dirname, '..', 'uploads', 'images', imageFilename);
 
     // Check if the file exists and delete it
     if (fs.existsSync(filePath)) {

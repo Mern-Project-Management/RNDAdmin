@@ -4,7 +4,7 @@ const sharp = require('sharp');
 const multer = require('multer');
 
 const videoDir = path.join(__dirname, '../videos');
-const photoDir = path.join(__dirname, '../images');
+const photoDir = path.join(__dirname, '../uploads/images');
 const tempDir = path.join(__dirname, '../temp');
 
 [videoDir, photoDir, tempDir].forEach(dir => {
