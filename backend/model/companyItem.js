@@ -13,6 +13,10 @@ const companyItemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    icon: {
+        type: String,
+        required: false
+    },
     order: {
         type: Number,
         default: 0

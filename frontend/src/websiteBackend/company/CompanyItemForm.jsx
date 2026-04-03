@@ -27,6 +27,7 @@ const CompanyItemForm = () => {
             form.setFieldsValue({
                 name: companyItemData.name,
                 link: companyItemData.link,
+                icon: companyItemData.icon,
                 order: companyItemData.order,
             });
 
@@ -46,6 +47,7 @@ const CompanyItemForm = () => {
             const formData = new FormData();
             formData.append('name', values.name);
             formData.append('link', values.link);
+            formData.append('icon', values.icon || '');
             formData.append('order', values.order || 0);
             
             if (fileList[0]?.originFileObj) {
@@ -140,6 +142,14 @@ const CompanyItemForm = () => {
                     rules={[{ required: true, message: 'Please input the navigation link!' }]}
                 >
                     <Input placeholder="e.g. /about-us" />
+                </Form.Item>
+
+                <Form.Item
+                    name="icon"
+                    label="Icon Name (Lucide Icons)"
+                    extra="Example: Users, Info, Briefcase, Rocket, Globe"
+                >
+                    <Input placeholder="Enter icon name" />
                 </Form.Item>
 
                 <Form.Item

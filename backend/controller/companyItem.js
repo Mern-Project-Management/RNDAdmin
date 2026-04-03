@@ -8,6 +8,7 @@ exports.createCompanyItem = async (req, res) => {
         const companyItem = new CompanyItem({
             name: req.body.name,
             link: req.body.link,
+            icon: req.body.icon,
             image: image,
             order: req.body.order || 0,
         });
