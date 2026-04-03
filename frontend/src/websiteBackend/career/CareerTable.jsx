@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Modal, message, Button } from 'antd';
-import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { useGetAllApplicationsQuery, useDeleteApplicationMutation, useDeleteMultipleApplicationsMutation } from '../../slice/career/CareerForm';
@@ -62,6 +62,23 @@ const CareerTable = () => {
         onChange: onSelectChange,
     };
 
+    const getBaseUrl = () => {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3030';
+        }
+        return 'https://www.admin.rndtechnosoft.com';
+    };
+
+    const handleView = (filePath) => {
+        if (!filePath) {
+            message.warning('No resume file attached');
+            return;
+        }
+        const filename = filePath.includes('/') ? filePath.split('/').pop() : filePath;
+        const baseUrl = getBaseUrl();
+        window.open(`${baseUrl}/api/image/pdf/view/${filename}`, '_blank');
+    };
+
     const handleDownload = async (filePath) => {
         if (!filePath) {
             message.warning('No resume file attached to this application');
@@ -70,7 +87,8 @@ const CareerTable = () => {
         try {
             // If it's a full URL or path, get just the filename
             const filename = filePath.includes('/') ? filePath.split('/').pop() : filePath;
-            const response = await fetch(`/api/image/pdf/download/${filename}`);
+            const baseUrl = getBaseUrl();
+            const response = await fetch(`${baseUrl}/api/image/pdf/download/${filename}`);
 
             if (!response.ok) {
                 throw new Error('Download failed');
@@ -129,10 +147,18 @@ const CareerTable = () => {
                 );
 
                 return hasResume ? (
-                    <DownloadOutlined
-                        onClick={() => handleDownload(resumePath)}
-                        className="text-blue-600 cursor-pointer text-lg hover:scale-110 transition-transform"
-                    />
+                    <div className="flex gap-3 items-center">
+                        <EyeOutlined
+                            onClick={() => handleView(resumePath)}
+                            className="text-green-600 cursor-pointer text-lg hover:scale-110 transition-transform"
+                            title="View Resume"
+                        />
+                        <DownloadOutlined
+                            onClick={() => handleDownload(resumePath)}
+                            className="text-blue-600 cursor-pointer text-lg hover:scale-110 transition-transform"
+                            title="Download Resume"
+                        />
+                    </div>
                 ) : <span className="text-gray-400 italic text-xs">No Resume</span>;
             },
         },
