@@ -66,7 +66,7 @@ const EditClientForm = () => {
 
       toast.success("Client updated successfully!");
       setTimeout(() => {
-        navigate('/clients');
+        navigate('/clients-table');
       }, 1500);
     } catch (error) {
       console.error(error);

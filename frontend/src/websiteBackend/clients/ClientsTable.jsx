@@ -38,7 +38,7 @@ const ClientsTable = () => {
         Cell: ({ row }) => (
           <span
             className="cursor-pointer"
-            onClick={() => navigate(`/clients/editclient/${row.original._id}`)}
+            onClick={() => navigate(`/edit-client/${row.original._id}`)}
           >
             {row.original.title}
           </span>
