@@ -28,7 +28,7 @@ router.put('/updateClient', requireAuth, uploadPhoto, updateClient);
 router.delete('/deleteClient', requireAuth, deleteClient);
 
 // Delete single image from client
-router.delete('/:id/image/:imageFilename/:index', requireAuth, deleteClientImage);
+router.delete('/:id/image/:imageFilename(*)/:index', requireAuth, deleteClientImage);
 
 // Download client image
 router.get('/download/:filename', requireAuth, downloadClientImage);

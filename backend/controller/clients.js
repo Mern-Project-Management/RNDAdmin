@@ -101,21 +101,27 @@ const deleteClient = async (req, res) => {
     }
 
     // Delete all associated images
-    client.photo.forEach(filename => {
-      const filePath = path.join(__dirname, '..', filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      } else {
-        console.warn(`File not found: ${filename}`);
-      }
-    });
+    if (client.photo && Array.isArray(client.photo)) {
+      client.photo.forEach(filename => {
+        if (filename) {
+          const filePath = path.join(__dirname, '..', filename);
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+            } catch (unlinkErr) {
+              console.error(`Error deleting file: ${filePath}`, unlinkErr);
+            }
+          }
+        }
+      });
+    }
 
     await Clients.findByIdAndDelete(id);
 
     res.status(200).json({ message: 'Client deleted successfully' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error deleting client', error });
+    console.error('Error in deleteClient:', error);
+    res.status(500).json({ message: 'Error deleting client', error: error.message });
   }
 };
 
@@ -130,22 +136,30 @@ const deleteClientImage = async (req, res) => {
       return res.status(404).json({ message: 'Client not found' });
     }
 
-    // Remove the photo and its alt text
+    // Remove the photo
     client.photo = client.photo.filter(photo => photo !== imageFilename);
-    client.alt.splice(index, 1);
+    
+    // Remove the alt text safely
+    if (client.alt && Array.isArray(client.alt) && index >= 0 && index < client.alt.length) {
+      client.alt.splice(index, 1);
+    }
 
     const filePath = path.join(__dirname, '..', imageFilename);
 
-    // Check if the file exists and delete it
+    // Check if the file exists and delete it safely
     if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+      try {
+        fs.unlinkSync(filePath);
+      } catch (unlinkErr) {
+        console.error(`Error deleting file: ${filePath}`, unlinkErr);
+      }
     }
 
     await client.save();
 
     res.json({ message: 'Photo and alt text deleted successfully' });
   } catch (error) {
-    console.error('Error deleting photo and alt text:', error);
+    console.error('Error in deleteClientImage:', error);
     res.status(500).json({ message: error.message });
   }
 };
