@@ -37,6 +37,13 @@ router.get('/download/:filename(*)', async (req, res) => {
       const nestedPath = path.join(__dirname, '../uploads/images/images', filename);
       if (fs.existsSync(nestedPath)) {
         originalPath = nestedPath;
+      } else {
+        // Check logos directory (was being used by mistake in some controllers)
+        const logoFileName = path.basename(filename);
+        const logoPath = path.join(__dirname, '../logos', logoFileName);
+        if (fs.existsSync(logoPath)) {
+          originalPath = logoPath;
+        }
       }
     }
   }
