@@ -309,8 +309,8 @@ console.log("Inquiry Data:", inquiryData);
             console.warn("Owner email is missing, skipping owner email notification.");
         }
 
-        // **Send Email to Customer**
-        if (inquiryData.email) {
+        // **Send Email to Customer** (Strictly only to user)
+        if (inquiryData.email && inquiryData.email !== ownerEmail) {
             const rawBody = customerTemplate.body.replace("[First Name]", inquiryData.firstName || "Customer");
             const customerMailOptions = {
                 from: `"RND Technosoft" <${smtpConfig.name}>`,

@@ -278,8 +278,8 @@ Message: ${message || '—'}
         console.warn('Admin email not configured; skipping admin notification.');
       }
 
-      // Send acknowledgement to the requester
-      if (customerTemplate && email) {
+      // Send acknowledgement to the requester (Strictly only to user)
+      if (customerTemplate && email && email !== adminEmail) {
         try {
           await transporter.sendMail({
             from: `"RND Technosoft" <${smtpConfig.name}>`,
@@ -290,7 +290,7 @@ Message: ${message || '—'}
         } catch (err) {
           console.error('Failed to send acknowledgement email to user:', err);
         }
-      } else if (email) {
+      } else if (email && email !== adminEmail) {
           console.warn('Customer template not found, using fallback string template');
           // Prepare acknowledgement email to user
           const companyName = process.env.COMPANY_NAME || 'Our Team';

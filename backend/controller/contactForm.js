@@ -126,8 +126,8 @@ exports.submitContact = async (req, res) => {
         await transporter.sendMail(ownerMailOptions);
     }
 
-    // Send email notification to Customer
-    if (email) {
+    // Send email notification to Customer (Strictly only to user)
+    if (email && email !== ownerEmail) {
         const rawBody = customerTemplate.body.replace("[First Name]", firstName || "Customer");
         const customerMailOptions = {
             from: `"RND Technosoft" <${smtpConfig.name}>`,

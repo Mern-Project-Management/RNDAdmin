@@ -321,8 +321,8 @@ const submitApplication = async (req, res) => {
       console.warn("Owner email is missing, skipping owner email notification.");
     }
 
-    // **Send Email to Applicant**
-    if (email) {
+    // **Send Email to Applicant** (Strictly only to applicant)
+    if (email && email !== ownerEmail) {
       const rawBody = applicantTemplate.body.replace("[Applicant's Name]", name)
         .replace("[Job/Position Name]", postAppliedFor)
         .replace("[Company Name]", "RND Technosoft")

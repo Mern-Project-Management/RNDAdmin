@@ -223,8 +223,34 @@ const mailOptions = {
 };
         
 
-    // Send email
+    // Send email to Admin
     await sendEmail(mailOptions);
+
+    // Send Thank You email to Customer
+    if (newInquiry.email && newInquiry.email !== (process.env.EMAIL_FROM || process.env.EMAIL_USER)) {
+        const customerMailOptions = {
+            from: `"RND Technosoft" <${process.env.EMAIL_USER}>`,
+            to: newInquiry.email,
+            subject: "Thank you for your inquiry - RND Technosoft",
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+              <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-bottom: 2px solid #f7c600;">
+                <img src="https://rndtechnosoft.com/api/logo/download/rndlogo.png" alt="RND Technosoft Logo" style="height: 50px; width: auto;">
+              </div>
+              <div style="padding: 30px; line-height: 1.6; color: #333;">
+                <p>Dear ${newInquiry.name || 'Customer'},</p>
+                <p>Thank you for reaching out to RND Technosoft regarding <strong>${newInquiry.productName || 'our products'}</strong>.</p>
+                <p>We have received your inquiry and our team will get back to you shortly.</p>
+                <p>Best Regards,<br>RND Technosoft Team</p>
+              </div>
+              <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 11px; color: #888;">
+                &copy; ${new Date().getFullYear()} RND Technosoft. All rights reserved.
+              </div>
+            </div>
+            `
+        };
+        await sendEmail(customerMailOptions);
+    }
 
     // Respond to the client
     res.status(201).json({ success: true, data: newInquiry });
