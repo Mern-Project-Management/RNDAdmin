@@ -46,6 +46,7 @@ const StaticMetaForm = () => {
               metaDescription: metaData.metaDescription,
               metaKeyword: metaData.metaKeyword,
               canonicalLink: metaData.canonicalLink,
+              faqSchema: metaData.faqSchema,
             });
           }
         })
@@ -170,6 +171,13 @@ const StaticMetaForm = () => {
           label="Canonical Link"
         >
           <Input placeholder="Enter Canonical Link" className="w-full" />
+        </Form.Item>
+        
+        <Form.Item
+          name="faqSchema"
+          label="FAQ Schema"
+        >
+          <Input.TextArea placeholder="Enter FAQ Schema (JSON-LD)" rows={6} className="w-full" />
         </Form.Item>
 
         <Form.Item>

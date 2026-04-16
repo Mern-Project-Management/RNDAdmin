@@ -7,6 +7,7 @@ const MetaSchema = new mongoose.Schema({
     metaDescription: { type: String },
     metaKeyword: { type: String },
     canonicalLink: { type: String },
+    faqSchema: { type: String },
 });
 
 module.exports = mongoose.model('Meta', MetaSchema);
