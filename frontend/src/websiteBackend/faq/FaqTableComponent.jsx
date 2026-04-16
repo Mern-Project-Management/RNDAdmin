@@ -97,6 +97,14 @@ export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, dele
     const tree = {};
 
     filteredFaqs.forEach((faq) => {
+      if (faq.blogId) {
+        const pId = "Blogs";
+        const pLabel = "Blogs";
+        if (!tree[pId]) tree[pId] = { label: pLabel, faqs: [], subs: {} };
+        tree[pId].faqs.push(faq);
+        return;
+      }
+
       const parent = faq.serviceparentCategoryId;
       const sub = faq.servicesubCategoryId;
       const subSub = faq.servicesubSubCategoryId;

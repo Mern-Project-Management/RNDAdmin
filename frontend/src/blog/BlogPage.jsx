@@ -186,14 +186,17 @@ const BlogTable = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 120,
+      width: 170,
       fixed: 'right',
       render: (_, record) => (
-        <div className="flex space-x-4">
+        <div className="flex items-center space-x-6">
           <FaEdit
-            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
+            size={26}
+            className="text-[#28a745] cursor-pointer hover:text-green-800 transition-colors"
             onClick={() => navigate(`/edit-blog-form/${record._id}`)}
+            title="Edit Blog"
           />
+
           <Popconfirm
             title="Are you sure you want to delete this blog?"
             onConfirm={() => handleDelete(record._id)}
@@ -201,10 +204,20 @@ const BlogTable = () => {
             cancelText="No"
             disabled={isDeleting}
           >
-            <FaTrashAlt 
-              className={`text-red-500 cursor-pointer text-lg hover:text-red-700 transition ${isDeleting ? 'opacity-50' : ''}`}
+            <FaTrashAlt
+              size={24}
+              className="text-[#dc3545] cursor-pointer hover:text-red-800 transition-colors"
+              title="Delete Blog"
             />
           </Popconfirm>
+
+          <Button
+            type="primary"
+            className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold px-3"
+            onClick={() => navigate(`/blog-faq/${record._id}`)}
+          >
+            FAQs
+          </Button>
         </div>
       ),
     },
@@ -215,14 +228,6 @@ const BlogTable = () => {
 
   return (
     <div className="space-y-6 p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold">Blogs</h2>
-        <Link to="/blog-form">
-          <Button icon={<PlusOutlined />} className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">
-            Add Blog
-          </Button>
-        </Link>
-      </div>
 
       {/* Page Heading Editor */}
       <div className="border border-gray-300 shadow-lg rounded-lg p-6 bg-white">
@@ -305,6 +310,15 @@ const BlogTable = () => {
             </span>
           )}
         </div>
+      </div>
+
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold">Blogs</h2>
+        <Link to="/blog-form">
+          <Button icon={<PlusOutlined />} className="bg-[#ffd333] text-[#1a1a1a] hover:bg-[#edc32f] hover:text-[#1a1a1a] border-none font-semibold">
+            Add Blog
+          </Button>
+        </Link>
       </div>
 
       {/* Blogs Table */}

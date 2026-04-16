@@ -13,6 +13,7 @@ servicesubSubCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'ServiceCa
 industryparentCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'IndustriesCategory' },
 industrysubCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'IndustriesCategory' },
 industrysubSubCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'IndustriesCategory' },
+blogId: { type: mongoose.Schema.Types.ObjectId, ref: 'Blog' },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   

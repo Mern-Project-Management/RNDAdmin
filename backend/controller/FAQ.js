@@ -114,7 +114,8 @@ const insertFAQ = async (req, res) => {
     const {
       question, answer, status,
       serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId,
-      industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId
+      industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId,
+      blogId
     } = req.body;
 
     // Helper to convert empty strings to undefined to avoid Mongoose ObjectId casting errors
@@ -129,7 +130,8 @@ const insertFAQ = async (req, res) => {
       servicesubSubCategoryId: cleanId(servicesubSubCategoryId),
       industryparentCategoryId: cleanId(industryparentCategoryId),
       industrysubCategoryId: cleanId(industrysubCategoryId),
-      industrysubSubCategoryId: cleanId(industrysubSubCategoryId)
+      industrysubSubCategoryId: cleanId(industrysubSubCategoryId),
+      blogId: cleanId(blogId)
     });
 
     await faq.save();
@@ -225,7 +227,8 @@ const updateFAQ = async (req, res) => {
     // Clean up empty strings for ObjectId fields in updateFields if they exist
     const categoryFields = [
       'serviceparentCategoryId', 'servicesubCategoryId', 'servicesubSubCategoryId',
-      'industryparentCategoryId', 'industrysubCategoryId', 'industrysubSubCategoryId'
+      'industryparentCategoryId', 'industrysubCategoryId', 'industrysubSubCategoryId',
+      'blogId'
     ];
 
     categoryFields.forEach(field => {
@@ -292,7 +295,18 @@ const countFaq = async (req, res) => {
   }
 };
 
-
+const getFAQByBlogId = async (req, res) => {
+  try {
+    const { blogId } = req.query;
+    if (!blogId) {
+      return res.status(400).json({ message: "blogId is required" });
+    }
+    const faqs = await FAQ.find({ blogId }).lean();
+    res.status(200).json({ data: faqs });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 // website side routes 
 
@@ -379,4 +393,4 @@ const getFAQBySlug = async (req, res) => {
 
 
 
-module.exports = { getFAQBySlug, replaceSlugWithId, insertFAQ, getFAQ, updateFAQ, deleteFAQ, getFAQById, countFaq, getFAQWebsite }; 
+module.exports = { getFAQBySlug, replaceSlugWithId, insertFAQ, getFAQ, updateFAQ, deleteFAQ, getFAQById, countFaq, getFAQWebsite, getFAQByBlogId }; 

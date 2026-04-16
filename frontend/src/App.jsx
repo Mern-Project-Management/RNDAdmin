@@ -72,6 +72,7 @@ const BlogCategory = lazy(() => import('./BlogCategory/BlogCategoryTable'));
 const Blogcategoryform = lazy(() => import('./BlogCategory/BlogCategoryForm'));
 const BlogTable = lazy(() => import('./blog/BlogPage'));
 const BlogForm = lazy(() => import('./blog/BlogForm'));
+const BlogFaq = lazy(() => import('./blog/BlogFaq'));
 const NavbarComp = lazy(() => import('./website/componets/navbar/Navbar'));
 const AlphabetBasedProduct = lazy(() => import('./website/pages/AlphabetBasedProduct'));
 const Hello = lazy(() => import('./Hello'));
@@ -383,6 +384,7 @@ function App() {
             { path: 'blog-table', element: <Suspense fallback={<LoadingFallback />}><BlogTable /></Suspense> },
             { path: 'blog-form', element: <Suspense fallback={<LoadingFallback />}><BlogForm /></Suspense> },
             { path: 'edit-blog-form/:id', element: <Suspense fallback={<LoadingFallback />}><BlogForm /></Suspense> },
+            { path: 'blog-faq/:id', element: <Suspense fallback={<LoadingFallback />}><BlogFaq /></Suspense> },
 
             // Product Inquiry Routes
             { path: 'product-inquiry-table', element: <Suspense fallback={<LoadingFallback />}><ProductInquiryTable /></Suspense> },

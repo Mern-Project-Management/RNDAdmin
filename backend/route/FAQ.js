@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getFAQBySlug,replaceSlugWithId, insertFAQ, getFAQ, updateFAQ, deleteFAQ, getFAQById, countFaq, getFAQWebsite } = require('../controller/FAQ')
+const { getFAQBySlug,replaceSlugWithId, insertFAQ, getFAQ, updateFAQ, deleteFAQ, getFAQById, countFaq, getFAQWebsite, getFAQByBlogId } = require('../controller/FAQ')
 const { requireAuth } = require('../middleware/authmiddleware');
 const { uploadPhoto } = require('../middleware/fileUpload.js')
 
@@ -13,6 +13,7 @@ router.put('/updateFaq', requireAuth, uploadPhoto, updateFAQ);
 router.delete('/deleteFAQ', requireAuth, deleteFAQ)
 router.get('/getFAQById', requireAuth, getFAQById);
 router.get('/countFaq', requireAuth, countFaq);
+router.get('/getFAQByBlogId', getFAQByBlogId);
 
 
 router.get('/getFAQWebsite', getFAQWebsite)
