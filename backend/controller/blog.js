@@ -68,7 +68,7 @@ const createBlog = async (req, res) => {
 // Get all blogs with populated category
 const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find(); // Populate the category field
+    const blogs = await Blog.find().sort({ createdAt: -1 }); // Populate the category field
     res.status(200).json(blogs); 
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
@@ -198,7 +198,7 @@ const getBlogsByCategory = async (req, res) => {
   const { categoryId } = req.query;
 console.log(categoryId)
   try {
-    const blogs = await Blog.find({ category: categoryId });
+    const blogs = await Blog.find({ category: categoryId }).sort({ createdAt: -1 });
     if (blogs.length === 0) {
       return res.status(404).json({ message: 'No blogs found for this category' });
     }
