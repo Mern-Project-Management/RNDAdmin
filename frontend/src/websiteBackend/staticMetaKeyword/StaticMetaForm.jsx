@@ -65,7 +65,10 @@ const StaticMetaForm = () => {
   // Handle page selection and auto-fill slug
   const handlePageChange = (value) => {
     const slug = generateSlug(value);
-    form.setFieldsValue({ pageSlug: slug });
+    form.setFieldsValue({ 
+      pageSlug: slug,
+      canonicalLink: slug ? `https://www.rndtechnosoft.com/${slug}` : ""
+    });
   };
 
   // Handle form submission
