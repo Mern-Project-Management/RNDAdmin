@@ -71,6 +71,7 @@ export default function BlogForm() {
       };
       if (name === 'title') {
         newData.slug = generateSlug(value);
+        newData.metacanonical = `https://www.rndtechnosoft.com/blogs/${newData.slug}`;
       }
       return newData;
     });
@@ -158,7 +159,7 @@ export default function BlogForm() {
         metatitle: blog.metatitle || '',
         metadescription: blog.metadescription || '',
         metakeywords: blog.metakeywords || '',
-        metacanonical: blog.metacanonical || '',
+        metacanonical: blog.metacanonical || `https://www.rndtechnosoft.com/blogs/${blog.slug}`,
         metalanguage: blog.metalanguage || '',
         metaschema: blog.metaschema || '',
         otherMeta: blog.otherMeta || '',

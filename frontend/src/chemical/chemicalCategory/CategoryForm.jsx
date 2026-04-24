@@ -61,20 +61,26 @@ const NewCategoryForm = () => {
     }, [slug, parentCategoryId, subCategoryId]);
     
     useEffect(() => {
-        setSlug(category.replace(/\s+/g, '-')
+        const generatedSlug = category.replace(/\s+/g, '-')
             .toLowerCase()
             .replace(/[^a-z0-9-]/g, '')
             .replace(/--+/g, '-')
             .replace(/^-+/, '')
-            .replace(/-+$/, '')
-        );
+            .replace(/-+$/, '');
+        setSlug(generatedSlug);
+        if (generatedSlug) {
+            setMetacanonical(`https://www.rndtechnosoft.com/${generatedSlug}`);
+        }
     }, [category])
 
     useEffect(() => {
-        setSlug(slug.toLowerCase()
+        const cleanedSlug = slug.toLowerCase()
             .replace(/[^a-z0-9-]/g, '')
-            .replace(/--+/g, '-')
-        );
+            .replace(/--+/g, '-');
+        setSlug(cleanedSlug);
+        if (cleanedSlug) {
+            setMetacanonical(`https://www.rndtechnosoft.com/${cleanedSlug}`);
+        }
     }, [slug])
 
     const handleSubmit = async (e) => {
