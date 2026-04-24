@@ -64,10 +64,20 @@ const StaticMetaForm = () => {
 
   // Handle page selection and auto-fill slug
   const handlePageChange = (value) => {
-    const slug = generateSlug(value);
+    let slug;
+    let canonical;
+
+    if (value === "Home Page") {
+      slug = "/";
+      canonical = "https://www.rndtechnosoft.com/";
+    } else {
+      slug = generateSlug(value);
+      canonical = slug ? `https://www.rndtechnosoft.com/${slug}` : "";
+    }
+
     form.setFieldsValue({ 
       pageSlug: slug,
-      canonicalLink: slug ? `https://www.rndtechnosoft.com/${slug}` : ""
+      canonicalLink: canonical
     });
   };
 
@@ -114,6 +124,7 @@ const StaticMetaForm = () => {
             onChange={handlePageChange}
             className="w-full"
           >
+            <Option value="Home Page">Home Page</Option>
             <Option value="Static Page">Static Page</Option>
             {menuList.map((menu) => (
               <React.Fragment key={menu._id}>
