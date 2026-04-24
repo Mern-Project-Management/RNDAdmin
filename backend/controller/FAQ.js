@@ -115,7 +115,7 @@ const insertFAQ = async (req, res) => {
       question, answer, status,
       serviceparentCategoryId, servicesubCategoryId, servicesubSubCategoryId,
       industryparentCategoryId, industrysubCategoryId, industrysubSubCategoryId,
-      blogId
+      blogId, slug
     } = req.body;
 
     // Helper to convert empty strings to undefined to avoid Mongoose ObjectId casting errors
@@ -131,7 +131,8 @@ const insertFAQ = async (req, res) => {
       industryparentCategoryId: cleanId(industryparentCategoryId),
       industrysubCategoryId: cleanId(industrysubCategoryId),
       industrysubSubCategoryId: cleanId(industrysubSubCategoryId),
-      blogId: cleanId(blogId)
+      blogId: cleanId(blogId),
+      slug: slug
     });
 
     await faq.save();
@@ -329,6 +330,16 @@ const getFAQBySlug = async (req, res) => {
 
     // If the slug is provided, search for FAQs based on the slug
     if (slug) {
+      // 0. Check for direct slug match (e.g. for static pages like 'our-expertise')
+      const faqsWithDirectSlugMatch = await FAQ.find({
+        status: "active",
+        slug: slug
+      });
+
+      if (faqsWithDirectSlugMatch.length > 0) {
+        return res.status(200).json({ data: faqsWithDirectSlugMatch });
+      }
+
       // 1. If slug matches serviceparentCategoryId or industryparentCategoryId, return FAQs where both subCategoryId and subSubCategoryId are empty
       const faqsWithParentMatch = await FAQ.find({
         status: "active",

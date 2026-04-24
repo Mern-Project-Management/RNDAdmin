@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const FAQForm = () => {
+const FAQForm = ({ onSuccess, type }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [status, setStatus] = useState("active");
@@ -51,7 +51,11 @@ const FAQForm = () => {
       setQuestion("");
       setAnswer("");
       setStatus("active");
-      navigate('/faq');
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        navigate('/faq');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -116,57 +120,63 @@ const FAQForm = () => {
   const subSubServiceCategories = (serviceparentCategoryId && servicesubCategoryId) ? findCategoryById(serviceCategories, serviceparentCategoryId)?.subCategories.find(sub => sub._id === servicesubCategoryId)?.subSubCategory || [] : [];
 
   return (
-    <form onSubmit={handleSubmit} className="p-4">
-      <h1 className="text-xl font-bold font-serif text-gray-700 uppercase text-center">Add FAQ</h1>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+        Add New FAQ
+      </h2>
 
       {/* Service Categories */}
-      <div className="mb-4">
-        <label htmlFor="serviceParentCategory" className="block font-semibold mb-2">
-          Parent Service Category
-        </label>
-        <select
-          id="serviceParentCategory"
-          value={serviceparentCategoryId}
-          onChange={handleServiceParentCategoryChange}
-          className="w-full p-2 border rounded focus:outline-none"
-        >
-          <option value="">Select Parent Service Category</option>
-          {serviceCategories.map(renderCategoryOptions)}
-        </select>
-      </div>
+      {type !== 'service' && (
+        <>
+          <div className="mb-4">
+            <label htmlFor="serviceParentCategory" className="block font-semibold mb-2">
+              Parent Service Category
+            </label>
+            <select
+              id="serviceParentCategory"
+              value={serviceparentCategoryId}
+              onChange={handleServiceParentCategoryChange}
+              className="w-full p-2 border rounded focus:outline-none"
+            >
+              <option value="">Select Parent Service Category</option>
+              {serviceCategories.map(renderCategoryOptions)}
+            </select>
+          </div>
 
-      {subServiceCategories.length > 0 && (
-        <div className="mb-4">
-          <label htmlFor="serviceSubCategory" className="block font-semibold mb-2">
-            Sub-Service Category (optional)
-          </label>
-          <select
-            id="serviceSubCategory"
-            value={servicesubCategoryId}
-            onChange={handleServiceSubCategoryChange}
-            className="w-full p-2 border rounded focus:outline-none"
-          >
-            <option value="">Select Sub-Service Category</option>
-            {subServiceCategories.map(renderCategoryOptions)}
-          </select>
-        </div>
-      )}
+          {subServiceCategories.length > 0 && (
+            <div className="mb-4">
+              <label htmlFor="serviceSubCategory" className="block font-semibold mb-2">
+                Sub-Service Category (optional)
+              </label>
+              <select
+                id="serviceSubCategory"
+                value={servicesubCategoryId}
+                onChange={handleServiceSubCategoryChange}
+                className="w-full p-2 border rounded focus:outline-none"
+              >
+                <option value="">Select Sub-Service Category</option>
+                {subServiceCategories.map(renderCategoryOptions)}
+              </select>
+            </div>
+          )}
 
-      {subSubServiceCategories.length > 0 && (
-        <div className="mb-4">
-          <label htmlFor="serviceSubSubCategory" className="block font-semibold mb-2">
-            Sub-Sub-Service Category (optional)
-          </label>
-          <select
-            id="serviceSubSubCategory"
-            value={servicesubSubCategoryId}
-            onChange={handleServiceSubSubCategoryChange}
-            className="w-full p-2 border rounded focus:outline-none"
-          >
-            <option value="">Select Sub-Sub-Service Category</option>
-            {subSubServiceCategories.map(renderCategoryOptions)}
-          </select>
-        </div>
+          {subSubServiceCategories.length > 0 && (
+            <div className="mb-4">
+              <label htmlFor="serviceSubSubCategory" className="block font-semibold mb-2">
+                Sub-Sub-Service Category (optional)
+              </label>
+              <select
+                id="serviceSubSubCategory"
+                value={servicesubSubCategoryId}
+                onChange={handleServiceSubSubCategoryChange}
+                className="w-full p-2 border rounded focus:outline-none"
+              >
+                <option value="">Select Sub-Sub-Service Category</option>
+                {subSubServiceCategories.map(renderCategoryOptions)}
+              </select>
+            </div>
+          )}
+        </>
       )}
 
       {/* Question and Answer */}

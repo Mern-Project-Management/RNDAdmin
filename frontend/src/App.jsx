@@ -143,6 +143,8 @@ import ImportExcel from './chemical/ImportExcel';
 import TrackingInfo from './clickTrack/TrackingInfo';
 import CookiesForm from './websiteBackend/privacy/Cookies';
 import MainFaqSection from './websiteBackend/faq/MainFaqSection';
+import ServiceFaqSection from './websiteBackend/faq/ServiceFaqSection';
+import AboutFaqSection from './websiteBackend/faq/AboutFaqSection';
 import FAQForm from './websiteBackend/faq/CreateFAQ';
 import EditFAQ from './websiteBackend/faq/EditFAQ';
 import CategoryTable from './websiteBackend/Service/ServiceCategory';
@@ -363,6 +365,8 @@ function App() {
 
             //FAQ Management Routes
             { path: 'faq', element: <Suspense fallback={<LoadingFallback />}><MainFaqSection /></Suspense> },
+            { path: 'our-service-faq', element: <Suspense fallback={<LoadingFallback />}><ServiceFaqSection /></Suspense> },
+            { path: 'about-faq', element: <Suspense fallback={<LoadingFallback />}><AboutFaqSection /></Suspense> },
             { path: 'faq/createFAQ', element: <Suspense fallback={<LoadingFallback />}><FAQForm /></Suspense> },
             { path: 'faq/editFAQ/:id', element: <Suspense fallback={<LoadingFallback />}><EditFAQ /></Suspense> },
 

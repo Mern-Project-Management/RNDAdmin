@@ -27,7 +27,8 @@ const menuData = [
       { title: "Our Service Banner", icon: Image, url: "/our-service-banner" },
       { title: "Why Choose Us", icon: PlusSquare, url: "/whyChooseUs-table" },
       { title: "Category", icon: GanttChart, url: "/service-category" },
-      { title: "Testimonials", icon: FileText, url: "/testimonials" }
+      { title: "Testimonials", icon: FileText, url: "/testimonials" },
+      { title: "Our Service FAQ", icon: FileQuestion, url: "/our-service-faq" }
     ]
   },
   {
@@ -113,6 +114,7 @@ const menuData = [
         icon: Building,
         children: [
           { title: "List", icon: List, url: "/about-us-table" },
+          { title: "About FAQ", icon: FileQuestion, url: "/about-faq" },
           // { title: "Add New", icon: PlusSquare, url: "/about-us-form" },
         ]
       },

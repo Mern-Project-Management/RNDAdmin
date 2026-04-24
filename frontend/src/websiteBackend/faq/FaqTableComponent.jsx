@@ -7,7 +7,7 @@ import { Collapse, Typography, Pagination } from "antd";
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, deleteFaq }) => {
+export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, deleteFaq, simple }) => {
   console.log("Rendering FaqTableComponent with FAQs:", faqs);
   const [categoryPage, setCategoryPage] = useState(1);
   const [dataPage, setDataPage] = useState({});
@@ -180,6 +180,14 @@ export const FaqTableComponent = ({ faqs, searchTerm, navigate, handleView, dele
       </table>
     </div>
   );
+
+  if (simple) {
+    return (
+      <div className="faq-simple-table-container mt-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        {renderFaqTable(filteredFaqs)}
+      </div>
+    );
+  }
 
   return (
     <div className="faq-hierarchy-container mt-6">

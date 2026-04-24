@@ -13,10 +13,11 @@ import SearchBar from "./FaqSearchbar.jsx";
 import { FaqTableComponent } from "./FaqTableComponent.jsx";
 
 import FaqModal from "./FaqModel.jsx";
+import FAQForm from "./CreateFAQ.jsx";
 
 Modal.setAppElement('#root');
 
-const MainFaqSection = () => {
+const MainFaqSection = ({ type }) => {
   const [heading, setHeading] = useState("");
   const [subheading, setSubheading] = useState("");
   const [faqs, setFaqs] = useState([]);
@@ -48,7 +49,7 @@ const MainFaqSection = () => {
   const fetchData = async (pageIndex) => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/faq/getFAQ?page=${pageIndex + 1}`, { withCredentials: true });
+      const response = await axios.get(`/api/faq/getFaq?page=${pageIndex + 1}`, { withCredentials: true });
       const faqsWithIds = response.data.data.map((faqItem, index) => {
         // Normalize category name from various possible shapes returned by the API
         const categoryName = faqItem.category?.name || faqItem.category ||
@@ -82,7 +83,8 @@ const MainFaqSection = () => {
 
   const fetchHeadings = async () => {
     try {
-      const response = await axios.get('/api/pageHeading/heading?pageType=faq', { withCredentials: true });
+      const pageType = type === 'service' ? 'our-service-faq' : 'faq';
+      const response = await axios.get(`/api/pageHeading/heading?pageType=${pageType}`, { withCredentials: true });
       const { heading, subheading } = response.data;
       setHeading(heading || '');
       setSubheading(subheading || '');
@@ -115,8 +117,9 @@ const MainFaqSection = () => {
 
     try {
       setLoading(true);
-      await axios.put('/api/pageHeading/updateHeading?pageType=faq', {
-        pagetype: 'faq',
+      const pageType = type === 'service' ? 'our-service-faq' : 'faq';
+      await axios.put(`/api/pageHeading/updateHeading?pageType=${pageType}`, {
+        pagetype: pageType,
         heading,
         subheading,
       }, { withCredentials: true });
@@ -131,25 +134,31 @@ const MainFaqSection = () => {
 
   useEffect(() => {
     fetchData(pageIndex);
-  }, [pageIndex]);
+  }, [pageIndex, type]);
 
   useEffect(() => {
     fetchHeadings();
-  }, []);
+  }, [type]);
 
   return (
     <div className="p-4 overflow-x-auto">
       <ToastContainer />
       
-      <HeadingSection 
-        heading={heading}
-        subheading={subheading}
-        setHeading={setHeading}
-        setSubheading={setSubheading}
-        saveHeadings={saveHeadings}
-        errors={errors}
-        loading={loadings}
-      />
+      {type !== 'service' && (
+        <HeadingSection 
+          heading={heading}
+          subheading={subheading}
+          setHeading={setHeading}
+          setSubheading={setSubheading}
+          saveHeadings={saveHeadings}
+          errors={errors}
+          loading={loadings}
+        />
+      )}
+
+      <div className="bg-white p-6 rounded-xl shadow-sm mb-8 border border-gray-100">
+        <FAQForm onSuccess={() => fetchData(pageIndex)} type={type} />
+      </div>
       
       <TableHeader navigate={navigate} />
       
@@ -158,7 +167,7 @@ const MainFaqSection = () => {
         setSearchTerm={setSearchTerm}
       />
       
-      <h2 className="text-md font-semibold mb-4">Manage FAQs</h2>
+      <h2 className="text-md font-semibold mb-4">{type === 'service' ? 'Existing FAQs' : 'Manage FAQs'}</h2>
       
       {loadings ? (
         <div className="flex justify-center">
@@ -180,6 +189,7 @@ const MainFaqSection = () => {
               navigate={navigate}
               handleView={handleView}
               deleteFaq={deleteFaq}
+              simple={type === 'service'}
             />
           )}
         </>
