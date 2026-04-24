@@ -275,3 +275,14 @@ a.text-blue-600 {
   }
 }
 
+/* React Quill Scrollbar */
+.quill-editor-container .ql-container {
+  height: 400px !important;
+  overflow-y: auto !important;
+}
+
+.quill-editor-container .ql-editor {
+  min-height: 400px !important;
+}
+
+

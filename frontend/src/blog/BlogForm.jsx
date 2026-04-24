@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useCreateBlogMutation, useGetBlogByIdQuery, useUpdateBlogMutation } from '@/slice/blog/blog';
 import ReactQuill from 'react-quill';
@@ -264,12 +265,14 @@ export default function BlogForm() {
 
         <div>
           <label className="block text-sm font-medium">Details</label>
-          <ReactQuill
-            theme="snow"
-            value={formData.details}
-            onChange={handleDetailsChange}
-            placeholder="Enter blog details"
-          />
+          <div className="quill-editor-container border rounded-md">
+            <ReactQuill
+              theme="snow"
+              value={formData.details}
+              onChange={handleDetailsChange}
+              placeholder="Enter blog details"
+            />
+          </div>
         </div>
 
         <div>
@@ -298,17 +301,30 @@ export default function BlogForm() {
           />
         </div>
 
-        {['alt', 'imageTitle', 'postedBy', 'metatitle', 'metadescription', 'metakeywords', 'metacanonical', 'metalanguage', 'metaschema', 'otherMeta', 'priority', 'status'].map((field) => (
-          <div key={field}>
-            <label className="block text-sm font-medium">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-            <Input
-              name={field}
-              value={formData[field]}
-              onChange={handleChange}
-              placeholder={`Enter ${field}`}
-            />
-          </div>
-        ))}
+        {['alt', 'imageTitle', 'postedBy', 'metatitle', 'metadescription', 'metakeywords', 'metacanonical', 'metalanguage', 'metaschema', 'otherMeta', 'priority', 'status'].map((field) => {
+          const isTextArea = ['metalanguage', 'metaschema', 'otherMeta'].includes(field);
+          return (
+            <div key={field}>
+              <label className="block text-sm font-medium">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+              {isTextArea ? (
+                <Textarea
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${field}`}
+                  rows={4}
+                />
+              ) : (
+                <Input
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${field}`}
+                />
+              )}
+            </div>
+          );
+        })}
 
         <div className="flex justify-end space-x-4">
           <Button type="button" variant="ghost" onClick={() => navigate('/blogs')}>
