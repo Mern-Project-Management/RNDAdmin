@@ -218,7 +218,20 @@ const NewCategoryForm = () => {
                     type="text"
                     id="title"
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        setCategory(val);
+                        const generatedSlug = val.replace(/\s+/g, '-')
+                            .toLowerCase()
+                            .replace(/[^a-z0-9-]/g, '')
+                            .replace(/--+/g, '-')
+                            .replace(/^-+/, '')
+                            .replace(/-+$/, '');
+                        setSlug(generatedSlug);
+                        if (generatedSlug) {
+                            setMetacanonical(`https://www.rndtechnosoft.com/${generatedSlug}`);
+                        }
+                    }}
                     className="w-full p-2 border rounded focus:outline-none"
                     required
                 />
@@ -270,7 +283,15 @@ const NewCategoryForm = () => {
                     type="text"
                     id="slug"
                     value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
+                    onChange={(e) => {
+                        const val = e.target.value.toLowerCase()
+                            .replace(/[^a-z0-9-]/g, '')
+                            .replace(/--+/g, '-');
+                        setSlug(val);
+                        if (val) {
+                            setMetacanonical(`https://www.rndtechnosoft.com/${val}`);
+                        }
+                    }}
                     className="w-full p-2 border rounded focus:outline-none"
                 />
             </div>

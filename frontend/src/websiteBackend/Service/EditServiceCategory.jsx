@@ -61,7 +61,7 @@ const EditServiceCategory = () => {
         setMetadescription(metadescription)
         setMetakeywords(metakeywords);
         setMetalanguage(metalanguage);
-        setMetacanonical(metacanonical);
+        setMetacanonical(metacanonical || `https://www.rndtechnosoft.com/${slug}`);
         setMetaschema(metaschema);
         setOthermeta(otherMeta);
         setChangeFreq(changeFreq)
@@ -112,20 +112,26 @@ const EditServiceCategory = () => {
   }, [slug, categoryId, subCategoryId]);
 
   useEffect(() => {
-    setSlug(category.replace(/\s+/g, '-')
+    const generatedSlug = category.replace(/\s+/g, '-')
       .toLowerCase()
       .replace(/[^a-z0-9-]/g, '')
       .replace(/--+/g, '-')
       .replace(/^-+/, '')
-      .replace(/-+$/, '')
-    );
+      .replace(/-+$/, '');
+    setSlug(generatedSlug);
+    if (generatedSlug) {
+      setMetacanonical(`https://www.rndtechnosoft.com/${generatedSlug}`);
+    }
   }, [category])
 
   useEffect(() => {
-    setSlug(slug.toLowerCase()
+    const cleanedSlug = slug.toLowerCase()
       .replace(/[^a-z0-9-]/g, '')
-      .replace(/--+/g, '-')
-    );
+      .replace(/--+/g, '-');
+    setSlug(cleanedSlug);
+    if (cleanedSlug) {
+      setMetacanonical(`https://www.rndtechnosoft.com/${cleanedSlug}`);
+    }
   }, [slug])
 
   const handleSubmit = async (e) => {
@@ -254,7 +260,20 @@ const EditServiceCategory = () => {
           type="text"
           id="category"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            setCategory(val);
+            const generatedSlug = val.replace(/\s+/g, '-')
+              .toLowerCase()
+              .replace(/[^a-z0-9-]/g, '')
+              .replace(/--+/g, '-')
+              .replace(/^-+/, '')
+              .replace(/-+$/, '');
+            setSlug(generatedSlug);
+            if (generatedSlug) {
+              setMetacanonical(`https://www.rndtechnosoft.com/${generatedSlug}`);
+            }
+          }}
           className="w-full p-2 border rounded focus:outline-none"
           required
         />
@@ -390,7 +409,15 @@ const EditServiceCategory = () => {
           type="text"
           id="slug"
           value={slug}
-          onChange={(e) => setSlug(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value.toLowerCase()
+              .replace(/[^a-z0-9-]/g, '')
+              .replace(/--+/g, '-');
+            setSlug(val);
+            if (val) {
+              setMetacanonical(`https://www.rndtechnosoft.com/${val}`);
+            }
+          }}
           className="w-full p-2 border rounded focus:outline-none"
         />
       </div>
@@ -411,7 +438,7 @@ const EditServiceCategory = () => {
           Meta Title
         </label>
         <textarea
-          id="meta"
+          id="metatitle"
           value={metatitle}
           onChange={(e) => setMetatitle(e.target.value)}
           className="w-full p-2 border rounded focus:outline-none"
@@ -423,7 +450,7 @@ const EditServiceCategory = () => {
           Meta Description
         </label>
         <textarea
-          id="meta"
+          id="metadescription"
           value={metadescription}
           onChange={(e) => setMetadescription(e.target.value)}
           className="w-full p-2 border rounded focus:outline-none"
@@ -435,7 +462,7 @@ const EditServiceCategory = () => {
           Meta Keywords
         </label>
         <textarea
-          id="meta"
+          id="metakeywords"
           value={metakeywords}
           onChange={(e) => setMetakeywords(e.target.value)}
           className="w-full p-2 border rounded focus:outline-none"
@@ -447,7 +474,7 @@ const EditServiceCategory = () => {
           Meta Canonical
         </label>
         <textarea
-          id="meta"
+          id="metacanonical"
           value={metacanonical}
           onChange={(e) => setMetacanonical(e.target.value)}
           className="w-full p-2 border rounded focus:outline-none"
