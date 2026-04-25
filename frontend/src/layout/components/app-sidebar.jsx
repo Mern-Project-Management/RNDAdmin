@@ -251,6 +251,11 @@ const menuData = [
         title: "Alert Bar",
         icon: PanelTop,
         url: "/alert-bar",
+      },
+      {
+        title: "Thank You",
+        icon: FileCheck,
+        url: "/thank-you",
       }
     ],
   },

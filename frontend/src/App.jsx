@@ -129,6 +129,7 @@ const PolicyTable = lazy(() => import('./websiteBackend/policy/PolicyTable'));
 const PolicyForm = lazy(() => import('./websiteBackend/policy/PolicyForm'));
 const CompanyItemTable = lazy(() => import('./websiteBackend/company/CompanyItemTable'));
 const CompanyItemForm = lazy(() => import('./websiteBackend/company/CompanyItemForm'));
+const ThankYouForm = lazy(() => import('./websiteBackend/ThankYou/ThankYouForm'));
 
 // Life at RND Management
 const LifeAtRndCategoryTable = lazy(() => import('./websiteBackend/lifeAtRnd/CategoryTable'));
@@ -213,7 +214,7 @@ const AppContent = () => {
       '/catalogue', '/privacy', '/terms', '/import-excel', '/tracking',
       '/clients', '/core-value', '/whyChooseUs', '/JobApplication',
       '/policy', '/counter', '/text-slider', '/alert-bar', '/staff', '/list', '/table',
-      '/form', '/add-', '/edit-', '/admin', '/logo-table', '/worldwide-table'
+      '/form', '/add-', '/edit-', '/admin', '/logo-table', '/worldwide-table', '/thank-you'
     ];
     
     return adminFragments.some(fragment =>
@@ -312,6 +313,7 @@ function App() {
             </PrivateRoute>
           ),
           children: [
+            { path: 'thank-you', element: <Suspense fallback={<LoadingFallback />}><ThankYouForm /></Suspense> },
             { path: 'dashboard', element: <Suspense fallback={<LoadingFallback />}><DashboardPage /></Suspense> },
             // Chemical Management Routes
             {
@@ -530,7 +532,6 @@ function App() {
             { path: 'life-at-rnd/gallery', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndGalleryTable /></Suspense> },
             { path: 'life-at-rnd/add-gallery', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndGalleryForm /></Suspense> },
             { path: 'life-at-rnd/edit-gallery/:id', element: <Suspense fallback={<LoadingFallback />}><LifeAtRndGalleryForm /></Suspense> },
-
           ]
         }
       ]

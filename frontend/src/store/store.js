@@ -34,6 +34,7 @@ import { notificationApi } from '@/slice/notification/notification';
 import { serviceApi } from '../slice/serviceSlice';
 import { lifeAtRndCategoryApi } from '../slice/lifeAtRnd/lifeAtRndCategory';
 import { lifeAtRndGalleryApi } from '../slice/lifeAtRnd/lifeAtRndGallery';
+import { thankYouApi } from '../slice/thankYou/thankYou';
 const store = configureStore({
   reducer: {
     [chemicalApi.reducerPath]: chemicalApi.reducer, // RTK Query reducer for chemicals
@@ -70,7 +71,8 @@ const store = configureStore({
     [notificationApi.reducerPath]: notificationApi.reducer,
     [serviceApi.reducerPath]: serviceApi.reducer,
     [lifeAtRndCategoryApi.reducerPath]: lifeAtRndCategoryApi.reducer,
-    [lifeAtRndGalleryApi.reducerPath]: lifeAtRndGalleryApi.reducer
+    [lifeAtRndGalleryApi.reducerPath]: lifeAtRndGalleryApi.reducer,
+    [thankYouApi.reducerPath]: thankYouApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -110,7 +112,8 @@ const store = configureStore({
       .concat(notificationApi.middleware)
       .concat(serviceApi.middleware)
       .concat(lifeAtRndCategoryApi.middleware)
-      .concat(lifeAtRndGalleryApi.middleware),
+      .concat(lifeAtRndGalleryApi.middleware)
+      .concat(thankYouApi.middleware),
 });
 
 export default store;

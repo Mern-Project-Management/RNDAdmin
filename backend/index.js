@@ -82,6 +82,7 @@ app.use(express.static(path.join(__dirname, 'dist'), {
 
 // API Routes with caching
 const apiRoutes = [
+  ['/api/thank-you', require('./route/thankYou')],
   ['/api/admin', admin],
   ['/api/supplier', require('./route/supplier')],
   ['/api/services', require('./routes/services')],
