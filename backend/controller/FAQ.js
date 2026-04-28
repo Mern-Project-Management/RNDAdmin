@@ -152,7 +152,9 @@ const insertFAQ = async (req, res) => {
 
 const getFAQ = async (req, res) => {
   try {
-    const faqs = await FAQ.find().lean();
+    const { slug } = req.query;
+    const query = slug ? { slug } : {};
+    const faqs = await FAQ.find(query).lean();
 
     // Get all unique parent category IDs from FAQs
     const parentIds = [...new Set(

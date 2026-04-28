@@ -148,6 +148,8 @@ import ServiceFaqSection from './websiteBackend/faq/ServiceFaqSection';
 import AboutFaqSection from './websiteBackend/faq/AboutFaqSection';
 import FAQForm from './websiteBackend/faq/CreateFAQ';
 import EditFAQ from './websiteBackend/faq/EditFAQ';
+import HomeFaqSection from './websiteBackend/faq/HomeFaqSection';
+import EditHomeFAQ from './websiteBackend/faq/EditHomeFAQ';
 import CategoryTable from './websiteBackend/Service/ServiceCategory';
 import ServiceCategoryForm from './websiteBackend/Service/ServiceCategoryForm';
 import EditServiceCategory from './websiteBackend/Service/EditServiceCategory';
@@ -371,6 +373,8 @@ function App() {
             { path: 'about-faq', element: <Suspense fallback={<LoadingFallback />}><AboutFaqSection /></Suspense> },
             { path: 'faq/createFAQ', element: <Suspense fallback={<LoadingFallback />}><FAQForm /></Suspense> },
             { path: 'faq/editFAQ/:id', element: <Suspense fallback={<LoadingFallback />}><EditFAQ /></Suspense> },
+            { path: 'home-faq', element: <Suspense fallback={<LoadingFallback />}><HomeFaqSection /></Suspense> },
+            { path: 'edit-home-faq/:id', element: <Suspense fallback={<LoadingFallback />}><EditHomeFAQ /></Suspense> },
 
             // Portfolio Management Routes
             { path: 'portfolio-category', element: <Suspense fallback={<LoadingFallback />}><PorfolioCategoryTable /></Suspense> },

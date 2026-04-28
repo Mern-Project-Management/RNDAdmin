@@ -101,6 +101,11 @@ const menuData = [
         ]
       },
       {
+        title: "Home FAQ",
+        icon: FileQuestion,
+        url: "/home-faq"
+      },
+      {
         title: "Clients",
         icon: Users,
         children: [
