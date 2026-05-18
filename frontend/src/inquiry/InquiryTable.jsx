@@ -67,7 +67,8 @@ export default function InquiryList() {
     };
 
     // Filtering function
-    const filteredData = inquiryData.filter(item => {
+    const sortedInquiryData = [...inquiryData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const filteredData = sortedInquiryData.filter(item => {
         // Define active vs inactive status lists
         const inactiveStatuses = ["Completed", "Rejected"];
         

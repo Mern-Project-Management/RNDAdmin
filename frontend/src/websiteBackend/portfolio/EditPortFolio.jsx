@@ -523,7 +523,7 @@ const EditPortfolio = () => {
                 <span className="text-xs font-bold">Ã—</span>
               </button>
               <img
-                src={photo ? URL.createObjectURL(photo) : `/api/image/download/${initialPhoto}`}
+                src={photo ? URL.createObjectURL(photo) : `/api/image/download/${initialPhoto.startsWith('uploads/') ? '' : 'uploads/images/'}${initialPhoto}`}
                 alt=""
                 className="h-32 w-52 object-cover rounded"
               />

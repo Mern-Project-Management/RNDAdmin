@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 // Get all inquiries
 exports.getAllInquiries = async (req, res) => {
     try {
-        const inquiries = await Inquiry.find();
+        const inquiries = await Inquiry.find().sort({ createdAt: -1 });
         res.status(200).json(inquiries);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -385,7 +385,7 @@ exports.getTodayInquiries = async (req, res) => {
                 $gte: startOfDay,
                 $lt: endOfDay,
             },
-        });
+        }).sort({ createdAt: -1 });
 
         res.status(200).json(todayInquiries);
     } catch (error) {

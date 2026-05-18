@@ -79,7 +79,7 @@ const ServiceSec1Form = () => {
   // Set image preview when photo URL is loaded in edit mode
   useEffect(() => {
     if (isEditMode && formData.photo && !selectedFile) {
-      setImagePreview(`/api/image/download/${formData.photo}`);
+      setImagePreview(`/api/image/download/${formData.photo.startsWith('uploads/') ? '' : 'uploads/images/'}${formData.photo}`);
     }
   }, [formData.photo, isEditMode, selectedFile]);
 

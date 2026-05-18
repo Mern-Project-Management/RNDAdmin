@@ -358,10 +358,10 @@ const WhyChooseUsCRUD = () => {
     }
 
     setPreviewImages({
-      main: item.photo ? `/api/image/download/${item.photo}` : null,
+      main: item.photo ? `/api/image/download/${item.photo.startsWith('uploads/') ? '' : 'uploads/images/'}${item.photo}` : null,
       cards:
         item.cards?.map((card) =>
-          card.photo ? `/api/image/download/${card.photo}` : null,
+          card.photo ? `/api/image/download/${card.photo.startsWith('uploads/') ? '' : 'uploads/images/'}${card.photo}` : null,
         ) || [],
     });
     setEditingId(item._id);
@@ -827,7 +827,7 @@ const WhyChooseUsCRUD = () => {
                     <td className="px-6 py-4">
                       {item.photo && (
                         <img
-                          src={`/api/image/download/${item.photo}`}
+                          src={`/api/image/download/${item.photo.startsWith('uploads/') ? '' : 'uploads/images/'}${item.photo}`}
                           alt={item.alt}
                           className="h-12 w-12 object-cover rounded"
                         />

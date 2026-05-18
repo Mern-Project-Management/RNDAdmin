@@ -27,7 +27,7 @@ export function ProductInquiryTable() {
   
   const { data, isLoading, isError } = useGetInquiriesQuery();
   const [deleteInquiry] = useDeleteInquiryMutation();
-  const inquiriesList = data?.inquiries || [];
+  const inquiriesList = [...(data?.inquiries || [])].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({

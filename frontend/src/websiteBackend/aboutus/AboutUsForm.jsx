@@ -48,7 +48,7 @@ const AboutUsForm = () => {
           uid: '-1',
           name: 'Current Image',
           status: 'done',
-          url: `/api/image/download/${aboutUsData.image}`,
+          url: `/api/image/download/${aboutUsData.image.startsWith('uploads/') ? '' : 'uploads/images/'}${aboutUsData.image}`,
         }]);
       }
     }

@@ -11,7 +11,7 @@ const deleteImage = (imagePath) => {
     }
   }
 };
-const processCards = (cards, files) => {
+const processCards = (cards, files, oldCards = []) => {
   let parsedCards = [];
 
   if (typeof cards === 'string') {
@@ -32,9 +32,16 @@ const processCards = (cards, files) => {
 
     // Check if new photo uploaded for this specific card
     if (files && files[specificField] && files[specificField][0]) {
+      // If there was an old photo at this index, delete it
+      if (oldCards[index] && oldCards[index].photo && oldCards[index].photo !== card.photo) {
+        deleteImage(oldCards[index].photo);
+      }
       finalPhoto = 'uploads/images/' + files[specificField][0].filename;
     } else if (files && files['photo'] && files['photo'][index]) {
       // Fallback for old frontend format if still used
+      if (oldCards[index] && oldCards[index].photo && oldCards[index].photo !== card.photo) {
+        deleteImage(oldCards[index].photo);
+      }
       finalPhoto = 'uploads/images/' + files['photo'][index].filename;
     }
 
@@ -250,6 +257,18 @@ exports.updateWhyChooseUs = async (req, res) => {
     // - keep existing card photos if new not uploaded
     // - replace photo if new uploaded
     const processedCards = processCards(cards, req.files, whyChooseUs.cards);
+
+    // Check for deleted cards and remove their images
+    if (whyChooseUs.cards && whyChooseUs.cards.length > 0) {
+      const newCardPhotos = processedCards.map(c => c.photo).filter(p => p);
+      whyChooseUs.cards.forEach(oldCard => {
+        // If the old photo is not in the new set of photos, delete it
+        // Note: we check if it's NOT in newCardPhotos to avoid deleting a photo that was just kept
+        if (oldCard.photo && !newCardPhotos.includes(oldCard.photo)) {
+          deleteImage(oldCard.photo);
+        }
+      });
+    }
 
     /* ---------------- PAYLOAD ---------------- */
     const payload = {

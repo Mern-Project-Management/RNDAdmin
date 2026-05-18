@@ -97,7 +97,7 @@ const AboutUsTable = () => {
       width: '15%',
       render: (image) => (
         <img
-          src={`/api/image/download/${image}`}
+          src={`/api/image/download/${image.startsWith('uploads/') ? '' : 'uploads/images/'}${image}`}
           alt="About Us"
           className='w-[100px] h-[50px] object-cover'
         />

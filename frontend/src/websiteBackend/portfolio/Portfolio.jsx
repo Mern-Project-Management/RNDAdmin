@@ -55,7 +55,7 @@ const PortfolioTable = () => {
         Cell: ({ value }) => {
           const firstImage = Array.isArray(value) && value.length > 0 ? value[0] : null;
           return firstImage ? (
-            <img src={`/api/image/download/${firstImage}`} alt="Portfolio" className="w-20 h-12 object-cover rounded shadow-sm border border-gray-100" />
+            <img src={`/api/image/download/${firstImage.startsWith('uploads/') ? '' : 'uploads/images/'}${firstImage}`} alt="Portfolio" className="w-20 h-12 object-cover rounded shadow-sm border border-gray-100" />
           ) : (
             <span className="text-gray-400 italic text-xs">N/A</span>
           );
@@ -359,7 +359,7 @@ const PortfolioTable = () => {
                                 {/* Portfolio Image Section */}
                                 <div className="md:w-1/4 flex-shrink-0">
                                   <img 
-                                    src={row.original.photo && row.original.photo[0] ? `/api/image/download/${row.original.photo[0]}` : '/placeholder.jpg'} 
+                                    src={row.original.photo && row.original.photo[0] ? `/api/image/download/${row.original.photo[0].startsWith('uploads/') ? '' : 'uploads/images/'}${row.original.photo[0]}` : '/placeholder.jpg'} 
                                     alt={row.original.title} 
                                     className="w-full h-auto aspect-[4/3] object-cover rounded-lg shadow-sm border border-gray-100"
                                   />

@@ -245,7 +245,7 @@ const getMessagesByInquiryId = async (req, res) => {
     const messageCount = await Message.countDocuments({ inquiryId: id });
 
     // Find messages that match the inquiryId, and populate any references if needed
-    const messages = await Message.find({ inquiryId :id }).populate('inquiryId'); 
+    const messages = await Message.find({ inquiryId :id }).sort({ createdAt: -1 }).populate('inquiryId'); 
 
     if (!messages || messages.length === 0) {
       return res.status(404).json({
