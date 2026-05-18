@@ -144,8 +144,11 @@ const EditStaff = () => {
 
 
   const handleFileChange = (e) => {
-    const newPhotos = Array.from(e.target.files);
-    setPhoto([...photo, ...newPhotos]);
+    const file = e.target.files[0];
+    if (!file) return;
+    setPhoto([file]);
+    setPhotoAlts([""]);
+    setImgtitle([""]);
   };
 
   const handleDeleteInitialPhoto = (e, photoFilename, index) => {
@@ -168,15 +171,11 @@ const EditStaff = () => {
 
   const handleDeleteNewPhoto = (e, index) => {
     e.preventDefault();
-    const updatedPhotos = [...photo];
-    updatedPhotos.splice(index, 1);
-    setPhoto(updatedPhotos);
-    const updatedPhotoAlts = [...initialphotoAlts];
-    updatedPhotoAlts.splice(index, 1);
-    setInitialPhotoAlts(updatedPhotoAlts);
-    const updatedImgtitle = [...initialImgtitle];
-    updatedImgtitle.splice(index, 1);
-    setInitialImgtitle(updatedImgtitle);
+    setPhoto([]);
+    setPhotoAlts([]);
+    setImgtitle([]);
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) fileInput.value = "";
   };
 
   return (
@@ -303,7 +302,6 @@ const EditStaff = () => {
         <input
           type="file"
           onChange={handleFileChange}
-          multiple
           accept="image/*"
           className="p-2 border rounded"
         />

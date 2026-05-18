@@ -17,27 +17,19 @@ const StaffForm = () => {
   const navigate = useNavigate();
 
   const handlePhotoChange = (e) => {
-    const files = Array.from(e.target.files); // Convert FileList to array
-    // Limit the number of photos to 5
-    if (photos.length + files.length > 5) {
-      alert("You can only upload up to 5 photos");
-      return;
-    }
-    setPhotos([...photos, ...files]);
-    // Initialize alt text for each new photo
-    const newPhotoAlts = Array.from({ length: files.length }, () => "");
-    setPhotoAlts([...photoAlts, ...newPhotoAlts]);
-    const newImgtitles = Array.from({ length: files.length }, () => "");
-    setImgtitle([...imgtitle, ...newImgtitles]);
-
-
+    const file = e.target.files[0];
+    if (!file) return;
+    setPhotos([file]);
+    setPhotoAlts([""]);
+    setImgtitle([""]);
   };
 
-  const handleDeleteImage = (index) => {
-    setPhotos((prevPhotos) => prevPhotos.filter((_, i) => i !== index));
-    setPhotoAlts((prevPhotoAlts) => prevPhotoAlts.filter((_, i) => i !== index));
-    setImgtitle((prevImgtitle) => prevImgtitle.filter((_, i) => i !== index));
-
+  const handleDeleteImage = () => {
+    setPhotos([]);
+    setPhotoAlts([]);
+    setImgtitle([]);
+    const fileInput = document.getElementById("photo");
+    if (fileInput) fileInput.value = "";
   };
 
 
@@ -177,7 +169,6 @@ const StaffForm = () => {
           type="file"
           name="photo"
           id="photo"
-          multiple
           onChange={handlePhotoChange}
           className="border rounded focus:outline-none "
           accept="image/*"

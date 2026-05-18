@@ -69,8 +69,21 @@ const updateStaff = async (req, res) => {
 
     // Process new uploaded photos
     if (req.files && req.files['photo'] && req.files['photo'].length > 0) {
-      const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename); // Using filename to get the stored file names
-      updateFields.photo = [...existingStaff.photo, ...newPhotoPaths];
+      // Remove old photo files from filesystem
+      if (existingStaff && existingStaff.photo && Array.isArray(existingStaff.photo)) {
+        existingStaff.photo.forEach(oldPhoto => {
+          const filePath = path.join(__dirname, '..', oldPhoto);
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+            } catch (err) {
+              console.error("Error deleting old photo:", err);
+            }
+          }
+        });
+      }
+      const newPhotoPaths = req.files['photo'].map(file => 'uploads/images/' + file.filename); 
+      updateFields.photo = newPhotoPaths; // Replace existing photos with new photo
     } else {
       updateFields.photo = existingStaff.photo; // Keep existing photos if no new photos are uploaded
     }
