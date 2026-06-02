@@ -109,8 +109,10 @@ const Logo = lazy(() => import('./websiteBackend/companyLogo/CompanyLogoTable'))
 const LogoForm = lazy(() => import('./websiteBackend/companyLogo/LogoForm'));
 const ContactInfoForm = lazy(() => import('./websiteBackend/contactInfo/ContactInfoData'));
 const ContactForm = lazy(() => import('./websiteBackend/contactInfo/contactInfoForm'));
-const MenuListingForm = lazy(() => import('./websiteBackend/MenuListing/MenuListingForm'));
-const MenuListingTable = lazy(() => import('./websiteBackend/MenuListing/MenuListingTable'));
+const GlobalSettings = lazy(() => import('./websiteBackend/globalSettings/GlobalSettings'));
+const Redirects = lazy(() => import('./websiteBackend/redirects/Redirects'));
+const AuditReports = lazy(() => import('./websiteBackend/auditReports/AuditReports'));
+
 const StaticMetaForm = lazy(() => import('./websiteBackend/staticMetaKeyword/StaticMetaForm'));
 const MetaList = lazy(() => import('./websiteBackend/staticMetaKeyword/StaticTable'));
 const ImageUploadForm = lazy(() => import('./website/componets/slideshow/SlideShowForm'));
@@ -446,15 +448,20 @@ function App() {
             // { path: 'contact-info/add', element: <Suspense fallback={<LoadingFallback />}><ContactForm /></Suspense> },
             // { path: 'contact-info/edit/:id', element: <Suspense fallback={<LoadingFallback />}><ContactForm /></Suspense> },
 
-            // Menu Listing Routes
-            { path: 'menu-listing-table', element: <Suspense fallback={<LoadingFallback />}><MenuListingTable /></Suspense> },
-            { path: 'menu-listing-form', element: <Suspense fallback={<LoadingFallback />}><MenuListingForm /></Suspense> },
-            { path: 'menu-listing-form/:id', element: <Suspense fallback={<LoadingFallback />}><MenuListingForm /></Suspense> },
 
             // Meta Routes
             { path: 'meta-table', element: <Suspense fallback={<LoadingFallback />}><MetaList /></Suspense> },
             { path: 'meta-form', element: <Suspense fallback={<LoadingFallback />}><StaticMetaForm /></Suspense> },
             { path: 'edit-meta-form/:id', element: <Suspense fallback={<LoadingFallback />}><StaticMetaForm /></Suspense> },
+
+            // Global Settings
+            { path: 'global-settings', element: <Suspense fallback={<LoadingFallback />}><GlobalSettings /></Suspense> },
+
+            // Redirects
+            { path: 'redirects', element: <Suspense fallback={<LoadingFallback />}><Redirects /></Suspense> },
+
+            // Audit Reports
+            { path: 'audit-reports', element: <Suspense fallback={<LoadingFallback />}><AuditReports /></Suspense> },
 
             // Slide show
             { path: 'slideShow-form', element: <Suspense fallback={<LoadingFallback />}><ImageUploadForm /></Suspense> },

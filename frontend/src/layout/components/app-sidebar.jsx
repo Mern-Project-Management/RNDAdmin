@@ -15,6 +15,7 @@ const menuData = [
     url: "/dashboard",
 
   },
+
   {
     title: "Services",
     icon: FlaskConical,
@@ -63,6 +64,24 @@ const menuData = [
     ]
   },
   {
+    title: "SEO Management",
+    icon: Search,
+    children: [
+      { title: "Pages / Meta Tags", icon: KeyRound, url: "/meta-table" },
+      { title: "Global Settings", icon: Settings, url: "/global-settings" },
+      { title: "Redirects", icon: ArrowLeftRightIcon, url: "/redirects" },
+      { title: "Audit Reports", icon: List, url: "/audit-reports" },
+      {
+        title: "Blog",
+        icon: Newspaper,
+        children: [
+          { title: "Blog Categories", icon: List, url: "/blog-category-table" },
+          { title: "Blog", icon: PlusSquare, url: "/blog-table" },
+        ]
+      },
+    ]
+  },
+  {
     title: "Website",
     icon: Globe,
     children: [
@@ -85,14 +104,7 @@ const menuData = [
           { title: "Manage Stripe", icon: List, url: "/text-slider" },
         ]
       },
-      {
-        title: "Blog",
-        icon: Newspaper,
-        children: [
-          { title: "Blog Categories", icon: List, url: "/blog-category-table" },
-          { title: "Blog", icon: PlusSquare, url: "/blog-table" },
-        ]
-      },
+
       {
         title: "Faq",
         icon: FileQuestion,
@@ -224,16 +236,7 @@ const menuData = [
           { title: "Add New", icon: PlusSquare, url: "/whatsUpInfo-form" }
         ]
       },
-      {
-        title: "Meta Info",
-        icon: KeyRound,
-        children: [
-          { title: "Meta List", icon: List, url: "/meta-table" },
-          { title: "Meta Form", icon: List, url: "/meta-form" },
-          { title: "Menu List", icon: List, url: "/menu-listing-table" },
-          { title: "Add Menu", icon: PlusSquare, url: "/menu-listing-form" },
-        ]
-      },
+
 
       {
         title: "catalogue Management",

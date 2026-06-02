@@ -118,7 +118,7 @@ const apiRoutes = [
   ['/api/emailCategory', require('./route/emailCategory')],
   ['/api/companyLogo', require('./route/companyLogo')],
   ['/api/meta', require('./route/staticMeta')],
-  ['/api/menulist', require('./route/menuListing')],
+
   ['/api/slideshow', require('./route/slideShow')],
   ['/api/whatsup', require('./route/whatsUpInfo')],
   ['/api/events', require('./route/events')],
@@ -147,7 +147,10 @@ const apiRoutes = [
   ['/api/tracking', require('./route/tracking')],
   ['/api/companyItem', require('./route/companyItem')],
   ['/api/notification', require('./route/notification')],
-  ['/api/alertBar', require('./route/AlertBar')]
+  ['/api/alertBar', require('./route/AlertBar')],
+  ['/api/global-settings', require('./route/globalSettings')],
+  ['/api/redirect', require('./route/redirect')],
+  ['/api/seo-audit', require('./route/seoAudit')]
 ];
 
 // Apply cache middleware to all API routes
