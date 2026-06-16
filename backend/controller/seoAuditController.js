@@ -1,5 +1,6 @@
 const SeoAudit = require('../model/seoAudit');
 const StaticMeta = require('../model/staticMeta');
+const Blog = require('../model/blog');
 
 exports.getAudits = async (req, res) => {
     try {
@@ -38,6 +39,46 @@ async function runAuditBackground(auditId) {
 
         // Fetch pages from database
         const pages = await StaticMeta.find() || [];
+        const blogs = await Blog.find({ status: 'active' }) || [];
+
+        const itemsToAudit = [];
+        for (const p of pages) {
+            itemsToAudit.push({
+                metaTitle: p.metaTitle,
+                metaDescription: p.metaDescription,
+                metaKeyword: p.metaKeyword,
+                canonicalLink: p.canonicalLink,
+                ogTitle: p.ogTitle,
+                ogDescription: p.ogDescription,
+                ogImage: p.ogImage,
+                noIndex: p.noIndex,
+                noFollow: p.noFollow,
+                pageName: p.pageName || p.pageSlug || 'Unknown Page',
+                pageSlug: p.pageSlug,
+                h1Count: p.h1Count,
+                h2Count: p.h2Count,
+                missingAltCount: p.missingAltCount
+            });
+        }
+
+        for (const b of blogs) {
+            itemsToAudit.push({
+                metaTitle: b.metatitle || b.title,
+                metaDescription: b.metadescription,
+                metaKeyword: b.metakeywords,
+                canonicalLink: b.metacanonical,
+                ogTitle: b.metatitle || b.title,
+                ogDescription: b.metadescription,
+                ogImage: b.image && b.image.length > 0 ? b.image[0] : null,
+                noIndex: false,
+                noFollow: false,
+                pageName: b.title || 'Blog Post',
+                pageSlug: `blogs/${b.slug}`,
+                h1Count: 1, 
+                h2Count: 1, 
+                missingAltCount: 0 
+            });
+        }
 
         let totalPagesScore = 0;
         let errorsFound = 0;
@@ -129,9 +170,9 @@ async function runAuditBackground(auditId) {
             return score;
         };
 
-        // Score all static pages
-        for (const p of pages) {
-            totalPagesScore += auditDocument(p);
+        // Score all items (static pages + blogs)
+        for (const item of itemsToAudit) {
+            totalPagesScore += auditDocument(item);
         }
 
         // Global Checks
@@ -146,11 +187,11 @@ async function runAuditBackground(auditId) {
         globalResults.forEach(r => { if (r.passed) globalScore += r.points; });
 
         // Calculate Final
-        const avgPages = pages.length > 0 ? (totalPagesScore / pages.length) : 0;
+        const avgPages = itemsToAudit.length > 0 ? (totalPagesScore / itemsToAudit.length) : 0;
         
         let denom = 0;
         let sum = globalScore;
-        if (pages.length > 0) { sum += avgPages; denom++; }
+        if (itemsToAudit.length > 0) { sum += avgPages; denom++; }
         denom++; // for global
         
         const finalScore = Math.round(sum / denom);
@@ -159,7 +200,7 @@ async function runAuditBackground(auditId) {
         audit.pagesScore = Math.round(avgPages) || 0;
         audit.blogsScore = 0;
         audit.globalScore = globalScore || 0;
-        audit.pagesCrawled = pages.length || 0;
+        audit.pagesCrawled = itemsToAudit.length || 0;
         audit.errorsFound = errorsFound || 0;
         audit.warningsFound = warningsFound || 0;
         audit.infoFound = infoFound || 0;

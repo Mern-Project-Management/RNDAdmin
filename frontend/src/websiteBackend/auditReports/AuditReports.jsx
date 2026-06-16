@@ -277,7 +277,7 @@ const AuditReports = () => {
                                  issue.type === 'WARNING' ? <AlertTriangle size={16} className="text-[#e69b00]"/> :
                                  <Info size={16} className="text-blue-500"/>}
                                 <span className="font-medium text-xs text-gray-500 mr-2 uppercase tracking-wide">SEO ISSUE</span>
-                                {issue.message}
+                                {issue.message.replace(/\s*\(\s*-[0-9]+\s*\)/g, '')}
                               </div>
                               <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
                                 issue.type === 'ERROR' ? 'bg-red-200 text-red-700' :
