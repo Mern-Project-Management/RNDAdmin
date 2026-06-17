@@ -124,15 +124,15 @@ async function runAuditBackground(auditId) {
                 score -= 10; issues.push({ type: 'WARNING', message: 'Missing Canonical Link (-10)' });
             }
 
-            // 4. Keywords
-            if (!keywords) {
-                score -= 5; issues.push({ type: 'INFO', message: 'Missing Keywords (-5)' });
-            }
+            // 4. Keywords (Disabled temporarily per request)
+            // if (!keywords) {
+            //     score -= 5; issues.push({ type: 'INFO', message: 'Missing Keywords (-5)' });
+            // }
 
-            // 5. OG Tags
-            if (!ogTitle) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:title (-5)' }); }
-            if (!ogDesc) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:description (-5)' }); }
-            if (!ogImg) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:image (-5)' }); }
+            // 5. OG Tags (Disabled temporarily per request)
+            // if (!ogTitle) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:title (-5)' }); }
+            // if (!ogDesc) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:description (-5)' }); }
+            // if (!ogImg) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:image (-5)' }); }
 
             // 6. Robots
             if (noIndex || noFollow) {
