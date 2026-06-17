@@ -1,5 +1,23 @@
 const Redirect = require('../model/redirect');
 
+exports.trackHit = async (req, res) => {
+    try {
+        const { sourceUrl } = req.body;
+        if (!sourceUrl) return res.status(400).json({ success: false, message: 'sourceUrl is required' });
+
+        const redirect = await Redirect.findOneAndUpdate(
+            { sourceUrl },
+            { $inc: { hits: 1 } },
+            { new: true }
+        );
+
+        if (!redirect) return res.status(404).json({ success: false, message: 'Redirect not found' });
+        res.status(200).json({ success: true, data: redirect });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 exports.getAllRedirects = async (req, res) => {
     try {
         const redirects = await Redirect.find().sort({ createdAt: -1 });
