@@ -1,0 +1,1 @@
+const axios = require('axios'); axios.get('https://www.rndtechnosoft.com/blogs', {headers: {'User-Agent': 'Mozilla/5.0'}}).then(r => console.log(r.data.substring(0, 500))).catch(e => console.log(e.message));

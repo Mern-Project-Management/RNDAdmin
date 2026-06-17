@@ -1,6 +1,9 @@
 const SeoAudit = require('../model/seoAudit');
 const StaticMeta = require('../model/staticMeta');
 const Blog = require('../model/blog');
+const axios = require('axios');
+const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
 
 exports.getAudits = async (req, res) => {
     try {
@@ -33,9 +36,14 @@ exports.runAudit = async (req, res) => {
 };
 
 async function runAuditBackground(auditId) {
+    let browser = null;
     try {
         const audit = await SeoAudit.findById(auditId);
         if (!audit) return;
+
+        // Launch Puppeteer browser to fetch rendered React pages
+        browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+        const auditPage = await browser.newPage();
 
         // Fetch pages from database
         const pages = await StaticMeta.find() || [];
@@ -87,7 +95,7 @@ async function runAuditBackground(auditId) {
         let pageResults = [];
 
         // Function to score based on database document
-        const auditDocument = (doc) => {
+        const auditDocument = async (doc) => {
             let score = 100;
             let issues = [];
             
@@ -104,6 +112,20 @@ async function runAuditBackground(auditId) {
             
             const name = doc.pageName || doc.pageSlug || 'Unknown Page';
             const url = doc.pageSlug === 'home' || doc.pageSlug === '/' ? '/' : `/${doc.pageSlug}`;
+
+            // Fetch live page to get accurate HTML headings using Puppeteer
+            let h1Count = doc.h1Count || 0;
+            let h2Count = doc.h2Count || 0;
+            try {
+                const fullUrl = `https://www.rndtechnosoft.com${url}`;
+                await auditPage.goto(fullUrl, { waitUntil: 'networkidle2', timeout: 15000 });
+                const html = await auditPage.content();
+                const $ = cheerio.load(html);
+                h1Count = $('h1').length;
+                h2Count = $('h2').length;
+            } catch (err) {
+                console.error(`Error fetching live page ${url} for SEO audit:`, err.message);
+            }
 
             // 1. Title
             if (!title) {
@@ -139,12 +161,10 @@ async function runAuditBackground(auditId) {
                 score -= 10; issues.push({ type: 'WARNING', message: 'Robots set to noindex/nofollow (-10)' });
             }
 
-            // 7. Headings (Using db counts if available, otherwise assume warning)
-            const h1Count = doc.h1Count || 0;
-            const h2Count = doc.h2Count || 0;
-            if (h1Count === 0) { score -= 10; issues.push({ type: 'ERROR', message: 'Missing H1 tag (based on db) (-10)' }); }
-            else if (h1Count > 1) { score -= 5; issues.push({ type: 'WARNING', message: 'Multiple H1 tags (based on db) (-5)' }); }
-            if (h2Count === 0) { score -= 5; issues.push({ type: 'INFO', message: 'Missing H2 tag (based on db) (-5)' }); }
+            // 7. Headings (Using live counts)
+            if (h1Count === 0) { score -= 10; issues.push({ type: 'ERROR', message: 'Missing H1 tag (-10)' }); }
+            else if (h1Count > 1) { score -= 5; issues.push({ type: 'WARNING', message: 'Multiple H1 tags (-5)' }); }
+            if (h2Count === 0) { score -= 5; issues.push({ type: 'INFO', message: 'Missing H2 tag (-5)' }); }
 
             // 8. Alt Tags (Using db counts)
             const missingAltCount = doc.missingAltCount || 0;
@@ -172,7 +192,7 @@ async function runAuditBackground(auditId) {
 
         // Score all items (static pages + blogs)
         for (const item of itemsToAudit) {
-            totalPagesScore += auditDocument(item);
+            totalPagesScore += await auditDocument(item);
         }
 
         // Global Checks
@@ -212,5 +232,9 @@ async function runAuditBackground(auditId) {
 
     } catch (error) {
         console.error("Background Audit Error: ", error);
+    } finally {
+        if (browser) {
+            await browser.close();
+        }
     }
 }
