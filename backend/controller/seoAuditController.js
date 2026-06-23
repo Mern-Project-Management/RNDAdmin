@@ -36,14 +36,9 @@ exports.runAudit = async (req, res) => {
 };
 
 async function runAuditBackground(auditId) {
-    let browser = null;
     try {
         const audit = await SeoAudit.findById(auditId);
         if (!audit) return;
-
-        // Launch Puppeteer browser to fetch rendered React pages
-        browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-        const auditPage = await browser.newPage();
 
         // Fetch pages from database
         const pages = await StaticMeta.find() || [];
@@ -113,16 +108,17 @@ async function runAuditBackground(auditId) {
             const name = doc.pageName || doc.pageSlug || 'Unknown Page';
             const url = doc.pageSlug === 'home' || doc.pageSlug === '/' ? '/' : `/${doc.pageSlug}`;
 
-            // Fetch live page to get accurate HTML headings using Puppeteer
+            // Fetch live page to get accurate HTML headings using axios
             let h1Count = doc.h1Count || 0;
             let h2Count = doc.h2Count || 0;
             try {
                 const fullUrl = `https://www.rndtechnosoft.com${url}`;
-                await auditPage.goto(fullUrl, { waitUntil: 'networkidle2', timeout: 15000 });
-                const html = await auditPage.content();
-                const $ = cheerio.load(html);
-                h1Count = $('h1').length;
-                h2Count = $('h2').length;
+                const response = await axios.get(fullUrl, { timeout: 8000 });
+                if (response.data) {
+                    const $ = cheerio.load(response.data);
+                    h1Count = $('h1').length;
+                    h2Count = $('h2').length;
+                }
             } catch (err) {
                 console.error(`Error fetching live page ${url} for SEO audit:`, err.message);
             }
@@ -145,16 +141,6 @@ async function runAuditBackground(auditId) {
             if (!canonical) {
                 score -= 10; issues.push({ type: 'WARNING', message: 'Missing Canonical Link (-10)' });
             }
-
-            // 4. Keywords (Disabled temporarily per request)
-            // if (!keywords) {
-            //     score -= 5; issues.push({ type: 'INFO', message: 'Missing Keywords (-5)' });
-            // }
-
-            // 5. OG Tags (Disabled temporarily per request)
-            // if (!ogTitle) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:title (-5)' }); }
-            // if (!ogDesc) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:description (-5)' }); }
-            // if (!ogImg) { score -= 5; issues.push({ type: 'WARNING', message: 'Missing og:image (-5)' }); }
 
             // 6. Robots
             if (noIndex || noFollow) {
@@ -190,10 +176,10 @@ async function runAuditBackground(auditId) {
             return score;
         };
 
-        // Score all items (static pages + blogs)
-        for (const item of itemsToAudit) {
-            totalPagesScore += await auditDocument(item);
-        }
+        // Score all items concurrently using Promise.all
+        const scorePromises = itemsToAudit.map(item => auditDocument(item));
+        const scores = await Promise.all(scorePromises);
+        totalPagesScore = scores.reduce((acc, curr) => acc + curr, 0);
 
         // Global Checks
         let globalScore = 0;
@@ -232,9 +218,5 @@ async function runAuditBackground(auditId) {
 
     } catch (error) {
         console.error("Background Audit Error: ", error);
-    } finally {
-        if (browser) {
-            await browser.close();
-        }
     }
 }
