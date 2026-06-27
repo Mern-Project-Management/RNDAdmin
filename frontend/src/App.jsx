@@ -317,6 +317,7 @@ function App() {
             </PrivateRoute>
           ),
           children: [
+            { index: true, element: <Navigate to="dashboard" replace /> },
             { path: 'thank-you', element: <Suspense fallback={<LoadingFallback />}><ThankYouForm /></Suspense> },
             { path: 'dashboard', element: <Suspense fallback={<LoadingFallback />}><DashboardPage /></Suspense> },
             // Chemical Management Routes

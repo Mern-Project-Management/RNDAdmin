@@ -107,5 +107,9 @@
     "vite": "^6.0.1",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-html": "^3.2.2"
+  },
+  "overrides": {
+    "quill": "2.0.2",
+    "serialize-javascript": "^7.0.6"
   }
 }
