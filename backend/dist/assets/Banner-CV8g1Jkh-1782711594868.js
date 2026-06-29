@@ -1,0 +1,1 @@
+import{j as e}from"./index-CynNQtNv-1782711594868.js";function s({imageUrl:l}){return e.jsx("div",{className:"relative w-full h-[30vh] lg:h-[250px]",children:e.jsx("img",{src:l,alt:"Banner",className:"w-full h-full object-cover"})})}export{s as B};
