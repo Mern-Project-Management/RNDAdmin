@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
   Users, 
@@ -6,6 +6,7 @@ import {
   MessageSquare, 
   Briefcase 
 } from 'lucide-react';
+import SeoDashboardWidget from './SeoDashboardWidget';
 
 const Dashboard = () => {
   const [dataCount, setDataCount] = useState({
@@ -71,6 +72,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      
+      {/* SEO Audit Dashboard Widget */}
+      <SeoDashboardWidget />
     </div>
   );
 };
