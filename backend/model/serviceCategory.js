@@ -23,6 +23,8 @@ const ServicecategorySchema = new mongoose.Schema({
   changeFreq: { type: String },
   component: { type: String, default: "MainService" }, // Added component field with default value
   status: { type: String },
+  noIndex: { type: Boolean, default: false },
+  noFollow: { type: Boolean, default: false },
 
   subCategories: [
     {
@@ -47,6 +49,8 @@ const ServicecategorySchema = new mongoose.Schema({
       changeFreq: { type: String },
       component: { type: String, default: "SubService" }, // Added component field with default value
       status: { type: String },
+      noIndex: { type: Boolean, default: false },
+      noFollow: { type: Boolean, default: false },
 
       subSubCategory: [
         {
@@ -71,6 +75,8 @@ const ServicecategorySchema = new mongoose.Schema({
           changeFreq: { type: String },
           component: { type: String, default: "SubSubService" }, // Added component field with default value
           status: { type: String },
+          noIndex: { type: Boolean, default: false },
+          noFollow: { type: Boolean, default: false },
         },
       ],
     },

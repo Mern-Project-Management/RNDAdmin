@@ -25,6 +25,8 @@ const BlogSchema = new Schema({
     changeFreq: { type: String },
     lastmod: { type: Date, default: Date.now },
     status: { type: String, required: true, default: 'active' },
+    noIndex: { type: Boolean, default: false },
+    noFollow: { type: Boolean, default: false },
     viewedIPs: { type: [String], default: [] },
     category: { type: Schema.Types.ObjectId, ref: 'BlogCategory' },
     createdAt: { type: Date, default: Date.now },

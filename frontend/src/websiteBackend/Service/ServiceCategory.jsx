@@ -102,6 +102,15 @@ const CategoryTable = () => {
         ),
       },
       {
+        Header: "Index",
+        accessor: "noIndex",
+        Cell: ({ row }) => (
+          <span className={`px-2 py-1 rounded text-xs font-semibold ${row.original.noIndex ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+            {row.original.noIndex ? 'No Index' : 'Index'}
+          </span>
+        ),
+      },
+      {
         Header: "Options",
         Cell: ({ row }) => (
           <div className="flex gap-4">
@@ -337,6 +346,11 @@ const CategoryTable = () => {
                             </div>
                           </td>
                           <td className="py-2 px-4">
+                            <span className={`px-2 py-1 rounded text-xs font-semibold ${subcategory.noIndex ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                              {subcategory.noIndex ? 'No Index' : 'Index'}
+                            </span>
+                          </td>
+                          <td className="py-2 px-4">
                             <div className="flex gap-4">
                             <button className="text-green-500 hover:text-green-700 transition">
                                 <Link to={`/edit-service-category/${row.original.slug}/${subcategory.slug}`}>
@@ -374,6 +388,11 @@ const CategoryTable = () => {
                                   </div>
                                 )}
                               </div>
+                            </td>
+                            <td className="py-2 px-4">
+                              <span className={`px-2 py-1 rounded text-xs font-semibold ${subSubcategory.noIndex ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                {subSubcategory.noIndex ? 'No Index' : 'Index'}
+                              </span>
                             </td>
                             <td className="py-2 px-4">
                               <div className="flex gap-4">

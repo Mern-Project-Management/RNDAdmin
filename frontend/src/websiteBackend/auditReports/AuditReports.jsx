@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Popconfirm, message, Spin, Tag, Collapse } from "antd";
+import { Button, Popconfirm, message, Spin, Tag, Collapse, Modal, Pagination, Tabs } from "antd";
 import { Activity, Trash2, Play, CheckCircle2, AlertCircle, AlertTriangle, Info, Calendar } from "lucide-react";
 import axios from "axios";
 
@@ -10,6 +10,15 @@ const AuditReports = () => {
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
   const [activeAudit, setActiveAudit] = useState(null);
+  const [issueModalVisible, setIssueModalVisible] = useState(false);
+  const [issueModalType, setIssueModalType] = useState('ERROR');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
+  const openIssueModal = (type) => {
+    setIssueModalType(type);
+    setIssueModalVisible(true);
+  };
 
   useEffect(() => {
     fetchAudits();
@@ -81,6 +90,20 @@ const AuditReports = () => {
     if (!dateString) return "Processing...";
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
+  const formatUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `https://rndtechnosoft.com${url.startsWith('/') ? url : '/' + url}`;
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeAudit]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   const getScoreColor = (score) => {
@@ -218,20 +241,26 @@ const AuditReports = () => {
                       <span className="text-2xl font-bold text-gray-800">{!activeAudit.completedAt ? '...' : activeAudit.pagesCrawled}</span>
                       <span className="text-[10px] text-gray-500 uppercase font-semibold">Pages Crawled</span>
                     </div>
-                    <div className="border border-gray-100 rounded-xl flex flex-col items-center justify-center p-4">
+                    <div onClick={() => activeAudit?.completedAt && openIssueModal('ERROR')} className={`border border-gray-100 rounded-xl flex flex-col items-center justify-center p-4 ${activeAudit?.completedAt ? 'cursor-pointer hover:shadow-md transition' : ''}`}>
                       <AlertCircle className={`${!activeAudit.completedAt ? 'text-gray-300' : 'text-red-500'} mb-2`} size={24} />
                       <span className="text-2xl font-bold text-gray-800">{!activeAudit.completedAt ? '...' : activeAudit.errorsFound}</span>
                       <span className="text-[10px] text-gray-500 uppercase font-semibold">Errors Found</span>
                     </div>
-                    <div className="border border-gray-100 rounded-xl flex flex-col items-center justify-center p-4">
+                    <div onClick={() => activeAudit?.completedAt && openIssueModal('WARNING')} className={`border border-gray-100 rounded-xl flex flex-col items-center justify-center p-4 ${activeAudit?.completedAt ? 'cursor-pointer hover:shadow-md transition' : ''}`}>
                       <AlertTriangle className={`${!activeAudit.completedAt ? 'text-gray-300' : 'text-[#ffd333]'} mb-2`} size={24} />
                       <span className="text-2xl font-bold text-gray-800">{!activeAudit.completedAt ? '...' : activeAudit.warningsFound}</span>
                       <span className="text-[10px] text-gray-500 uppercase font-semibold">Warnings</span>
                     </div>
-                    <div className="border border-gray-100 rounded-xl flex flex-col items-center justify-center p-4">
-                      <Info className={`${!activeAudit.completedAt ? 'text-gray-300' : 'text-blue-500'} mb-2`} size={24} />
-                      <span className="text-2xl font-bold text-gray-800">{!activeAudit.completedAt ? '...' : activeAudit.infoFound}</span>
-                      <span className="text-[10px] text-gray-500 uppercase font-semibold">Info</span>
+                    <div onClick={() => activeAudit?.completedAt && openIssueModal('INFO')} className={`border border-gray-100 rounded-xl flex flex-col items-center justify-center p-4 relative ${activeAudit?.completedAt ? 'cursor-pointer hover:shadow-md transition' : ''}`}>
+                      <div className="flex flex-col items-center justify-center w-full mb-2">
+                        <Info className={`${!activeAudit.completedAt ? 'text-gray-300' : 'text-blue-500'} mb-2`} size={24} />
+                        <span className="text-2xl font-bold text-gray-800">{!activeAudit.completedAt ? '...' : activeAudit.infoFound}</span>
+                        <span className="text-[10px] text-gray-500 uppercase font-semibold">Info</span>
+                      </div>
+                      <div className="w-full flex justify-between gap-1 text-[10px] mt-auto">
+                        <div className="bg-green-100 text-green-700 px-1 py-0.5 rounded font-semibold flex-1 text-center truncate">Index: {!activeAudit.completedAt ? '...' : activeAudit.indexedPages}</div>
+                        <div className="bg-gray-100 text-gray-600 px-1 py-0.5 rounded font-semibold flex-1 text-center truncate" title={`Noindex: ${!activeAudit.completedAt ? '...' : activeAudit.noIndexedPages}`}>Noindex: {!activeAudit.completedAt ? '...' : activeAudit.noIndexedPages}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -248,7 +277,7 @@ const AuditReports = () => {
                 </h3>
                 
                 <div className="space-y-4">
-                  {activeAudit.pageResults && activeAudit.pageResults.map((page, index) => (
+                  {activeAudit.pageResults && activeAudit.pageResults.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((page, index) => (
                     <div key={index} className="border border-gray-200 rounded-xl overflow-hidden">
                       <div className="p-4 bg-white flex justify-between items-center">
                         <div className="flex items-center gap-4">
@@ -256,9 +285,14 @@ const AuditReports = () => {
                             {page.score}
                           </div>
                           <div>
-                            <h4 className="font-bold text-gray-800">{page.name}</h4>
-                            <a href={page.url} target="_blank" rel="noopener noreferrer" className="text-xs text-gray-400 hover:text-blue-500 truncate max-w-xs block">
-                              {page.url}
+                            <h4 className="font-bold text-gray-800 flex items-center gap-2">
+                              {page.name}
+                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold text-white ${page.noIndex ? 'bg-gray-400' : 'bg-green-500'}`}>
+                                {page.noIndex ? 'Noindex' : 'Indexed'}
+                              </span>
+                            </h4>
+                            <a href={formatUrl(page.url)} target="_blank" rel="noopener noreferrer" className="text-xs text-gray-400 hover:text-blue-500 truncate max-w-xs block">
+                              {formatUrl(page.url)}
                             </a>
                           </div>
                         </div>
@@ -284,15 +318,10 @@ const AuditReports = () => {
                           </div>
                         ))}
                         
-                        {/* Success Badges (Responsive is true for all) */}
-                        <div className="px-3 py-1.5 rounded-md border text-[13px] font-medium flex items-center gap-2 shadow-sm bg-green-50 border-green-200 text-green-700">
-                          <CheckCircle2 size={14} className="text-green-500"/>
-                          Responsive mobile viewport configured
-                        </div>
-                        
                         {/* Global checks only on homepage to match screenshot UI */}
                         {page.url === '/' && activeAudit.globalResults && activeAudit.globalResults.filter(r => r.passed).map((res, idx) => {
                           if (res.checkName.includes('Responsive')) return null;
+                          if (res.checkName.includes('SSL')) return null;
                           let displayName = res.checkName;
                           if (res.checkName === 'Robots.txt available') displayName = 'robots.txt verified';
                           if (res.checkName === 'Sitemap.xml available') displayName = 'sitemap.xml verified';
@@ -304,14 +333,21 @@ const AuditReports = () => {
                             </div>
                           );
                         })}
-                        
-                        <div className="px-3 py-1.5 rounded-md border text-[13px] font-medium flex items-center gap-2 shadow-sm bg-green-50 border-green-200 text-green-700">
-                          <Activity size={14} className="text-green-500"/>
-                          Fast PageSpeed response (19ms)
-                        </div>
                       </div>
                     </div>
                   ))}
+
+                  {activeAudit.pageResults && activeAudit.pageResults.length > pageSize && (
+                    <div className="flex justify-center mt-6 py-4">
+                      <Pagination
+                        current={currentPage}
+                        total={activeAudit.pageResults.length}
+                        pageSize={pageSize}
+                        onChange={handlePageChange}
+                        showSizeChanger={false}
+                      />
+                    </div>
+                  )}
 
                   {(!activeAudit.pageResults || activeAudit.pageResults.length === 0) && (
                     <div className="text-center p-8 text-gray-400 bg-gray-50 rounded-xl border border-gray-100">
@@ -324,6 +360,82 @@ const AuditReports = () => {
           </div>
         </div>
       )}
+
+      {/* Issues Modal */}
+      <Modal
+        title={issueModalType === 'ERROR' ? 'Errors Found' : issueModalType === 'WARNING' ? 'Warnings' : 'Indexing Info'}
+        open={issueModalVisible}
+        onCancel={() => setIssueModalVisible(false)}
+        footer={null}
+        width={800}
+      >
+        <div className="max-h-[60vh] overflow-y-auto">
+          {issueModalType === 'INFO' ? (
+            <Tabs defaultActiveKey="1" items={[
+              {
+                key: '1',
+                label: `Indexed (${activeAudit?.pageResults?.filter(p => !p.noIndex).length || 0})`,
+                children: (
+                  <div className="space-y-3">
+                    {activeAudit?.pageResults?.filter(p => !p.noIndex).map((page, idx) => (
+                      <div key={idx} className="border-b pb-2">
+                        <h4 className="font-bold flex items-center gap-2">
+                          {page.name} 
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold text-white bg-green-500">Indexed</span>
+                        </h4>
+                        <a href={formatUrl(page.url)} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-xs">{formatUrl(page.url)}</a>
+                      </div>
+                    ))}
+                    {activeAudit?.pageResults?.filter(p => !p.noIndex).length === 0 && <p className="text-gray-500 text-center">No indexed pages found.</p>}
+                  </div>
+                )
+              },
+              {
+                key: '2',
+                label: `Noindex (${activeAudit?.pageResults?.filter(p => p.noIndex).length || 0})`,
+                children: (
+                  <div className="space-y-3">
+                    {activeAudit?.pageResults?.filter(p => p.noIndex).map((page, idx) => (
+                      <div key={idx} className="border-b pb-2">
+                        <h4 className="font-bold flex items-center gap-2">
+                          {page.name} 
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold text-white bg-gray-400">Noindex</span>
+                        </h4>
+                        <a href={formatUrl(page.url)} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-xs">{formatUrl(page.url)}</a>
+                      </div>
+                    ))}
+                    {activeAudit?.pageResults?.filter(p => p.noIndex).length === 0 && <p className="text-gray-500 text-center">No noindex pages found.</p>}
+                  </div>
+                )
+              }
+            ]} />
+          ) : (
+            <>
+              {activeAudit?.pageResults?.filter(p => p.issues.some(i => i.type === issueModalType)).map((page, idx) => (
+                <div key={idx} className="mb-4 border-b pb-4">
+                  <h4 className="font-bold flex items-center gap-2">
+                    {page.name} 
+                    <a href={formatUrl(page.url)} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-xs font-normal">
+                      ({formatUrl(page.url)})
+                    </a>
+                  </h4>
+                  <ul className="list-disc pl-5 mt-2 space-y-1">
+                    {page.issues.filter(i => i.type === issueModalType).map((issue, i) => (
+                      <li key={i} className={`text-sm ${issueModalType === 'ERROR' ? 'text-red-600' : 'text-orange-500'}`}>
+                        {issue.message}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              {activeAudit?.pageResults?.filter(p => p.issues.some(i => i.type === issueModalType)).length === 0 && (
+                <p className="text-gray-500 p-4 text-center">No {issueModalType.toLowerCase()}s found.</p>
+              )}
+            </>
+          )}
+        </div>
+      </Modal>
+
     </div>
   );
 };

@@ -31,6 +31,8 @@ const insertCategory = async (req, res) => {
     url,
     priority,
     changeFreq,
+    noIndex,
+    noFollow,
   } = req.body;
 
   const photo = req.files?.photo ? 'logos/' + req.files.photo[0].filename : null;
@@ -65,6 +67,8 @@ const insertCategory = async (req, res) => {
       url,
       priority,
       changeFreq,
+      noIndex,
+      noFollow,
       component, // Assigning the hardcoded component field
     });
 
@@ -97,6 +101,8 @@ const insertSubCategory = async (req, res) => {
     url,
     priority,
     changeFreq,
+    noIndex,
+    noFollow,
   } = req.body;
   const photo = req.files?.photo ? 'logos/' + req.files.photo[0].filename : null;
   const dropdownPhoto = req.files?.dropdownPhoto ? 'logos/' + req.files.dropdownPhoto[0].filename : null;
@@ -137,6 +143,8 @@ const insertSubCategory = async (req, res) => {
       url,
       priority,
       changeFreq,
+      noIndex,
+      noFollow,
     });
     await categoryDoc.save();
 
@@ -167,6 +175,8 @@ const insertSubSubCategory = async (req, res) => {
     url,
     priority,
     changeFreq,
+    noIndex,
+    noFollow,
   } = req.body;
   const photo = req.files?.photo ? 'logos/' + req.files.photo[0].filename : null;
   const dropdownPhoto = req.files?.dropdownPhoto ? 'logos/' + req.files.dropdownPhoto[0].filename : null;
@@ -215,6 +225,8 @@ const insertSubSubCategory = async (req, res) => {
       url,
       priority,
       changeFreq,
+      noIndex,
+      noFollow,
     });
     await categoryDoc.save();
 
@@ -246,6 +258,8 @@ const updateCategory = async (req, res) => {
     url,
     priority,
     changeFreq,
+    noIndex,
+    noFollow,
   } = req.body;
 
   // Check for photo file
@@ -275,6 +289,8 @@ const updateCategory = async (req, res) => {
     otherMeta,
     url,
     changeFreq,
+    noIndex,
+    noFollow,
   };
 
   // Only set photos if they exist
@@ -330,6 +346,8 @@ const updateSubCategory = async (req, res) => {
     'url',
     'priority',
     'changeFreq',
+    'noIndex',
+    'noFollow',
     'dropdownPhotoAlt',
   ];
 
@@ -391,6 +409,8 @@ const updatesubsubcategory = async (req, res) => {
     url,
     priority,
     changeFreq,
+    noIndex,
+    noFollow,
     dropdownPhotoAlt,
   } = req.body;
 
@@ -438,6 +458,8 @@ const updatesubsubcategory = async (req, res) => {
     subSubCategories.url = url || subSubCategories.url;
     subSubCategories.priority = !isNaN(priority) ? Number(priority) : subSubCategories.priority;
     subSubCategories.changeFreq = changeFreq || subSubCategories.changeFreq;
+    subSubCategories.noIndex = noIndex !== undefined ? noIndex : subSubCategories.noIndex;
+    subSubCategories.noFollow = noFollow !== undefined ? noFollow : subSubCategories.noFollow;
 
     await categoryDoc.save(); // Save the updated document
     res.status(200).json(categoryDoc); // Return the updated category document

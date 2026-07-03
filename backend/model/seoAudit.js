@@ -10,6 +10,8 @@ const SeoAuditSchema = new mongoose.Schema({
     errorsFound: { type: Number, default: 0 },
     warningsFound: { type: Number, default: 0 },
     infoFound: { type: Number, default: 0 },
+    indexedPages: { type: Number, default: 0 },
+    noIndexedPages: { type: Number, default: 0 },
     
     startedAt: { type: Date },
     completedAt: { type: Date },
@@ -21,6 +23,7 @@ const SeoAuditSchema = new mongoose.Schema({
         errorCount: { type: Number, default: 0 },
         warningCount: { type: Number, default: 0 },
         infoCount: { type: Number, default: 0 },
+        noIndex: { type: Boolean, default: false },
         issues: [{
             type: { type: String, enum: ['ERROR', 'WARNING', 'INFO'] },
             message: { type: String }

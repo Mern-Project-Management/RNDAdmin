@@ -16,6 +16,8 @@ const ServiceSchema = new Schema({
   metaschema:{type:String},
   otherMeta:{type:String},
   status: { type: String,  },
+  noIndex: { type: Boolean, default: false },
+  noFollow: { type: Boolean, default: false },
   categories: [{ type: String, ref: 'ServiceCategory' }],
   subcategories: [{ type: String, ref: 'ServiceCategory' }],
   subSubcategories: [{ type: String, ref: 'ServiceCategory' }],

@@ -29,6 +29,8 @@ const EditServiceCategory = () => {
   const [changeFreq, setChangeFreq] = useState()
   const [priority, setPriority] = useState(0)
   const [status, setStatus] = useState("active");
+  const [noIndex, setNoIndex] = useState(false);
+  const [noFollow, setNoFollow] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +46,7 @@ const EditServiceCategory = () => {
 
       try {
         const response = await axios.get(urls, { withCredentials: true });
-        const { category, tag, description, photo, dropdownPhoto, alt, dropdownPhotoAlt, imgtitle, slug, metatitle, metadescription, metakeywords, metalanguage, metacanonical, metaschema, otherMeta, changeFreq, priority, status } = response.data;
+        const { category, tag, description, photo, dropdownPhoto, alt, dropdownPhotoAlt, imgtitle, slug, metatitle, metadescription, metakeywords, metalanguage, metacanonical, metaschema, otherMeta, changeFreq, priority, status, noIndex, noFollow } = response.data;
 
         setCategory(category);
         setTag(tag);
@@ -56,6 +58,8 @@ const EditServiceCategory = () => {
         setImgtitle(imgtitle)
         setSlug(slug);
         setStatus(status);
+        setNoIndex(noIndex || false);
+        setNoFollow(noFollow || false);
 
         setMetatitle(metatitle);
         setMetadescription(metadescription)
@@ -156,6 +160,8 @@ const EditServiceCategory = () => {
     formData.append('changeFreq', changeFreq);
     formData.append('priority', priority);
     formData.append('status', status);
+    formData.append('noIndex', noIndex);
+    formData.append('noFollow', noFollow);
 
     if (photo instanceof File) {
       formData.append("photo", photo);
@@ -561,6 +567,28 @@ const EditServiceCategory = () => {
         >
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="robots" className="block font-semibold mb-2">
+          Robots (Index/Follow)
+        </label>
+        <select
+          id="robots"
+          value={(!noIndex && !noFollow) ? "index,follow" : (noIndex && noFollow) ? "noindex,nofollow" : (!noIndex && noFollow) ? "index,nofollow" : "noindex,follow"}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "index,follow") { setNoIndex(false); setNoFollow(false); }
+            if (val === "noindex,nofollow") { setNoIndex(true); setNoFollow(true); }
+            if (val === "index,nofollow") { setNoIndex(false); setNoFollow(true); }
+            if (val === "noindex,follow") { setNoIndex(true); setNoFollow(false); }
+          }}
+          className="w-full p-2 border rounded focus:outline-none"
+        >
+          <option value="index,follow">Index, Follow</option>
+          <option value="noindex,nofollow">NoIndex, NoFollow</option>
+          <option value="index,nofollow">Index, NoFollow</option>
+          <option value="noindex,follow">NoIndex, Follow</option>
         </select>
       </div>
       <div className="flex justify-between mt-6">
