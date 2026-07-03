@@ -1,1 +1,0 @@
-const axios = require('axios'); const cheerio = require('cheerio'); axios.get('https://www.rndtechnosoft.com/blogs', {headers: {'User-Agent': 'Mozilla/5.0'}}).then(r => { const $ = cheerio.load(r.data); console.log('H1:', $('h1').length, 'H2:', $('h2').length); }).catch(e => console.error(e.message));
