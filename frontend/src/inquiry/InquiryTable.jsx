@@ -19,6 +19,7 @@ import {
 import { ChevronDown, ChevronUp, EllipsisVertical, MoreVertical, Plus } from "lucide-react";
 import FollowUpModal from "./FollowUpModel";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import ExportModal from "./ExportModal";
 import { useDeleteInquiryMutation, useDeleteMultipleInquiriesMutation } from "@/slice/inquiry/inquiry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useGetInquiriesQuery } from "@/slice/inquiry/inquiry";
@@ -58,6 +59,7 @@ export default function InquiryList() {
     const [emailFilter, setEmailFilter] = useState("");
     const [activeTab, setActiveTab] = useState("Active"); // Filter inquiries by Active/Inactive status
     const [mobileFilter, setMobileFilter] = useState("");
+    const [serviceFilter, setServiceFilter] = useState("");
     const [cityFilter, setCityFilter] = useState("");
     const [selectedInquiries, setSelectedInquiries] = useState([]);
     const [expandedRowId, setExpandedRowId] = useState(null);
@@ -78,8 +80,6 @@ export default function InquiryList() {
 
         return (
             matchesActiveTab &&
-            (companyNameFilter === "" ||
-                (item.organisation || '').toLowerCase().includes(companyNameFilter.toLowerCase())) &&
             (statusFilter === null || item.status === statusFilter) &&
             (sourceFilter === null || item.source === sourceFilter) &&
             (nameFilter === null ||
@@ -87,7 +87,9 @@ export default function InquiryList() {
             (emailFilter === "" ||
                 (item.email || '').toLowerCase().includes(emailFilter.toLowerCase())) &&
             (mobileFilter === "" ||
-                (item.phone || '').toLowerCase().includes(mobileFilter.toLowerCase()))
+                (item.phone || '').toLowerCase().includes(mobileFilter.toLowerCase())) &&
+            (serviceFilter === "" ||
+                (item.service || item.department || '').toLowerCase().includes(serviceFilter.toLowerCase()))
         );
     });
     const handleDelete = async (inquiryId) => {
@@ -190,7 +192,7 @@ export default function InquiryList() {
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
-                    <h1 className="text-xl font-bold text-gray-900 mb-4 md:mb-0">Inquiry List</h1>
+                    <h1 className="text-xl font-bold text-gray-900 mb-4 md:mb-0">Inquiry List ({inquiryData?.length || 0})</h1>
                     <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg mt-4 w-fit">
                         <button 
                             onClick={() => setActiveTab("Active")}
@@ -215,12 +217,15 @@ export default function InquiryList() {
                     </div>
                 </div>
                 
-                <Link to='/add-inquiry'>
-                    <Button className="gap-2 px-6">
-                        <Plus className="h-5 w-5" />
-                        Add Inquiry
-                    </Button>
-                </Link>
+                <div className="flex gap-2">
+                    <ExportModal data={inquiryData} />
+                    <Link to='/add-inquiry'>
+                        <Button className="gap-2 px-6">
+                            <Plus className="h-5 w-5" />
+                            Add Inquiry
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             <Table className="border">
@@ -232,11 +237,11 @@ export default function InquiryList() {
                                 onCheckedChange={handleSelectAll}
                             />
                         </TableHead>
-                        <TableHead className="lg:w-[100px] w-[50px] sticky left-0 bg-background z-50">Date</TableHead>
-                        <TableHead className="text-left">Info</TableHead>
-                        {/* Hidden Headers for Status/Source */}
-                        <TableHead className="text-left">Page</TableHead>
-                        {/* <TableHead className="text-left">Email</TableHead> */}
+                        <TableHead className="min-w-[110px] whitespace-nowrap sticky left-0 bg-background z-50">Date</TableHead>
+                        <TableHead className="text-left">Name</TableHead>
+                        <TableHead className="text-left">Email</TableHead>
+                        <TableHead className="text-left">Phone</TableHead>
+                        <TableHead className="text-left">Service</TableHead>
                         <TableHead className="text-left">Message</TableHead>
                         <TableHead className="text-left">Follow Up</TableHead>
                         <TableHead className="w-[80px] text-left">Actions</TableHead>
@@ -246,22 +251,46 @@ export default function InquiryList() {
                         <TableHead></TableHead>
                         <TableHead>
                             <Input
-                                placeholder="Search Info"
-                                className="w-[180px]"
+                                placeholder="Search Name"
+                                className="w-[120px]"
                                 value={nameFilter || ""}
                                 onChange={(e) => setNameFilter(e.target.value)}
                             />
                         </TableHead>
-                        <TableHead></TableHead>
-                        {/* Hidden Filters for Status/Source */}
-                        <TableHead></TableHead>
+                        <TableHead>
+                            <Input
+                                placeholder="Search Email"
+                                className="w-[120px]"
+                                value={emailFilter || ""}
+                                onChange={(e) => setEmailFilter(e.target.value)}
+                            />
+                        </TableHead>
+                        <TableHead>
+                            <Input
+                                placeholder="Search Phone"
+                                className="w-[120px]"
+                                value={mobileFilter || ""}
+                                onChange={(e) => setMobileFilter(e.target.value)}
+                            />
+                        </TableHead>
+                        <TableHead>
+                            <Input
+                                placeholder="Search Service"
+                                className="w-[120px]"
+                                value={serviceFilter || ""}
+                                onChange={(e) => setServiceFilter(e.target.value)}
+                            />
+                        </TableHead>
                         <TableHead></TableHead>
                         <TableHead></TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredData.map((item, index) => (
+                    {filteredData.map((item, index) => {
+                        const dateObj = new Date(item.createdAt);
+                        const formattedDate = `${String(dateObj.getDate()).padStart(2, '0')}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${dateObj.getFullYear()}`;
+                        return (
                         <TableRow key={index} className="border-b">
                             <TableCell className="p-5">
                                 <Checkbox
@@ -269,11 +298,10 @@ export default function InquiryList() {
                                     onCheckedChange={() => handleInquirySelect(item._id)}
                                 />
                             </TableCell>
-                            <TableCell className="sticky left-0 bg-background">{item.createdAt.slice(0, 10)}</TableCell>
+                            <TableCell className="whitespace-nowrap sticky left-0 bg-background">{formattedDate}</TableCell>
                             <TableCell>
                                 <div className="space-y-1">
                                     <div className="font-medium text-gray-900 text-sm">{item.name}</div>
-                                    <div className="text-xs text-[#7a6b00] font-medium">{item.email}</div>
                                     
                                     {expandedRowId === item._id && (
                                         <div className="mt-3 bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2.5 text-sm shadow-inner scale-in-95 animate-in fade-in duration-200">
@@ -368,14 +396,10 @@ export default function InquiryList() {
                                     </button>
                                 </div>
                             </TableCell>
-                            {/* Hidden Status and Source Cells */}
-                            <TableCell>
-                                <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded text-gray-700 border border-gray-200">
-                                    {formatUrl(item.url)}
-                                </span>
-                            </TableCell>
-                            {/* <TableCell>{item.email}</TableCell> */}
-                            <TableCell>
+                            <TableCell className="max-w-[150px] truncate" title={item.email}>{item.email}</TableCell>
+                            <TableCell>{item.phone}</TableCell>
+                            <TableCell>{item.service || item.department}</TableCell>
+                            <TableCell className="max-w-[200px]">
                                 {item.message ? (
                                     <div>
                                         <p className={`text-sm text-gray-800 leading-relaxed ${expandedRowId === item._id ? '' : 'line-clamp-2'}`}>
@@ -396,7 +420,7 @@ export default function InquiryList() {
                                 <div className="flex gap-4 justify-center items-center">
                                     <Link to={`/edit-inquiry/${item._id}`}>
                                         <FaEdit 
-                                            className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
+                                            className="text-blue-500 cursor-pointer text-lg hover:text-blue-700 transition"
                                             title="Edit Inquiry"
                                         />
                                     </Link>
@@ -408,7 +432,7 @@ export default function InquiryList() {
                                 </div>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )})}
                 </TableBody>
             </Table>
 

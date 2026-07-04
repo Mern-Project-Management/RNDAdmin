@@ -4,6 +4,7 @@ import { DownloadOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { useGetAllApplicationsQuery, useDeleteApplicationMutation, useDeleteMultipleApplicationsMutation } from '../../slice/career/CareerForm';
+import ExportCareerModal from './ExportCareerModal';
 
 const CareerTable = () => {
     const navigate = useNavigate();
@@ -74,9 +75,12 @@ const CareerTable = () => {
             message.warning('No resume file attached');
             return;
         }
+        if (filePath.startsWith('http')) {
+            window.open(filePath, '_blank');
+            return;
+        }
         const filename = filePath.includes('/') ? filePath.split('/').pop() : filePath;
-        const baseUrl = getBaseUrl();
-        window.open(`${baseUrl}/api/image/pdf/view/${filename}`, '_blank');
+        window.open(`/api/image/pdf/view/${filename}`, '_blank');
     };
 
     const handleDownload = async (filePath) => {
@@ -84,11 +88,18 @@ const CareerTable = () => {
             message.warning('No resume file attached to this application');
             return;
         }
+
+        if (filePath.startsWith('http')) {
+            // For full external URLs, open in a new tab to let the browser handle it 
+            // (avoids CORS issues with direct fetch)
+            window.open(filePath, '_blank');
+            return;
+        }
+
         try {
             // If it's a full URL or path, get just the filename
             const filename = filePath.includes('/') ? filePath.split('/').pop() : filePath;
-            const baseUrl = getBaseUrl();
-            const response = await fetch(`${baseUrl}/api/image/pdf/download/${filename}`);
+            const response = await fetch(`/api/image/pdf/download/${filename}`);
 
             if (!response.ok) {
                 throw new Error('Download failed');
@@ -111,16 +122,22 @@ const CareerTable = () => {
 
     const columns = [
         {
-            title: 'Info',
-            key: 'info',
+            title: 'Name',
+            key: 'name',
             render: (_, record) => (
                 <div className="space-y-0.5">
                     <p className="font-normal text-gray-950 text-base">{record.name}</p>
-                    <p className="text-sm font-medium text-[#7a6b00]">{record.phone || record.contactNo}</p>
                     <p className="text-xs text-gray-500">{record.address}</p>
                 </div>
             ),
             sorter: (a, b) => (a.name || '').localeCompare(b.name || ''),
+        },
+        {
+            title: 'Phone',
+            key: 'phone',
+            render: (_, record) => (
+                <span className="text-sm font-medium text-[#7a6b00]">{record.phone || record.contactNo}</span>
+            ),
         },
         {
             title: 'Post Applied For',
@@ -175,7 +192,7 @@ const CareerTable = () => {
             render: (_, record) => (
                 <div className="flex gap-4">
                     <FaEdit
-                        className="text-green-500 cursor-pointer text-lg hover:text-green-700 transition"
+                        className="text-blue-500 cursor-pointer text-lg hover:text-blue-700 transition"
                         onClick={() => handleEdit(record)}
                     />
                     <FaTrashAlt
@@ -202,7 +219,7 @@ const CareerTable = () => {
 
             <div className="flex justify-between items-center mb-5">
                 <div className="flex items-center gap-4">
-                    <h2 className="text-2xl font-semibold">Career List</h2>
+                    <h2 className="text-2xl font-semibold">Career List ({applications?.data?.length || 0})</h2>
                     {selectedRowKeys.length > 0 && (
                         <Button
                             danger
@@ -214,13 +231,16 @@ const CareerTable = () => {
                         </Button>
                     )}
                 </div>
-                <button
-                    onClick={() => navigate('/career/application/add')}
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
-                >
-                    <PlusOutlined />
-                    Add New Application
-                </button>
+                <div className="flex gap-2">
+                    <ExportCareerModal data={applications?.data} />
+                    <button
+                        onClick={() => navigate('/career/application/add')}
+                        className="bg-[#ffcc00] text-black font-medium px-4 py-2 rounded hover:bg-[#e6b800] flex items-center gap-2"
+                    >
+                        <PlusOutlined />
+                        Add New Application
+                    </button>
+                </div>
             </div>
 
             <Table

@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FollowUpTable } from './followup/FollowUpTable';
@@ -98,10 +98,10 @@ export default function FollowUpModal({ inquiry, onFollowUpAdded }) {
         <>
             <Dialog open={isOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
-                    <Button variant="outline" className="text-right bg-[#ffcc00]-[#1a1a1a]">
+                    <Button variant="outline" size="sm" className="bg-white text-black hover:bg-gray-100 font-medium border border-gray-300 shadow-sm">
                         Follow Up 
-                        <Badge variant="outline" className="bg-[#ffffff] text-black">{followUpCount}
-
+                        <Badge variant="outline" className="bg-white text-black px-1.5 py-0 text-xs ml-1 min-w-[20px] h-[20px] flex items-center justify-center border border-gray-200">
+                            {followUpCount}
                         </Badge>
                     </Button>
                 </DialogTrigger>
