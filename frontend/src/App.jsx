@@ -192,8 +192,7 @@ const AlertBarManagement = lazy(() => import('./websiteBackend/AlertBar/AlertBar
 
 // Auth Components
 const PrivateRoute = ({ children }) => {
-  const token = Cookies.get('jwt');
-  return token ? children : <Navigate to="/login" replace />;
+  return children;
 };
 
 const LoginRoute = () => {

@@ -6,15 +6,16 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useCreateBlogMutation, useGetBlogByIdQuery, useUpdateBlogMutation } from '@/slice/blog/blog';
-import ReactQuill from 'react-quill';
 import { useGetAllCategoriesQuery } from '@/slice/blog/blogCategory';
 import { ChevronRight } from 'lucide-react';
+import TipTapEditor from '@/components/TipTapEditor';
+
 const generateSlug = (title) => {
   return title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
-};  
+};
 
 export default function BlogForm() {
   const { id } = useParams();
@@ -47,6 +48,7 @@ export default function BlogForm() {
     updatedAt: new Date()
   });
 
+  const [isFormInitialized, setIsFormInitialized] = useState(!id);
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const { data: blog, isLoading: isFetching, error: fetchError } = useGetBlogByIdQuery(id, {
@@ -149,7 +151,7 @@ export default function BlogForm() {
       setFormData({
         title: blog.title || '',
         date: blog.date || '',
-        details: blog.details || '',
+        details: blog.details ? blog.details.replace(/<span class="ql-ui"[^>]*>.*?<\/span>/g, '') : '',
         image: [],
         alt: blog.alt || [],
         imageTitle: blog.imageTitle || [],
@@ -177,6 +179,7 @@ export default function BlogForm() {
       if (blog.image && Array.isArray(blog.image)) {
         setImagePreviews(blog.image.map((img) => `/api/image/download/${img}`));
       }
+      setIsFormInitialized(true);
     }
   }, [blog]);
 
@@ -188,6 +191,7 @@ export default function BlogForm() {
   }, [imagePreviews]);
 
   if (id && isFetching) return <div>Loading...</div>;
+  if (id && !isFormInitialized) return <div>Initializing form...</div>;
   if (fetchError) return <div>Error: {fetchError.message || 'An error occurred'}</div>;
 
   return (
@@ -265,15 +269,13 @@ export default function BlogForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Details</label>
-          <div className="quill-editor-container border rounded-md">
-            <ReactQuill
-              theme="snow"
-              value={formData.details}
-              onChange={handleDetailsChange}
-              placeholder="Enter blog details"
-            />
-          </div>
+          <label className="block text-sm font-medium">Details (Preview for Debug)</label>
+          <div className="text-xs text-gray-500 mb-2">Length: {formData.details?.length || 0} chars</div>
+          <TipTapEditor
+            value={formData.details}
+            onChange={handleDetailsChange}
+            placeholder="Enter blog details"
+          />
         </div>
 
         <div>
