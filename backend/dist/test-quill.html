@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+  <div id="editor"></div>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    var quill = new Quill('#editor', {
+      theme: 'snow'
+    });
+    fetch('http://localhost:3030/api/blog/getById?id=6a45d7e86b32767e5dd36b0e')
+      .then(r => r.json())
+      .then(blog => {
+        const html = blog.details.replace(/<span class="ql-ui"[^>]*>.*?<\/span>/g, '');
+        quill.clipboard.dangerouslyPasteHTML(html);
+        console.log("Length after paste:", quill.root.innerHTML.length);
+        if (quill.root.innerHTML === '<p><br></p>') {
+            console.error("QUILL REJECTED THE HTML");
+        }
+      });
+  </script>
+</body>
+</html>
