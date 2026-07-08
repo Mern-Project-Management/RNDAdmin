@@ -31,11 +31,17 @@ console.log(userData)
                 className="flex items-center space-x-2 cursor-pointer"
                 onClick={toggleUserInfo}
             >
-                <img
-                    src={`/api/logo/download/${userData.admin.photo}`}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full"
-                />
+                {userData.admin?.photo ? (
+                    <img
+                        src={`/api/logo/download/${userData.admin.photo}`}
+                        alt="User Avatar"
+                        className="w-8 h-8 rounded-full object-cover"
+                    />
+                ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                        <User className="w-5 h-5 text-gray-500" />
+                    </div>
+                )}
                 <ChevronDown className={`w-4 h-4 transition-transform ${isUserInfoOpen ? 'rotate-180' : ''}`} />
             </div>
 

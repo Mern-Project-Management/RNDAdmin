@@ -75,7 +75,8 @@ const BlogFaq = () => {
             fetchFaqs();
         } catch (error) {
             console.error("Error saving FAQ:", error);
-            message.error("Failed to save FAQ");
+            const errorMessage = error.response?.data?.message || error.message || "Failed to save FAQ";
+            message.error(`Failed to save FAQ: ${errorMessage}`);
         }
     };
 
