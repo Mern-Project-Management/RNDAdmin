@@ -7,11 +7,15 @@ import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Image from '@tiptap/extension-image';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 import { 
   Bold, Italic, Underline as UnderlineIcon, Strikethrough, 
   Heading1, Heading2, Heading3, List, ListOrdered, 
   AlignLeft, AlignCenter, AlignRight, AlignJustify, 
-  Link as LinkIcon, Image as ImageIcon, Unlink 
+  Link as LinkIcon, Image as ImageIcon, Unlink, Table as TableIcon
 } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -194,6 +198,72 @@ const MenuBar = ({ editor }) => {
       >
         <ImageIcon className="w-4 h-4" />
       </Button>
+      <div className="w-px h-6 bg-gray-300 mx-1 self-center" />
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+        className="text-gray-700 hover:text-gray-900"
+        title="Insert Table"
+      >
+        <TableIcon className="w-4 h-4" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().addColumnAfter().run()}
+        disabled={!editor.can().addColumnAfter()}
+        className="text-gray-700 hover:text-gray-900 text-xs font-bold"
+        title="Add Column"
+      >
+        Col+
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().deleteColumn().run()}
+        disabled={!editor.can().deleteColumn()}
+        className="text-gray-700 hover:text-gray-900 text-xs font-bold"
+        title="Delete Column"
+      >
+        Col-
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().addRowAfter().run()}
+        disabled={!editor.can().addRowAfter()}
+        className="text-gray-700 hover:text-gray-900 text-xs font-bold"
+        title="Add Row"
+      >
+        Row+
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().deleteRow().run()}
+        disabled={!editor.can().deleteRow()}
+        className="text-gray-700 hover:text-gray-900 text-xs font-bold"
+        title="Delete Row"
+      >
+        Row-
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().deleteTable().run()}
+        disabled={!editor.can().deleteTable()}
+        className="text-red-500 hover:text-red-700 text-xs font-bold"
+        title="Delete Table"
+      >
+        Del Tbl
+      </Button>
     </div>
   );
 };
@@ -213,11 +283,17 @@ const TipTapEditor = ({ value, onChange, placeholder }) => {
       TextStyle,
       Color,
       Image,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: value || '',
     editorProps: {
       attributes: {
-        class: 'prose max-w-none focus:outline-none min-h-[400px] p-4 bg-white',
+        class: 'prose max-w-none focus:outline-none min-h-[400px] p-4 bg-white tiptap-table-styles',
       },
     },
     onUpdate: ({ editor }) => {
