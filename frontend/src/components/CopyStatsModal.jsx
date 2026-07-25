@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, PhoneCall, MousePointerClick, FileText, Briefcase, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
+import { Mail, Phone, PhoneCall, MousePointerClick, FileText, Briefcase, Send, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
 import axios from 'axios';
 
 const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page' }) => {
@@ -10,6 +10,9 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
     ctaContactCount: 0,
     callbackFormCount: 0,
     jobApplyCount: 0,
+    contactEmailCount: 0,
+    contactPhoneCount: 0,
+    contactFormCount: 0,
     totalCopyCount: 0,
   });
   const [loading, setLoading] = useState(false);
@@ -31,6 +34,9 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
           ctaContactCount: response.data.ctaContactCount || 0,
           callbackFormCount: response.data.callbackFormCount || 0,
           jobApplyCount: response.data.jobApplyCount || 0,
+          contactEmailCount: response.data.contactEmailCount || 0,
+          contactPhoneCount: response.data.contactPhoneCount || 0,
+          contactFormCount: response.data.contactFormCount || 0,
           totalCopyCount: response.data.totalCopyCount || 0,
         });
       }
@@ -53,9 +59,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
   const displayPath = itemPath.startsWith('/') ? itemPath : `/${itemPath}`;
   const isCareer = itemType === 'Career' || itemType === 'Career Application';
   const isBlog = itemType === 'Blog';
-
-  const showCallbackCard = isBlog || stats.callbackFormCount > 0 || (!isCareer && stats.jobApplyCount === 0);
-  const showJobApplyCard = isCareer || stats.jobApplyCount > 0;
+  const isContactPage = displayPath.includes('contact-us') || itemType === 'Contact Page';
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 transition-all">
@@ -123,7 +127,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
 
               {/* Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* Email Stat Card */}
+                
+                {/* 1. Footer Email */}
                 <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-amber-300 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 shrink-0">
@@ -142,7 +147,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 </div>
 
-                {/* Phone Stat Card */}
+                {/* 2. Footer Phone */}
                 <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-blue-300 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shrink-0">
@@ -161,7 +166,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 </div>
 
-                {/* Request a Call Stat Card */}
+                {/* 3. Request a Call */}
                 <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-emerald-300 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shrink-0">
@@ -180,7 +185,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 </div>
 
-                {/* Footer CTA Contact Us Card */}
+                {/* 4. Footer CTA Contact Us Card */}
                 <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-purple-300 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100 shrink-0">
@@ -199,8 +204,70 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 </div>
 
-                {/* Blog Callback Form Card (only if relevant) */}
-                {showCallbackCard && (
+                {/* Special Contact Us Page Extra Cards */}
+                {isContactPage && (
+                  <>
+                    {/* Contact Page Sales Enquiry Email */}
+                    <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-orange-300 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center border border-orange-100 shrink-0">
+                          <Mail size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-gray-800">Contact Email</h4>
+                          <p className="text-[11px] text-gray-500">Sales Enquiry copies</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-2xl font-extrabold text-orange-600 font-mono">
+                          {loading ? '...' : stats.contactEmailCount}
+                        </span>
+                        <span className="text-[10px] text-gray-400 block font-medium">copies</span>
+                      </div>
+                    </div>
+
+                    {/* Contact Page Sales Enquiry Phone */}
+                    <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-teal-300 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100 shrink-0">
+                          <Phone size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-gray-800">Contact Phone</h4>
+                          <p className="text-[11px] text-gray-500">Sales Enquiry copies</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-2xl font-extrabold text-teal-600 font-mono">
+                          {loading ? '...' : stats.contactPhoneCount}
+                        </span>
+                        <span className="text-[10px] text-gray-400 block font-medium">copies</span>
+                      </div>
+                    </div>
+
+                    {/* Contact Page "Get in Touch" Form */}
+                    <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-cyan-300 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center border border-cyan-100 shrink-0">
+                          <Send size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-gray-800">Contact Form</h4>
+                          <p className="text-[11px] text-gray-500">Get in Touch submits</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-2xl font-extrabold text-cyan-600 font-mono">
+                          {loading ? '...' : stats.contactFormCount}
+                        </span>
+                        <span className="text-[10px] text-gray-400 block font-medium">submits</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Blog Callback Form Card (if blog page or if callback submissions exist) */}
+                {(isBlog || (!isContactPage && stats.callbackFormCount > 0)) && (
                   <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-rose-300 transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100 shrink-0">
@@ -220,8 +287,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 )}
 
-                {/* Job Applications Card (only if relevant) */}
-                {showJobApplyCard && (
+                {/* Job Applications Card (if career page or if job apply submissions exist) */}
+                {(isCareer || (!isContactPage && stats.jobApplyCount > 0)) && (
                   <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-indigo-300 transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shrink-0">

@@ -337,13 +337,22 @@ router.get('/page-copy-stats', async (req, res) => {
     let ctaContactCount = 0;
     let callbackFormCount = 0;
     let jobApplyCount = 0;
+    let contactEmailCount = 0;
+    let contactPhoneCount = 0;
+    let contactFormCount = 0;
 
     events.forEach(event => {
       const btn = (event.buttonName || '').toLowerCase();
       const target = (event.metadata && event.metadata.target ? event.metadata.target : '').toLowerCase();
       const count = event.repetitionCount || 1;
 
-      if (target === 'email' || btn === 'footer email') {
+      if (target === 'contact_email' || btn === 'sales enquiry email') {
+        contactEmailCount += count;
+      } else if (target === 'contact_phone' || btn === 'sales enquiry phone') {
+        contactPhoneCount += count;
+      } else if (target === 'contact_form') {
+        contactFormCount += count;
+      } else if (target === 'email' || btn === 'footer email') {
         emailCopyCount += count;
       } else if (target === 'phone' || btn === 'footer phone') {
         phoneCopyCount += count;
@@ -367,7 +376,10 @@ router.get('/page-copy-stats', async (req, res) => {
       ctaContactCount,
       callbackFormCount,
       jobApplyCount,
-      totalCopyCount: emailCopyCount + phoneCopyCount + requestCallCount + ctaContactCount + callbackFormCount + jobApplyCount
+      contactEmailCount,
+      contactPhoneCount,
+      contactFormCount,
+      totalCopyCount: emailCopyCount + phoneCopyCount + requestCallCount + ctaContactCount + callbackFormCount + jobApplyCount + contactEmailCount + contactPhoneCount + contactFormCount
     });
   } catch (error) {
     console.error('Page copy stats error:', error);
