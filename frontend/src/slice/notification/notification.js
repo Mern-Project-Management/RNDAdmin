@@ -1,8 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 export const notificationApi = createApi({
   reducerPath: 'notificationApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/notification' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api/notification',
+    credentials: 'include',
+    prepareHeaders: (headers) => {
+      const token = Cookies.get('jwt');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   tagTypes: ['Notifications'],
   endpoints: (builder) => ({
     getTodayNotifications: builder.query({

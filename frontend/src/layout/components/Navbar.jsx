@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import NotificationsDropdown from '@/navbar/NotificationDropdown';
 import UserInfoDropdown from '@/navbar/UserInfoDropdown';
@@ -74,14 +74,28 @@ const Navbar = () => {
         }
     };
 
-    if (isLoading || isMessagesLoading) return <p>Loading...</p>;
-    if (error) return <p>Error loading profile</p>;
+    const admin = adminProfile?.admin;
+    
+    // Format username logic
+    const getUsername = () => {
+        if (!admin) return '';
+        const fullName = [admin.firstname, admin.lastname].filter(Boolean).join(' ').trim();
+        if (fullName) return fullName;
+        if (admin.username) return admin.username;
+        if (admin.email) {
+            const prefix = admin.email.split('@')[0];
+            return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+        }
+        return 'Admin';
+    };
+
+    const username = getUsername();
 
     return (
         <>
-            <nav className="bg-[#ffcc00] flex items-center justify-between text-[#1a1a1a] relative">
-                <SidebarTrigger />
-                <div className="flex w-full items-center justify-end space-x-8">
+            <nav className="bg-[#ffcc00] flex items-center justify-between text-[#1a1a1a] relative px-4 py-0.5 h-9 border-b border-yellow-500/20">
+                <SidebarTrigger className="h-7 w-7" />
+                <div className="flex w-full items-center justify-end space-x-3">
                     <NotificationsDropdown
                         notifications={notificationsData?.data || []}
                         unreadCount={unreadCount}
@@ -90,19 +104,29 @@ const Navbar = () => {
                         setIsNotificationsOpen={setIsNotificationsOpen}
                     />
 
-                    {adminProfile && (
-                        <p className="text-gray-800 font-medium">{adminProfile.admin.email}</p>
+                    {isLoading ? (
+                        <div className="h-4 w-20 bg-yellow-400/60 animate-pulse rounded"></div>
+                    ) : username ? (
+                        <div className="flex items-center gap-1.5 text-right hidden sm:flex">
+                            <span className="text-gray-900 font-bold text-xs">
+                                {username}
+                            </span>
+                        </div>
+                    ) : null}
+
+                    {isLoading ? (
+                        <div className="w-6 h-6 rounded-full bg-yellow-400/60 animate-pulse"></div>
+                    ) : (
+                        <UserInfoDropdown
+                            userData={adminProfile || {}}
+                            isUserInfoOpen={isUserInfoOpen}
+                            toggleUserInfo={toggleUserInfo}
+                            openProfileDetails={openProfileDetails}
+                            setIsEditProfileOpen={setIsEditProfileOpen}
+                        />
                     )}
 
-                    <UserInfoDropdown
-                        userData={adminProfile}
-                        isUserInfoOpen={isUserInfoOpen}
-                        toggleUserInfo={toggleUserInfo}
-                        openProfileDetails={openProfileDetails}
-                        setIsEditProfileOpen={setIsEditProfileOpen}
-                    />
-
-                    {isProfileDetailsOpen && (
+                    {isProfileDetailsOpen && adminProfile && (
                         <ProfileDetailsModal
                             userData={adminProfile}
                             setIsProfileDetailsOpen={setIsProfileDetailsOpen}

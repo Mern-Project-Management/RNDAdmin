@@ -6,8 +6,8 @@ import { logout } from './authSlice'; // Import a logout action if you have one 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   const baseQuery = fetchBaseQuery({
     baseUrl: '/api/admin',
+    credentials: 'include',
     prepareHeaders: (headers) => {
-
       const token = Cookies.get('jwt'); // Get the JWT from cookies
 
       // If token exists, add it to the Authorization header
