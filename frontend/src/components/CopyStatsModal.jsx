@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, PhoneCall, MousePointerClick, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
+import { Mail, Phone, PhoneCall, MousePointerClick, FileText, Briefcase, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
 import axios from 'axios';
 
 const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page' }) => {
@@ -8,6 +8,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
     phoneCopyCount: 0,
     requestCallCount: 0,
     ctaContactCount: 0,
+    callbackFormCount: 0,
+    jobApplyCount: 0,
     totalCopyCount: 0,
   });
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
           phoneCopyCount: response.data.phoneCopyCount || 0,
           requestCallCount: response.data.requestCallCount || 0,
           ctaContactCount: response.data.ctaContactCount || 0,
+          callbackFormCount: response.data.callbackFormCount || 0,
+          jobApplyCount: response.data.jobApplyCount || 0,
           totalCopyCount: response.data.totalCopyCount || 0,
         });
       }
@@ -47,13 +51,18 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
   if (!isOpen) return null;
 
   const displayPath = itemPath.startsWith('/') ? itemPath : `/${itemPath}`;
+  const isCareer = itemType === 'Career' || itemType === 'Career Application';
+  const isBlog = itemType === 'Blog';
+
+  const showCallbackCard = isBlog || stats.callbackFormCount > 0 || (!isCareer && stats.jobApplyCount === 0);
+  const showJobApplyCard = isCareer || stats.jobApplyCount > 0;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 transition-all">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-200">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl overflow-hidden border border-gray-200">
         
         {/* Header */}
-        <div className="bg-white p-6 border-b border-gray-200 flex justify-between items-center">
+        <div className="bg-white p-5 border-b border-gray-200 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-[#ffd333]/20 flex items-center justify-center text-[#1a1a1a]">
               <Info className="w-6 h-6 text-[#d4a000]" />
@@ -67,7 +76,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   {displayPath}
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mt-1" title={itemName}>
+              <h3 className="text-lg font-bold text-gray-900 mt-1" title={itemName}>
                 {itemName}
               </h3>
             </div>
@@ -101,7 +110,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
             <div className="space-y-5">
               <div className="flex justify-between items-center">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  Page Contact Interactions & Clicks Analytics
+                  Page Contact Interactions & Submissions Analytics
                 </h4>
                 <div className="flex items-center gap-1.5 text-xs text-gray-600 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-xs">
                   <BarChart2 size={14} className="text-gray-500" />
@@ -113,7 +122,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
               </div>
 
               {/* Cards Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Email Stat Card */}
                 <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-amber-300 transition-colors">
                   <div className="flex items-center gap-3">
@@ -190,6 +199,48 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 </div>
 
+                {/* Blog Callback Form Card (only if relevant) */}
+                {showCallbackCard && (
+                  <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-rose-300 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100 shrink-0">
+                        <FileText size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-gray-800">Callback Form</h4>
+                        <p className="text-[11px] text-gray-500">Form submits</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-extrabold text-rose-600 font-mono">
+                        {loading ? '...' : stats.callbackFormCount}
+                      </span>
+                      <span className="text-[10px] text-gray-400 block font-medium">submits</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Job Applications Card (only if relevant) */}
+                {showJobApplyCard && (
+                  <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-indigo-300 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shrink-0">
+                        <Briefcase size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-gray-800">Job Apply</h4>
+                        <p className="text-[11px] text-gray-500">Application submits</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-extrabold text-indigo-600 font-mono">
+                        {loading ? '...' : stats.jobApplyCount}
+                      </span>
+                      <span className="text-[10px] text-gray-400 block font-medium">submits</span>
+                    </div>
+                  </div>
+                )}
+
               </div>
             </div>
           )}
@@ -199,7 +250,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
         <div className="bg-white px-6 py-4 border-t border-gray-200 flex justify-end">
           <button
             onClick={onClose}
-            className="px-6 py-2.5 bg-[#ffd333] hover:bg-[#edc32f] text-gray-900 font-bold rounded-lg transition-colors text-sm shadow-xs cursor-pointer"
+            className="px-6 py-2 bg-[#ffd333] hover:bg-[#edc32f] text-gray-900 font-bold rounded-lg transition-colors text-sm shadow-xs cursor-pointer"
           >
             Close
           </button>

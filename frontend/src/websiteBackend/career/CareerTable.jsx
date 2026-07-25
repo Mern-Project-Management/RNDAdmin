@@ -2,9 +2,11 @@ import React from 'react';
 import { Table, Modal, message, Button } from 'antd';
 import { DownloadOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllApplicationsQuery, useDeleteApplicationMutation, useDeleteMultipleApplicationsMutation } from '../../slice/career/CareerForm';
 import ExportCareerModal from './ExportCareerModal';
+import CopyStatsModal from '../../components/CopyStatsModal';
 
 const CareerTable = () => {
     const navigate = useNavigate();
@@ -12,6 +14,11 @@ const CareerTable = () => {
     const [deleteApplication] = useDeleteApplicationMutation();
     const [deleteMultipleApplications] = useDeleteMultipleApplicationsMutation();
     const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
+    const [trackingModal, setTrackingModal] = React.useState({
+        isOpen: false,
+        itemName: '',
+        itemPath: '',
+    });
 
     const handleEdit = (record) => {
         navigate(`/career/edit/${record._id}`);
@@ -189,18 +196,32 @@ const CareerTable = () => {
         {
             title: 'Actions',
             key: 'actions',
-            render: (_, record) => (
-                <div className="flex gap-4">
-                    <FaEdit
-                        className="text-blue-500 cursor-pointer text-lg hover:text-blue-700 transition"
-                        onClick={() => handleEdit(record)}
-                    />
-                    <FaTrashAlt
-                        className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
-                        onClick={() => handleDelete(record._id)}
-                    />
-                </div>
-            ),
+            render: (_, record) => {
+                const title = record.careerTitle || record.postAppliedFor || record.name || '';
+                const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+                return (
+                    <div className="flex gap-4 items-center">
+                        <Info
+                            className="text-[#d4a000] cursor-pointer text-lg hover:text-[#b38700] transition"
+                            title="View tracking analytics"
+                            onClick={() => setTrackingModal({
+                                isOpen: true,
+                                itemName: title,
+                                itemPath: `/build-your-future/${slug}`,
+                            })}
+                        />
+                        <FaEdit
+                            className="text-blue-500 cursor-pointer text-lg hover:text-blue-700 transition"
+                            onClick={() => handleEdit(record)}
+                        />
+                        <FaTrashAlt
+                            className="text-red-500 cursor-pointer text-lg hover:text-red-700 transition"
+                            onClick={() => handleDelete(record._id)}
+                        />
+                    </div>
+                );
+            },
         },
     ];
 
@@ -255,6 +276,14 @@ const CareerTable = () => {
                     showTotal: (total) => `Total ${total} applications`,
                 }}
                 scroll={{ x: true }}
+            />
+
+            <CopyStatsModal
+                isOpen={trackingModal.isOpen}
+                onClose={() => setTrackingModal({ ...trackingModal, isOpen: false })}
+                itemName={trackingModal.itemName}
+                itemPath={trackingModal.itemPath}
+                itemType="Career Application"
             />
         </div>
     );

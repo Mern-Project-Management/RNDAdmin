@@ -335,6 +335,8 @@ router.get('/page-copy-stats', async (req, res) => {
     let phoneCopyCount = 0;
     let requestCallCount = 0;
     let ctaContactCount = 0;
+    let callbackFormCount = 0;
+    let jobApplyCount = 0;
 
     events.forEach(event => {
       const btn = (event.buttonName || '').toLowerCase();
@@ -349,6 +351,10 @@ router.get('/page-copy-stats', async (req, res) => {
         requestCallCount += count;
       } else if (target === 'cta_contact' || btn === 'footer cta contact us') {
         ctaContactCount += count;
+      } else if (target === 'blog_callback') {
+        callbackFormCount += count;
+      } else if (target === 'career_apply') {
+        jobApplyCount += count;
       }
     });
 
@@ -359,7 +365,9 @@ router.get('/page-copy-stats', async (req, res) => {
       phoneCopyCount,
       requestCallCount,
       ctaContactCount,
-      totalCopyCount: emailCopyCount + phoneCopyCount + requestCallCount + ctaContactCount
+      callbackFormCount,
+      jobApplyCount,
+      totalCopyCount: emailCopyCount + phoneCopyCount + requestCallCount + ctaContactCount + callbackFormCount + jobApplyCount
     });
   } catch (error) {
     console.error('Page copy stats error:', error);

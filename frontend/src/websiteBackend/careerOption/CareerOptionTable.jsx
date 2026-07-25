@@ -10,7 +10,8 @@ import {
   ArrowDown,
   Plus,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -22,6 +23,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom"
 import UseAnimations from "react-useanimations";
 import loading from "react-useanimations/lib/loading";
+import CopyStatsModal from '../../components/CopyStatsModal';
 
 
 Modal.setAppElement('#root');
@@ -37,6 +39,11 @@ const CareerOptionTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCoption, setSelectedCoption] = useState(null); // State for the selected banner
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [trackingModal, setTrackingModal] = useState({
+    isOpen: false,
+    itemName: '',
+    itemPath: '',
+  });
   const navigate = useNavigate()
 
   const notify = () => {
@@ -106,19 +113,36 @@ const CareerOptionTable = () => {
       },
       {
         Header: "Options",
-        Cell: ({ row }) => (
-          <div className="flex gap-4">
-            <button className="text-slate-800 hover:text-slate-600 transition" onClick={() => handleView(row.original)}>
-              <Eye />
-            </button>
-            <button className="text-green-500 hover:text-green-700 transition">
-              <Link to={`/careeroption/editCareerOption/${row.original._id}`}><Edit /></Link>
-            </button>
-            <button className="text-red-500 hover:text-red-700 transition" onClick={() => deleteCareerOption(row.original._id)}>
-              <Trash2 />
-            </button>
-          </div>
-        ),
+        Cell: ({ row }) => {
+          const slug = row.original.slug
+            ? row.original.slug
+            : row.original.jobtitle?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+          return (
+            <div className="flex gap-4 items-center">
+              <button
+                className="text-[#d4a000] hover:text-[#b38700] transition cursor-pointer"
+                title="View tracking analytics"
+                onClick={() => setTrackingModal({
+                  isOpen: true,
+                  itemName: row.original.jobtitle,
+                  itemPath: `/build-your-future/${slug}`,
+                })}
+              >
+                <Info size={18} />
+              </button>
+              <button className="text-slate-800 hover:text-slate-600 transition" onClick={() => handleView(row.original)}>
+                <Eye />
+              </button>
+              <button className="text-green-500 hover:text-green-700 transition">
+                <Link to={`/careeroption/editCareerOption/${row.original._id}`}><Edit /></Link>
+              </button>
+              <button className="text-red-500 hover:text-red-700 transition" onClick={() => deleteCareerOption(row.original._id)}>
+                <Trash2 />
+              </button>
+            </div>
+          );
+        },
         disableSortBy: true,
       },
     ],
@@ -473,6 +497,14 @@ const CareerOptionTable = () => {
           </button>
         </div>
       </Modal>
+
+      <CopyStatsModal
+        isOpen={trackingModal.isOpen}
+        onClose={() => setTrackingModal({ ...trackingModal, isOpen: false })}
+        itemName={trackingModal.itemName}
+        itemPath={trackingModal.itemPath}
+        itemType="Career"
+      />
     </div>
   );
 };
