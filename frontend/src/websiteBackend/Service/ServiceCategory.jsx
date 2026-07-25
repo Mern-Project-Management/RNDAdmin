@@ -1,8 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
-import { Edit, Trash2, ArrowUp, ArrowDown, Plus, X } from 'lucide-react';
+import { Edit, Trash2, ArrowUp, ArrowDown, Plus, X, Info } from 'lucide-react';
 import { BsArrowReturnRight } from "react-icons/bs";
 import { Link, useNavigate } from 'react-router-dom';
+import CopyStatsModal from "../../components/CopyStatsModal";
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +20,26 @@ const CategoryTable = () => {
   const [detail, setDetail] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [infoModalState, setInfoModalState] = useState({
+    isOpen: false,
+    itemName: '',
+    itemPath: '',
+    itemType: 'Category',
+  });
   const navigate = useNavigate();
+
+  const openInfoModal = (itemName, itemPath, itemType = 'Category') => {
+    setInfoModalState({
+      isOpen: true,
+      itemName: itemName || 'Category Page',
+      itemPath: itemPath || '',
+      itemType,
+    });
+  };
+
+  const closeInfoModal = () => {
+    setInfoModalState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   const confirmDelete = (item) => {
     setItemToDelete(item);
@@ -113,17 +133,25 @@ const CategoryTable = () => {
       {
         Header: "Options",
         Cell: ({ row }) => (
-          <div className="flex gap-4">
+          <div className="flex gap-3 items-center">
+            <button
+              className="text-[#d4a000] hover:text-yellow-600 transition cursor-pointer"
+              onClick={() => openInfoModal(row.original.category, row.original.slug, 'Category')}
+              title="View Copy Tracking Info"
+            >
+              <Info size={20} />
+            </button>
             <button className="text-green-500 hover:text-green-700 transition">
               <Link to={`/edit-service-category/${row.original.slug}`}>
-                <Edit />
+                <Edit size={20} />
               </Link>
             </button>
             <button
               className="text-red-500 hover:text-red-700 transition"
               onClick={() => confirmDelete({ id: row.original.slug })}
+              title="Delete Category"
             >
-              <Trash2 />
+              <Trash2 size={20} />
             </button>
           </div>
         ),
@@ -351,10 +379,17 @@ const CategoryTable = () => {
                             </span>
                           </td>
                           <td className="py-2 px-4">
-                            <div className="flex gap-4">
-                            <button className="text-green-500 hover:text-green-700 transition">
+                            <div className="flex gap-3 items-center">
+                              <button
+                                className="text-[#d4a000] hover:text-yellow-600 transition cursor-pointer"
+                                onClick={() => openInfoModal(subcategory.category, subcategory.slug, 'Subcategory')}
+                                title="View Copy Tracking Info"
+                              >
+                                <Info size={20} />
+                              </button>
+                              <button className="text-green-500 hover:text-green-700 transition">
                                 <Link to={`/edit-service-category/${row.original.slug}/${subcategory.slug}`}>
-                                  <Edit />
+                                  <Edit size={20} />
                                 </Link>
                               </button>
                               <button
@@ -363,8 +398,9 @@ const CategoryTable = () => {
                                   categoryId: row.original.slug,
                                   subCategoryId: subcategory.slug
                                 })}
+                                title="Delete Subcategory"
                               >
-                                <Trash2 />
+                                <Trash2 size={20} />
                               </button>
                             </div>
                           </td>
@@ -395,10 +431,17 @@ const CategoryTable = () => {
                               </span>
                             </td>
                             <td className="py-2 px-4">
-                              <div className="flex gap-4">
+                              <div className="flex gap-3 items-center">
+                                <button
+                                  className="text-[#d4a000] hover:text-yellow-600 transition cursor-pointer"
+                                  onClick={() => openInfoModal(subSubcategory.category, subSubcategory.slug, 'Sub-subcategory')}
+                                  title="View Copy Tracking Info"
+                                >
+                                  <Info size={20} />
+                                </button>
                                 <button className="text-green-500 hover:text-green-700 transition">
                                   <Link to={`/edit-service-category/${row.original.slug}/${subcategory.slug}/${subSubcategory.slug}`}>
-                                    <Edit />
+                                    <Edit size={20} />
                                   </Link>
                                 </button>
                                 <button
@@ -408,8 +451,9 @@ const CategoryTable = () => {
                                     subCategoryId: subcategory.slug,
                                     subSubCategoryId: subSubcategory.slug
                                   })}
+                                  title="Delete Sub-subcategory"
                                 >
-                                  <Trash2 />
+                                  <Trash2 size={20} />
                                 </button>
                               </div>
                             </td>
@@ -457,6 +501,14 @@ const CategoryTable = () => {
           </div>
         </div>
       )}
+      {/* Copy Tracking Analytics Info Modal */}
+      <CopyStatsModal
+        isOpen={infoModalState.isOpen}
+        onClose={closeInfoModal}
+        itemName={infoModalState.itemName}
+        itemPath={infoModalState.itemPath}
+        itemType={infoModalState.itemType}
+      />
     </div>
   );
 };

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Popconfirm, Typography, Image, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { Info } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
+import CopyStatsModal from '../components/CopyStatsModal';
 import {
   useGetAllBlogsQuery,
   useDeleteBlogMutation,
@@ -15,6 +17,27 @@ const BlogTable = () => {
   const { data: blogs = [], error, isLoading, refetch } = useGetAllBlogsQuery();
   const [deleteBlog, { isLoading: isDeleting }] = useDeleteBlogMutation();
   const navigate = useNavigate();
+
+  // State for Copy Tracking Info Modal
+  const [infoModalState, setInfoModalState] = useState({
+    isOpen: false,
+    itemName: '',
+    itemPath: '',
+    itemType: 'Blog',
+  });
+
+  const openInfoModal = (itemName, itemPath) => {
+    setInfoModalState({
+      isOpen: true,
+      itemName: itemName || 'Blog',
+      itemPath: itemPath || '',
+      itemType: 'Blog',
+    });
+  };
+
+  const closeInfoModal = () => {
+    setInfoModalState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   // State for expandable details
   const [expandedRows, setExpandedRows] = useState({});
@@ -186,10 +209,17 @@ const BlogTable = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 170,
+      width: 210,
       fixed: 'right',
       render: (_, record) => (
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
+          <Info
+            size={24}
+            className="text-[#d4a000] cursor-pointer hover:text-yellow-600 transition-colors"
+            onClick={() => openInfoModal(record.title, record.slug || record._id)}
+            title="View Copy Tracking Info"
+          />
+
           <FaEdit
             size={26}
             className="text-[#28a745] cursor-pointer hover:text-green-800 transition-colors"
@@ -328,6 +358,15 @@ const BlogTable = () => {
         rowKey="_id"
         pagination={{ pageSize: 5 }}
         scroll={{ x: 1000 }}
+      />
+
+      {/* Copy Tracking Analytics Info Modal */}
+      <CopyStatsModal
+        isOpen={infoModalState.isOpen}
+        onClose={closeInfoModal}
+        itemName={infoModalState.itemName}
+        itemPath={infoModalState.itemPath}
+        itemType={infoModalState.itemType}
       />
     </div>
   );

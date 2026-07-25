@@ -2,14 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Popconfirm, message, Input, ConfigProvider } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Edit3, Trash2, Search, Plus } from "lucide-react";
+import { Edit3, Trash2, Search, Plus, Info } from "lucide-react";
+import CopyStatsModal from "../../components/CopyStatsModal";
 
 const MetaList = () => {
   const [metaList, setMetaList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [infoModalState, setInfoModalState] = useState({
+    isOpen: false,
+    itemName: '',
+    itemPath: '',
+    itemType: 'Static Page',
+  });
   const navigate = useNavigate();
+
+  const openInfoModal = (itemName, itemPath) => {
+    setInfoModalState({
+      isOpen: true,
+      itemName: itemName || 'Static Page',
+      itemPath: itemPath || '',
+      itemType: 'Static Page',
+    });
+  };
+
+  const closeInfoModal = () => {
+    setInfoModalState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   useEffect(() => {
     const fetchMeta = async () => {
@@ -197,6 +217,12 @@ const MetaList = () => {
       key: "actions",
       render: (_, record) => (
         <div className="flex space-x-3 text-gray-400 items-center">
+          <Info
+            size={18}
+            className="cursor-pointer text-[#d4a000] hover:text-yellow-600 transition-colors"
+            onClick={() => openInfoModal(record.pageName || record.metaTitle || record.pageSlug, record.pageSlug)}
+            title="View Copy Tracking Info"
+          />
           <Edit3
             size={18}
             className="cursor-pointer hover:text-[#ffd333] transition-colors"
@@ -276,6 +302,15 @@ const MetaList = () => {
             }}
           />
         </div>
+
+        {/* Copy Tracking Analytics Info Modal */}
+        <CopyStatsModal
+          isOpen={infoModalState.isOpen}
+          onClose={closeInfoModal}
+          itemName={infoModalState.itemName}
+          itemPath={infoModalState.itemPath}
+          itemType={infoModalState.itemType}
+        />
       </div>
     </ConfigProvider>
   );

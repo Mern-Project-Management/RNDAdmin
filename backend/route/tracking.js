@@ -297,4 +297,69 @@ router.delete('/delete', async (req, res) => {
   }
 });
 
+// Get page copy stats (email & phone copy counts for a given path/slug)
+router.get('/page-copy-stats', async (req, res) => {
+  try {
+    const { pagePath, slug } = req.query;
+    const targetPath = pagePath || slug || '';
+
+    if (!targetPath) {
+      return res.status(400).json({
+        success: false,
+        error: 'pagePath or slug query parameter is required'
+      });
+    }
+
+    // Clean up slug/path for matching
+    const cleanPath = targetPath.trim().replace(/^\/+|\/+$/g, '');
+
+    // Create flexible matching query for page
+    const pageRegex = cleanPath
+      ? new RegExp(`(^|/)` + cleanPath.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + `(/|$)`, 'i')
+      : null;
+
+    const queryConditions = [
+      { page: targetPath },
+      { page: `/${cleanPath}` },
+      { page: cleanPath }
+    ];
+    if (pageRegex) {
+      queryConditions.push({ page: pageRegex });
+    }
+
+    const events = await ClickEvent.find({
+      $or: queryConditions
+    });
+
+    let emailCopyCount = 0;
+    let phoneCopyCount = 0;
+
+    events.forEach(event => {
+      const btn = (event.buttonName || '').toLowerCase();
+      const target = (event.metadata && event.metadata.target ? event.metadata.target : '').toLowerCase();
+      const count = event.repetitionCount || 1;
+
+      if (btn.includes('email') || target === 'email') {
+        emailCopyCount += count;
+      } else if (btn.includes('phone') || target === 'phone') {
+        phoneCopyCount += count;
+      }
+    });
+
+    res.json({
+      success: true,
+      pagePath: targetPath,
+      emailCopyCount,
+      phoneCopyCount,
+      totalCopyCount: emailCopyCount + phoneCopyCount
+    });
+  } catch (error) {
+    console.error('Page copy stats error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;
