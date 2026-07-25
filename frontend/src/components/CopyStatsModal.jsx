@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
+import { Mail, Phone, PhoneCall, MousePointerClick, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
 import axios from 'axios';
 
 const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page' }) => {
   const [stats, setStats] = useState({
     emailCopyCount: 0,
     phoneCopyCount: 0,
+    requestCallCount: 0,
+    ctaContactCount: 0,
     totalCopyCount: 0,
   });
   const [loading, setLoading] = useState(false);
@@ -23,6 +25,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
         setStats({
           emailCopyCount: response.data.emailCopyCount || 0,
           phoneCopyCount: response.data.phoneCopyCount || 0,
+          requestCallCount: response.data.requestCallCount || 0,
+          ctaContactCount: response.data.ctaContactCount || 0,
           totalCopyCount: response.data.totalCopyCount || 0,
         });
       }
@@ -46,7 +50,7 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 transition-all">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-200">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-200">
         
         {/* Header */}
         <div className="bg-white p-6 border-b border-gray-200 flex justify-between items-center">
@@ -97,11 +101,11 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
             <div className="space-y-5">
               <div className="flex justify-between items-center">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  Footer Contact Copy Analytics
+                  Page Contact Interactions & Clicks Analytics
                 </h4>
                 <div className="flex items-center gap-1.5 text-xs text-gray-600 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-xs">
                   <BarChart2 size={14} className="text-gray-500" />
-                  <span>Total Copies:</span>
+                  <span>Total Interactions:</span>
                   <span className="font-bold text-gray-900 font-mono text-sm">
                     {loading ? '...' : stats.totalCopyCount}
                   </span>
@@ -109,44 +113,83 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
               </div>
 
               {/* Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Email Stat Card */}
-                <div className="bg-white border border-gray-200 p-5 rounded-xl flex items-center justify-between shadow-xs hover:border-amber-300 transition-colors">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
-                      <Mail size={24} />
+                <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-amber-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 shrink-0">
+                      <Mail size={20} />
                     </div>
                     <div>
-                      <h4 className="text-base font-bold text-gray-800">Footer Email</h4>
-                      <p className="text-xs text-gray-500">Times copied by visitors</p>
+                      <h4 className="text-sm font-bold text-gray-800">Footer Email</h4>
+                      <p className="text-[11px] text-gray-500">Copied count</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-3xl font-extrabold text-amber-600 font-mono">
+                    <span className="text-2xl font-extrabold text-amber-600 font-mono">
                       {loading ? '...' : stats.emailCopyCount}
                     </span>
-                    <span className="text-xs text-gray-400 block font-medium">copies</span>
+                    <span className="text-[10px] text-gray-400 block font-medium">copies</span>
                   </div>
                 </div>
 
                 {/* Phone Stat Card */}
-                <div className="bg-white border border-gray-200 p-5 rounded-xl flex items-center justify-between shadow-xs hover:border-blue-300 transition-colors">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                      <Phone size={24} />
+                <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-blue-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shrink-0">
+                      <Phone size={20} />
                     </div>
                     <div>
-                      <h4 className="text-base font-bold text-gray-800">Footer Phone</h4>
-                      <p className="text-xs text-gray-500">Times copied by visitors</p>
+                      <h4 className="text-sm font-bold text-gray-800">Footer Phone</h4>
+                      <p className="text-[11px] text-gray-500">Copied count</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-3xl font-extrabold text-blue-600 font-mono">
+                    <span className="text-2xl font-extrabold text-blue-600 font-mono">
                       {loading ? '...' : stats.phoneCopyCount}
                     </span>
-                    <span className="text-xs text-gray-400 block font-medium">copies</span>
+                    <span className="text-[10px] text-gray-400 block font-medium">copies</span>
                   </div>
                 </div>
+
+                {/* Request a Call Stat Card */}
+                <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-emerald-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shrink-0">
+                      <PhoneCall size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-800">Request Call</h4>
+                      <p className="text-[11px] text-gray-500">Button clicks</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-2xl font-extrabold text-emerald-600 font-mono">
+                      {loading ? '...' : stats.requestCallCount}
+                    </span>
+                    <span className="text-[10px] text-gray-400 block font-medium">clicks</span>
+                  </div>
+                </div>
+
+                {/* Footer CTA Contact Us Card */}
+                <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-purple-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100 shrink-0">
+                      <MousePointerClick size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-800">CTA Contact</h4>
+                      <p className="text-[11px] text-gray-500">Button clicks</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-2xl font-extrabold text-purple-600 font-mono">
+                      {loading ? '...' : stats.ctaContactCount}
+                    </span>
+                    <span className="text-[10px] text-gray-400 block font-medium">clicks</span>
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
