@@ -340,6 +340,9 @@ router.get('/page-copy-stats', async (req, res) => {
     let contactEmailCount = 0;
     let contactPhoneCount = 0;
     let contactFormCount = 0;
+    let hrEmailCount = 0;
+    let hrPhoneCount = 0;
+    let readMoreCount = 0;
 
     events.forEach(event => {
       const btn = (event.buttonName || '').toLowerCase();
@@ -352,6 +355,12 @@ router.get('/page-copy-stats', async (req, res) => {
         contactPhoneCount += count;
       } else if (target === 'contact_form') {
         contactFormCount += count;
+      } else if (target === 'hr_email' || btn === 'hr email') {
+        hrEmailCount += count;
+      } else if (target === 'hr_phone' || btn === 'hr phone') {
+        hrPhoneCount += count;
+      } else if (target === 'read_more' || btn === 'read more') {
+        readMoreCount += count;
       } else if (target === 'email' || btn === 'footer email') {
         emailCopyCount += count;
       } else if (target === 'phone' || btn === 'footer phone') {
@@ -360,9 +369,9 @@ router.get('/page-copy-stats', async (req, res) => {
         requestCallCount += count;
       } else if (target === 'cta_contact' || btn === 'footer cta contact us') {
         ctaContactCount += count;
-      } else if (target === 'blog_callback') {
+      } else if (target === 'blog_callback' || btn === 'blog callback form') {
         callbackFormCount += count;
-      } else if (target === 'career_apply') {
+      } else if (target === 'career_apply' || target === 'job_apply') {
         jobApplyCount += count;
       }
     });
@@ -379,7 +388,10 @@ router.get('/page-copy-stats', async (req, res) => {
       contactEmailCount,
       contactPhoneCount,
       contactFormCount,
-      totalCopyCount: emailCopyCount + phoneCopyCount + requestCallCount + ctaContactCount + callbackFormCount + jobApplyCount + contactEmailCount + contactPhoneCount + contactFormCount
+      hrEmailCount,
+      hrPhoneCount,
+      readMoreCount,
+      totalCopyCount: emailCopyCount + phoneCopyCount + requestCallCount + ctaContactCount + callbackFormCount + jobApplyCount + contactEmailCount + contactPhoneCount + contactFormCount + hrEmailCount + hrPhoneCount + readMoreCount
     });
   } catch (error) {
     console.error('Page copy stats error:', error);

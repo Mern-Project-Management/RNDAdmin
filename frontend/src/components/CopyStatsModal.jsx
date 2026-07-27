@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, PhoneCall, MousePointerClick, FileText, Briefcase, Send, X, RefreshCw, Info, BarChart2 } from 'lucide-react';
+import { Mail, Phone, PhoneCall, MousePointerClick, FileText, Briefcase, Send, X, RefreshCw, Info, BarChart2, BookOpen } from 'lucide-react';
 import axios from 'axios';
 
 const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page' }) => {
@@ -13,6 +13,9 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
     contactEmailCount: 0,
     contactPhoneCount: 0,
     contactFormCount: 0,
+    hrEmailCount: 0,
+    hrPhoneCount: 0,
+    readMoreCount: 0,
     totalCopyCount: 0,
   });
   const [loading, setLoading] = useState(false);
@@ -37,6 +40,9 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
           contactEmailCount: response.data.contactEmailCount || 0,
           contactPhoneCount: response.data.contactPhoneCount || 0,
           contactFormCount: response.data.contactFormCount || 0,
+          hrEmailCount: response.data.hrEmailCount || 0,
+          hrPhoneCount: response.data.hrPhoneCount || 0,
+          readMoreCount: response.data.readMoreCount || 0,
           totalCopyCount: response.data.totalCopyCount || 0,
         });
       }
@@ -57,8 +63,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
   if (!isOpen) return null;
 
   const displayPath = itemPath.startsWith('/') ? itemPath : `/${itemPath}`;
-  const isCareer = itemType === 'Career' || itemType === 'Career Application';
-  const isBlog = itemType === 'Blog';
+  const isCareer = itemType === 'Career' || itemType === 'Career Application' || displayPath.includes('build-your-future');
+  const isBlog = itemType === 'Blog' || displayPath.includes('blogs') || displayPath.includes('blog');
   const isContactPage = displayPath.includes('contact-us') || itemType === 'Contact Page';
 
   return (
@@ -287,7 +293,69 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                   </div>
                 )}
 
-                {/* Job Applications Card (if career page or if job apply submissions exist) */}
+                {/* Read More Click Card (if blog page or if readMore clicks exist) */}
+                {(isBlog || (!isContactPage && stats.readMoreCount > 0)) && (
+                  <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-blue-300 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shrink-0">
+                        <BookOpen size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-gray-800">Read More</h4>
+                        <p className="text-[11px] text-gray-500">Read More clicks</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-extrabold text-blue-600 font-mono">
+                        {loading ? '...' : stats.readMoreCount}
+                      </span>
+                      <span className="text-[10px] text-gray-400 block font-medium">clicks</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Special Career Page Extra Cards (HR Email & HR Phone) */}
+                {isCareer && (
+                  <>
+                    <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-amber-300 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 shrink-0">
+                          <Mail size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-gray-800">HR Email</h4>
+                          <p className="text-[11px] text-gray-500">HR Contact copies</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-2xl font-extrabold text-amber-600 font-mono">
+                          {loading ? '...' : stats.hrEmailCount}
+                        </span>
+                        <span className="text-[10px] text-gray-400 block font-medium">copies</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-emerald-300 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shrink-0">
+                          <Phone size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-gray-800">HR Phone</h4>
+                          <p className="text-[11px] text-gray-500">HR Contact copies</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-2xl font-extrabold text-emerald-600 font-mono">
+                          {loading ? '...' : stats.hrPhoneCount}
+                        </span>
+                        <span className="text-[10px] text-gray-400 block font-medium">copies</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Job Applications / Career Apply Modal Card (if career page or if job apply submissions exist) */}
                 {(isCareer || (!isContactPage && stats.jobApplyCount > 0)) && (
                   <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-xs hover:border-indigo-300 transition-colors">
                     <div className="flex items-center gap-3">
@@ -295,8 +363,8 @@ const CopyStatsModal = ({ isOpen, onClose, itemName, itemPath, itemType = 'Page'
                         <Briefcase size={20} />
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold text-gray-800">Job Apply</h4>
-                        <p className="text-[11px] text-gray-500">Application submits</p>
+                        <h4 className="text-sm font-bold text-gray-800">Career Apply Modal</h4>
+                        <p className="text-[11px] text-gray-500">Inquiry form submits</p>
                       </div>
                     </div>
                     <div className="text-right">
