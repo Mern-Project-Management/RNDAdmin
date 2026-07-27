@@ -18,8 +18,6 @@ import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from 'react-modal';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom"
 import UseAnimations from "react-useanimations";
 import loading from "react-useanimations/lib/loading";
@@ -466,26 +464,18 @@ const CareerOptionTable = () => {
                 <p>{selectedCoption.requirement}</p>
               </div>
               <div className="mt-2">
-                <label className="font-semibold font-serif">Short Description:
-                  <ReactQuill
-                    readOnly={true}
-                    value={selectedCoption.shortDescription}
-                    modules={{ toolbar: false }}
-                    theme="bubble"
-                    className="quill"
-                  />
-                </label>
+                <label className="font-semibold font-serif">Short Description:</label>
+                <div 
+                  className="prose max-w-none text-sm"
+                  dangerouslySetInnerHTML={{ __html: selectedCoption.shortDescription || '' }}
+                />
               </div>
               <div className="mt-2">
-                <label className="mr-2 font-semibold font-serif">Long Description:
-                  <ReactQuill
-                    readOnly={true}
-                    value={selectedCoption.longDescription}
-                    modules={{ toolbar: false }}
-                    theme="bubble"
-                    className="quill"
-                  />
-                </label>
+                <label className="mr-2 font-semibold font-serif">Long Description:</label>
+                <div 
+                  className="prose max-w-none text-sm"
+                  dangerouslySetInnerHTML={{ __html: selectedCoption.longDescription || '' }}
+                />
               </div>
             </div>
           )}

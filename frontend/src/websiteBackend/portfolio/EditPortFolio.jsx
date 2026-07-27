@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -479,14 +478,12 @@ const EditPortfolio = () => {
         <label htmlFor="details" className="block font-semibold mb-2">
           Description <span className="text-red-500">*</span>
         </label>
-        <ReactQuill
+        <TipTapEditor
           value={details}
           onChange={(value) => {
             setDetails(value);
             clearFieldError('details');
           }}
-          modules={modules}
-          className={`quill ${errors.details ? 'border-red-500' : ''}`}
         />
         {getCharacterCountDisplay(details, 'details')}
         {errors.details && (

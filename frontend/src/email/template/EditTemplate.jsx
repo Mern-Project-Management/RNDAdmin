@@ -2,19 +2,19 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetTemplateByIdQuery, useUpdateTemplateMutation } from "@/slice/template/emailTemplate";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import TipTapEditor from "@/components/TipTapEditor";
 import { useGetEmailCategoriesQuery } from "@/slice/emailCategory/emailCategory";
 
 const EditTemplateForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm();
+  const bodyValue = watch("body");
 
   const [updateTemplate, { isLoading: isUpdating }] = useUpdateTemplateMutation();
   const { data: template, isLoading: isFetching, error } = useGetTemplateByIdQuery(id, { skip: !id });
   const { data: categories, isLoading: categoriesLoading } = useGetEmailCategoriesQuery();
-console.log(categories)
+
   useEffect(() => {
     if (template?.data) {
       reset({
@@ -100,11 +100,10 @@ console.log(categories)
 
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="body">Body</label>
-          <ReactQuill
-            value={template?.data?.body || ""}
+          <TipTapEditor
+            value={bodyValue || template?.data?.body || ""}
             onChange={handleEditorChange}
             placeholder="Enter template body"
-            className="w-full border border-gray-300 rounded px-3 py-2"
           />
           {errors.body && <p className="text-red-500 text-sm">{errors.body.message}</p>}
         </div>

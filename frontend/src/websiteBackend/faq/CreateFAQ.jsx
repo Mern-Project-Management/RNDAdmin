@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 const FAQForm = ({ onSuccess, type }) => {
   const [question, setQuestion] = useState("");
@@ -198,11 +197,9 @@ const FAQForm = ({ onSuccess, type }) => {
         <label htmlFor="answer" className="block font-semibold mb-2">
           Answer
         </label>
-        <ReactQuill
+        <TipTapEditor
           value={answer}
           onChange={setAnswer}
-          modules={modules} // Include modules for image handling
-          className="quill"
         />
       </div>
 

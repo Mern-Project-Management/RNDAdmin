@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Upload, message, Breadcrumb, Spin } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { 
   useCreateAboutUsMutation, 
   useUpdateAboutUsMutation,
@@ -216,11 +215,7 @@ const AboutUsForm = () => {
           label="Short Description"
           rules={[{ required: false, message: 'Please input the short description!' }]}
         >
-          <ReactQuill 
-            modules={modules}
-            theme="snow"
-            className="custom-quill-editor h-[150px] mb-[50px]"
-          />
+          <TipTapEditor className="h-[250px]" />
         </Form.Item>
 
         <Form.Item
@@ -228,11 +223,7 @@ const AboutUsForm = () => {
           label="Description"
           rules={[{ required: false, message: 'Please input the description!' }]}
         >
-          <ReactQuill 
-            modules={modules}
-            theme="snow"
-            className="custom-quill-editor h-[600px] mb-[50px]"
-          />
+          <TipTapEditor className="h-[450px]" />
         </Form.Item>
 
         <Form.Item

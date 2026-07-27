@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 const VideoForm = () => {
   const navigate = useNavigate();
@@ -183,14 +182,11 @@ const VideoForm = () => {
         <div>
           <Label htmlFor="description">Description *</Label>
           <div className="mt-2">
-            <ReactQuill
-              theme="snow"
+            <TipTapEditor
               value={formData.description}
               onChange={handleDescriptionChange}
-              modules={modules}
-              formats={formats}
               placeholder="Write a detailed description..."
-              style={{ height: '250px', marginBottom: '50px' }}
+              className="h-[300px]"
             />
           </div>
         </div>

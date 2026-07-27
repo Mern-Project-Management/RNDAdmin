@@ -268,7 +268,7 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-const TipTapEditor = ({ value, onChange, placeholder }) => {
+const TipTapEditor = ({ value, onChange, placeholder, className = "h-[500px]" }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -293,26 +293,30 @@ const TipTapEditor = ({ value, onChange, placeholder }) => {
     content: value || '',
     editorProps: {
       attributes: {
-        class: 'prose max-w-none focus:outline-none min-h-[400px] p-4 bg-white tiptap-table-styles',
+        class: 'prose max-w-none focus:outline-none min-h-[300px] p-4 bg-white tiptap-table-styles',
       },
     },
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      if (onChange) {
+        onChange(editor.getHTML());
+      }
     },
   });
 
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      // Check if it's the exact same to avoid infinite loops, but Quill adds p tags so we can check length roughly or just inject if very different
-      // Since TipTap is controlled internally, it's best to only set it if it's vastly different or empty
-      if (editor.isEmpty && value) {
-        editor.commands.setContent(value);
+    if (editor && value !== undefined && value !== editor.getHTML()) {
+      // Set content if editor is empty or value was updated externally (e.g. from DB load or form reset)
+      if (editor.isEmpty || (value === '' && !editor.isEmpty)) {
+        editor.commands.setContent(value || '');
+      } else if (Math.abs((value || '').length - editor.getHTML().length) > 10) {
+        // If content is significantly different, force update
+        editor.commands.setContent(value || '');
       }
     }
   }, [value, editor]);
 
   return (
-    <div className="border rounded-md shadow-sm overflow-hidden flex flex-col w-full h-[500px]">
+    <div className={`border rounded-md shadow-sm overflow-hidden flex flex-col w-full ${className}`}>
       <MenuBar editor={editor} />
       <div className="flex-1 overflow-y-auto bg-white border-t">
         <EditorContent editor={editor} />

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 const EditCareerOptionForm = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -326,24 +325,18 @@ const EditCareerOptionForm = () => {
         <label htmlFor="description" className="block font-semibold mb-2">
           Description
         </label>
-        <ReactQuill
+        <TipTapEditor
           value={description}
           onChange={setDescription}
-          modules={modules}
-          className="border rounded"
-          required
         />
       </div>
       <div className="mb-4">
         <label htmlFor="requirement" className="block font-semibold mb-2">
           Requirement
         </label>
-        <ReactQuill
+        <TipTapEditor
           value={requirement}
           onChange={setRequirement}
-          modules={modules}
-          className="border rounded"
-          required
         />
       </div>
      

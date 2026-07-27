@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Form, Button, message, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import axios from 'axios';
 
 const PrivacyForm = () => {
@@ -227,14 +226,11 @@ const PrivacyForm = () => {
             },
           ]}
         >
-          <ReactQuill
-            theme="snow"
+          <TipTapEditor
             value={privacyPolicy}
             onChange={handleEditorChange}
-            modules={modules}
-            formats={formats}
             placeholder="Start typing your privacy policy..."
-            style={{ height: '400px', marginBottom: '50px' }}
+            className="h-[450px]"
           />
         </Form.Item>
         <Form.Item>

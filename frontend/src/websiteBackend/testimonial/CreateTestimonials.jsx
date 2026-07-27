@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -347,11 +346,9 @@ const CreateTestimonials = () => {
         <label htmlFor="testimony" className="block font-semibold mb-2">
           Testimony <span className="text-red-500">*</span>
         </label>
-        <ReactQuill
+        <TipTapEditor
           value={testimony}
           onChange={setTestimony}
-          modules={modules}
-          className="quill bg-white"
         />
       </div>
 

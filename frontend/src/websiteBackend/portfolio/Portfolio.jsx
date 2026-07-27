@@ -5,8 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import UseAnimations from "react-useanimations";
 import loading from "react-useanimations/lib/loading";
 import debounce from 'lodash.debounce';
@@ -377,20 +375,15 @@ const PortfolioTable = () => {
                                         rel="noopener noreferrer"
                                         className="text-xs text-blue-500 hover:underline inline-block mt-1"
                                       >
-                                        Visit Website â†’
+                                        Visit Website →
                                       </a>
                                     )}
                                   </div>
                                   
-                                  <div className="text-gray-700 leading-relaxed text-sm">
-                                    <ReactQuill
-                                      readOnly={true}
-                                      value={row.original.details || ''}
-                                      modules={{ toolbar: false }}
-                                      theme="bubble"
-                                      className="quill-preview-simple"
-                                    />
-                                  </div>
+                                  <div 
+                                    className="text-gray-700 leading-relaxed text-sm prose max-w-none"
+                                    dangerouslySetInnerHTML={{ __html: row.original.details || '' }}
+                                  />
                                   <p className="mt-4 text-[10px] text-gray-400 font-medium">Slug: {row.original.slug}</p>
                                 </div>
                               </div>

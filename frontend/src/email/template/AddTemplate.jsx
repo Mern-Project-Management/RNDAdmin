@@ -1,8 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAddTemplateMutation } from "@/slice/template/emailTemplate";
-import ReactQuill from "react-quill"; // Import ReactQuill
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import TipTapEditor from "@/components/TipTapEditor";
 import { useGetEmailCategoriesQuery } from "@/slice/emailCategory/emailCategory";
 
 const AddTemplateForm = () => {
@@ -10,9 +9,12 @@ const AddTemplateForm = () => {
     register,
     handleSubmit,
     reset,
-    setValue, // To set the value of the Quill editor
+    setValue,
+    watch,
     formState: { errors },
   } = useForm();
+
+  const bodyValue = watch("body");
 
   const [addTemplate, { isLoading }] = useAddTemplateMutation();
 
@@ -28,9 +30,9 @@ const AddTemplateForm = () => {
     }
   };
 
-  // Handle changes in the Quill editor
+  // Handle changes in the TipTap editor
   const handleEditorChange = (value) => {
-    setValue("body", value); // Set the Quill editor value into the form state
+    setValue("body", value);
   };
 
   return (
@@ -101,16 +103,15 @@ const AddTemplateForm = () => {
           {errors.toEmail && <p className="text-red-500 text-sm">{errors.toEmail.message}</p>}
         </div>
 
-        {/* Body Field (ReactQuill) */}
+        {/* Body Field (TipTapEditor) */}
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="body">
             Body
           </label>
-          <ReactQuill
-            value="" // Set the value dynamically
-            onChange={handleEditorChange} // Update the form state on change
+          <TipTapEditor
+            value={bodyValue || ""}
+            onChange={handleEditorChange}
             placeholder="Enter template body"
-            className="w-full border border-gray-300 rounded px-3 py-2"
           />
           {errors.body && <p className="text-red-500 text-sm">{errors.body.message}</p>}
         </div>

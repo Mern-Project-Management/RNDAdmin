@@ -1,6 +1,5 @@
-﻿import React, { useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useEffect, useState } from 'react';
+import TipTapEditor from '@/components/TipTapEditor';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -126,12 +125,11 @@ const EmailForm = ({ selectedSupplier, supplier, email, name,type, chemicalName 
               onChange={(e) => setSubject(e.target.value)}
             />
             <div className="max-h-[300px] overflow-y-auto">
-              <ReactQuill
+              <TipTapEditor
                 value={message}
                 onChange={setMessage}
                 placeholder="Write your message here..."
-                theme="snow"
-                className="bg-white rounded-lg"
+                className="h-[250px]"
               />
             </div>
             <Button

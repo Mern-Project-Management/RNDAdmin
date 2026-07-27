@@ -3,9 +3,7 @@ import { useFieldArray, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import TipTapEditor from "@/components/TipTapEditor";
 
 const ImageUploadForm = ({ control, setValue }) => {
   const { fields, append, remove, update } = useFieldArray({
@@ -119,18 +117,11 @@ const ImageUploadForm = ({ control, setValue }) => {
           control={control}
           defaultValue=""
           render={({ field: { onChange, value } }) => (
-            <div className="quill-container">
-              <ReactQuill 
-                id="description"
-                theme="snow"
-                value={value}
-                onChange={onChange}
-                className="bg-white"
-                modules={quillModules}
-                formats={quillFormats}
-                placeholder="Enter detailed description..."
-              />
-            </div>
+            <TipTapEditor
+              value={value}
+              onChange={onChange}
+              placeholder="Enter detailed description..."
+            />
           )}
         />
         <p className="text-xs text-gray-500 mt-1">

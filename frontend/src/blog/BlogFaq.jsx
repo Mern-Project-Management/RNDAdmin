@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { Table, Button, Input, Space, Popconfirm, message, Card, Typography } from 'antd';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 const { Title } = Typography;
 
@@ -156,13 +155,10 @@ const BlogFaq = () => {
                     </div>
                     <div>
                         <label className="block text-gray-700 font-bold mb-2">Answer</label>
-                        <ReactQuill
-                            theme="snow"
+                        <TipTapEditor
                             value={answer}
                             onChange={setAnswer}
-                            modules={modules}
-                            className="bg-white rounded"
-                            style={{ height: '200px', marginBottom: '50px' }}
+                            className="h-[250px]"
                         />
                     </div>
                     <div className="flex gap-4 pt-4">

@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Breadcrumb, Button, Form, Input, message, Select, Spin, Switch } from 'antd';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { useCreatePolicyMutation, useGetPolicyByIdQuery, useUpdatePolicyMutation } from '@/slice/policy/policy';
 
 const POLICY_OPTIONS = [
@@ -150,14 +149,11 @@ const PolicyForm = () => {
             },
           ]}
         >
-          <ReactQuill
-            theme="snow"
+          <TipTapEditor
             value={content}
             onChange={handleEditorChange}
-            modules={modules}
-            formats={formats}
             placeholder="Start typing..."
-            style={{ height: '400px', marginBottom: '50px' }}
+            className="h-[450px]"
           />
         </Form.Item>
 

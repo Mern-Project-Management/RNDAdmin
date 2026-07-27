@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -225,20 +224,16 @@ const CareerOptionForm = () => {
 
       <div className="mb-8 mt-4">
         <label htmlFor="description" className="block font-semibold mb-2">Description</label>
-        <ReactQuill
+        <TipTapEditor
           value={description}
           onChange={setDescription}
-          modules={modules}
-          className="quill"
         />
       </div>
       <div className="mb-4">
         <label htmlFor="requirement" className="block font-semibold mb-2">Requirement</label>
-        <ReactQuill
+        <TipTapEditor
           value={requirement}
           onChange={setRequirement}
-          modules={modules}
-          className="quill"
         />
       </div>
      

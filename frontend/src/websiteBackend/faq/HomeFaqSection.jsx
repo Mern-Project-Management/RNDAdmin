@@ -3,8 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from "react-icons/fa";
 import UseAnimations from "react-useanimations";
 import loading from "react-useanimations/lib/loading";
@@ -125,11 +124,9 @@ const HomeFaqSection = () => {
 
           <div className="mb-8">
             <label htmlFor="answer" className="block font-semibold mb-2">Answer</label>
-            <ReactQuill
+            <TipTapEditor
               value={answer}
               onChange={setAnswer}
-              modules={modules}
-              className="quill focus:border-blue-500"
             />
           </div>
 

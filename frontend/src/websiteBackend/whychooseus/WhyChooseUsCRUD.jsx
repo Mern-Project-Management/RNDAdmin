@@ -8,8 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 // Define modules
 const modules = {
@@ -591,7 +590,7 @@ const WhyChooseUsCRUD = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Details
                   </label>
-                  <ReactQuill
+                  <TipTapEditor
                     value={formData.details}
                     onChange={(content) => {
                       handleInputChange({
@@ -601,10 +600,6 @@ const WhyChooseUsCRUD = () => {
                         },
                       });
                     }}
-                    theme="snow"
-                    className="bg-white rounded-lg"
-                      modules={modules}
-  formats={formats}
                   />
                 </div>
 

@@ -6,8 +6,6 @@ import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from 'react-modal';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import UseAnimations from "react-useanimations";
 import loading from "react-useanimations/lib/loading";
 
@@ -335,15 +333,10 @@ const TestimonialsTable = () => {
                                       <div className="absolute -top-6 -left-2 text-[#7a6b00]/10 text-8xl font-serif select-none italic pointer-events-none">
                                         &ldquo;
                                       </div>
-                                      <div className="relative z-10 italic text-gray-700 leading-relaxed font-serif">
-                                        <ReactQuill
-                                          readOnly={true}
-                                          value={row.original.testimony}
-                                          modules={{ toolbar: false }}
-                                          theme="bubble"
-                                          className="quill-preview text-lg"
-                                        />
-                                      </div>
+                                      <div 
+                                         className="relative z-10 italic text-gray-700 leading-relaxed font-serif prose max-w-none text-lg"
+                                         dangerouslySetInnerHTML={{ __html: row.original.testimony }}
+                                      />
                                     </div>
                                   </div>
                                 </div>

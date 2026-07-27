@@ -9,8 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UseAnimations from "react-useanimations";
 import loading from "react-useanimations/lib/loading";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 const CategoryTable = () => {
   const [categories, setCategories] = useState([]);
@@ -287,11 +286,10 @@ const CategoryTable = () => {
         </div>
           <div className="mb-6">
             <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">Detail</label>
-            <ReactQuill
-              theme="snow"
+            <TipTapEditor
               value={detail}
               onChange={setDetail}
-              className="w-full h-40 mb-12"
+              className="h-[300px]"
             />
           </div>
         <button

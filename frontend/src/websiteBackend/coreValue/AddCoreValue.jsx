@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, message, Upload, Breadcrumb } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCreateCoreValueMutation } from '../../slice/coreValue/coreValue.js';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { UploadOutlined, HomeOutlined } from '@ant-design/icons';
 
 const AddCoreValue = () => {
@@ -90,7 +89,7 @@ const AddCoreValue = () => {
           </Form.Item>
 
           <Form.Item name="details" label="details">
-            <ReactQuill theme="snow" />
+            <TipTapEditor />
           </Form.Item>
 
           <Form.Item>

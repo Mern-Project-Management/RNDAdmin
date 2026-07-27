@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -486,8 +485,7 @@ const ServiceSec1Form = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Details
               </label>
-              <ReactQuill
-                theme='snow'
+              <TipTapEditor
                 value={formData.details}
                 onChange={(value) =>
                   setFormData((prev) => ({
@@ -495,8 +493,6 @@ const ServiceSec1Form = () => {
                     details: value,
                   }))
                 }
-                modules={modules}
-                formats={formats}
                 placeholder="Enter detailed description"
                 className="bg-white rounded-lg"
               />

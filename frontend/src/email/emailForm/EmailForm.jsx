@@ -12,8 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
-import 'react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill';
+import TipTapEditor from '@/components/TipTapEditor';
 import { Upload, X } from 'lucide-react';
 import { useGetAllTemplatesQuery } from '@/slice/template/emailTemplate';
 import { useSendEmailMutation } from '@/slice/smtpSlice/email';
@@ -279,10 +278,9 @@ export default function EmailForm({ defaultTo = "", onSuccess }) {
             <label htmlFor="body" className="text-sm font-medium">
               Body*
             </label>
-            <ReactQuill
+            <TipTapEditor
               value={body || ''}
               onChange={(content) => setValue('body', content)}
-              className="bg-white"
             />
             {errors.body && <p className="text-sm text-red-500">{errors.body.message}</p>}
           </div>

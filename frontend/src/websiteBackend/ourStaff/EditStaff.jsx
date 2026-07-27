@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 
 const EditStaff = () => {
   const [S_id, setS_id] = useState("");
@@ -224,11 +223,9 @@ const EditStaff = () => {
         <label className="block font-semibold mb-2">
           Details
         </label>
-        <ReactQuill
-          theme="snow"
+        <TipTapEditor
           value={details}
           onChange={setDetails}
-          modules={modules}
         />
       </div>
       <div className="mb-4">

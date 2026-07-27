@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import TipTapEditor from "@/components/TipTapEditor";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -327,14 +326,9 @@ const ServiceCategoryForm = () => {
           <label className="block text-gray-700 font-bold mb-2 uppercase font-serif">
             Description
           </label>
-          <ReactQuill
+          <TipTapEditor
             value={description}
-            onChange={setDescription} // Directly update heading
-            modules={modules}
-            className="quill"
-            maxLength={500}
-            minLength={10}
-
+            onChange={setDescription}
           />
         </div>
         <div className="mb-4">

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, message, Upload, Breadcrumb } from 'antd';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useGetCoreValueByIdQuery, useUpdateCoreValueMutation } from '../../slice/coreValue/coreValue.js';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TipTapEditor from '@/components/TipTapEditor';
 import { UploadOutlined, HomeOutlined } from '@ant-design/icons';
 
 const EditCoreValue = () => {
@@ -139,7 +138,7 @@ const EditCoreValue = () => {
                         label="details"
                         rules={[{ message: 'Please input details!' }]}
                     >
-                        <ReactQuill theme="snow" />
+                        <TipTapEditor />
                     </Form.Item>
 
 

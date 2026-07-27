@@ -1,7 +1,5 @@
 import React from 'react';
 import { FaTimes } from "react-icons/fa";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 
 const FaqModal = ({ isOpen, onRequestClose, selectedFAQ }) => {
   return (
@@ -19,12 +17,9 @@ const FaqModal = ({ isOpen, onRequestClose, selectedFAQ }) => {
             </div>
             <div className="mt-2">
               <p className="mr-2 font-semibold font-serif">Answer:</p>
-              <ReactQuill
-                readOnly={true}
-                value={selectedFAQ.answer}
-                modules={{ toolbar: false }}
-                theme="bubble"
-                className="quill"
+              <div 
+                className="quill prose max-w-none text-sm"
+                dangerouslySetInnerHTML={{ __html: selectedFAQ.answer || '' }}
               />
             </div>
           </div>
