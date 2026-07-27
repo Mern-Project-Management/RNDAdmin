@@ -20,7 +20,10 @@ router.post('/track-event', async (req, res) => {
       metadata
     } = req.body;
 
-    const ipAddress = req.body.ipAddress || req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+    let ipAddress = req.body.ipAddress;
+    if (!ipAddress || ipAddress === 'pending' || ipAddress === 'unknown') {
+      ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || req.ip || '127.0.0.1';
+    }
 
     // Validate required field
     if (!eventType) {
@@ -48,6 +51,9 @@ router.post('/track-event', async (req, res) => {
       // Increment repetition count for existing event
       existingEvent.repetitionCount += 1;
       existingEvent.timestamp = new Date(); // Update timestamp
+      if (ipAddress && ipAddress !== 'pending' && ipAddress !== 'unknown') {
+        existingEvent.ipAddress = ipAddress;
+      }
       await existingEvent.save();
 
       return res.json({
@@ -118,32 +124,36 @@ router.get('/analytics', async (req, res) => {
 
     const events = await ClickEvent.find(query).sort({ timestamp: -1 });
 
+    const validIps = events
+      .map(e => e.ipAddress)
+      .filter(ip => ip && ip !== 'unknown' && ip !== 'pending');
+
     const analytics = {
       totalEvents: events.length,
+      totalClicks: events.reduce((sum, e) => sum + (e.repetitionCount || 1), 0),
       eventsByType: {},
       eventsByPage: {},
       eventsByButton: {},
-      // productViews: {},
       uniqueSessions: new Set(events.map(e => e.sessionId)).size,
-      uniqueUsers: new Set(events.map(e => e.userId)).size
+      uniqueUsers: new Set(events.map(e => e.userId)).size,
+      uniqueVisitors: new Set(validIps).size
     };
 
     events.forEach(event => {
+      const count = event.repetitionCount || 1;
+
       // By type
-      analytics.eventsByType[event.eventType] = (analytics.eventsByType[event.eventType] || 0) + 1;
+      analytics.eventsByType[event.eventType] = (analytics.eventsByType[event.eventType] || 0) + count;
 
       // By page
-      analytics.eventsByPage[event.page] = (analytics.eventsByPage[event.page] || 0) + 1;
+      if (event.page) {
+        analytics.eventsByPage[event.page] = (analytics.eventsByPage[event.page] || 0) + count;
+      }
 
       // By button
       if (event.buttonName) {
-        analytics.eventsByButton[event.buttonName] = (analytics.eventsByButton[event.buttonName] || 0) + 1;
+        analytics.eventsByButton[event.buttonName] = (analytics.eventsByButton[event.buttonName] || 0) + count;
       }
-
-      // By product
-      // if (event.productName) {
-      //   analytics.productViews[event.productName] = (analytics.productViews[event.productName] || 0) + 1;
-      // }
     });
 
     res.json(analytics);

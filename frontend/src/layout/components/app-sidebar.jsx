@@ -68,6 +68,7 @@ const menuData = [
     icon: Search,
     children: [
       { title: "Pages / Meta Tags", icon: KeyRound, url: "/meta-table" },
+      { title: "Event Analytics", icon: Activity, url: "/tracking" },
       { title: "Global Settings", icon: Settings, url: "/global-settings" },
       { title: "Redirects", icon: ArrowLeftRightIcon, url: "/redirects" },
       { title: "Audit Reports", icon: List, url: "/audit-reports" },
@@ -85,11 +86,6 @@ const menuData = [
     title: "Website",
     icon: Globe,
     children: [
-      {
-        title: "Tracking Info",
-        icon: Activity,
-        url: "/tracking",
-      },
       {
         title: "Logo", icon: Image,
         children: [
