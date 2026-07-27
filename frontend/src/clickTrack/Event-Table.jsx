@@ -402,15 +402,15 @@ export default function EventTable({ data: initialRawData }) {
       {/* MATRIX TABLE VIEW */}
       {viewMode === "matrix" && (
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-auto max-h-[68vh] relative">
             <table className="w-full border-collapse text-sm">
-              <thead>
+              <thead className="sticky top-0 z-20 shadow-xs">
                 
                 {/* Row 1: Header Category Groups */}
                 <tr className="border-b border-gray-200 text-xs font-bold text-gray-700 uppercase tracking-wider">
                   
                   {/* Page Info */}
-                  <th rowSpan={2} className="px-6 py-4 text-left bg-gray-50 border-r border-gray-200 min-w-[220px]">
+                  <th rowSpan={2} className="px-6 py-4 text-left bg-gray-100 border-r border-gray-200 min-w-[220px] sticky top-0 z-30 shadow-xs">
                     <button
                       onClick={() => handleSort("page")}
                       className="flex items-center gap-1 font-bold text-gray-800 hover:text-indigo-600 transition-colors"
@@ -423,7 +423,7 @@ export default function EventTable({ data: initialRawData }) {
                   </th>
 
                   {/* Total Clicks */}
-                  <th rowSpan={2} className="px-4 py-4 text-center bg-gray-50 border-r border-gray-200 min-w-[90px]">
+                  <th rowSpan={2} className="px-4 py-4 text-center bg-gray-100 border-r border-gray-200 min-w-[90px] sticky top-0 z-30 shadow-xs">
                     <button
                       onClick={() => handleSort("totalClicks")}
                       className="flex items-center justify-center gap-1 font-bold text-red-600 hover:text-red-700 transition-colors"
@@ -436,48 +436,48 @@ export default function EventTable({ data: initialRawData }) {
                   </th>
 
                   {/* Common Actions Group (All Pages) */}
-                  <th colSpan={4} className="px-4 py-2.5 text-center bg-blue-50/80 border-r border-gray-200 text-blue-800">
+                  <th colSpan={4} className="px-4 py-2.5 text-center bg-blue-100 border-r border-gray-200 text-blue-900 sticky top-0 z-20">
                     Common Actions (All Pages)
                   </th>
 
                   {/* Blog Actions Group */}
-                  <th colSpan={2} className="px-4 py-2.5 text-center bg-amber-50/80 border-r border-gray-200 text-amber-800">
+                  <th colSpan={2} className="px-4 py-2.5 text-center bg-amber-100 border-r border-gray-200 text-amber-900 sticky top-0 z-20">
                     Blog / Content
                   </th>
 
                   {/* Career / HR Group */}
-                  <th colSpan={3} className="px-4 py-2.5 text-center bg-purple-50/80 border-r border-gray-200 text-purple-800">
+                  <th colSpan={3} className="px-4 py-2.5 text-center bg-purple-100 border-r border-gray-200 text-purple-900 sticky top-0 z-20">
                     Career / HR Actions
                   </th>
 
                   {/* Contact Us Group */}
-                  <th colSpan={3} className="px-4 py-2.5 text-center bg-teal-50/80 text-teal-800">
+                  <th colSpan={3} className="px-4 py-2.5 text-center bg-teal-100 text-teal-900 sticky top-0 z-20">
                     Contact Us Page
                   </th>
                 </tr>
 
                 {/* Row 2: Sub-column Titles */}
-                <tr className="border-b border-gray-200 text-xs font-semibold text-gray-500">
+                <tr className="border-b border-gray-200 text-xs font-semibold text-gray-700">
                   
                   {/* Common Actions Sub-columns */}
-                  <th className="px-3 py-2 text-center bg-blue-50/30 border-r border-gray-100">Footer Email</th>
-                  <th className="px-3 py-2 text-center bg-blue-50/30 border-r border-gray-100">Footer Phone</th>
-                  <th className="px-3 py-2 text-center bg-blue-50/30 border-r border-gray-100">Request Call</th>
-                  <th className="px-3 py-2 text-center bg-blue-50/30 border-r border-gray-200">CTA Contact</th>
+                  <th className="px-3 py-2 text-center bg-blue-50 border-r border-gray-200 sticky top-[37px] z-20">Footer Email</th>
+                  <th className="px-3 py-2 text-center bg-blue-50 border-r border-gray-200 sticky top-[37px] z-20">Footer Phone</th>
+                  <th className="px-3 py-2 text-center bg-blue-50 border-r border-gray-200 sticky top-[37px] z-20">Request Call</th>
+                  <th className="px-3 py-2 text-center bg-blue-50 border-r border-gray-200 sticky top-[37px] z-20">CTA Contact</th>
 
                   {/* Blog Sub-columns */}
-                  <th className="px-3 py-2 text-center bg-amber-50/30 border-r border-gray-100">Callback Form</th>
-                  <th className="px-3 py-2 text-center bg-amber-50/30 border-r border-gray-200">Read More</th>
+                  <th className="px-3 py-2 text-center bg-amber-50 border-r border-gray-200 sticky top-[37px] z-20">Callback Form</th>
+                  <th className="px-3 py-2 text-center bg-amber-50 border-r border-gray-200 sticky top-[37px] z-20">Read More</th>
 
                   {/* Career Sub-columns */}
-                  <th className="px-3 py-2 text-center bg-purple-50/30 border-r border-gray-100">HR Email</th>
-                  <th className="px-3 py-2 text-center bg-purple-50/30 border-r border-gray-100">HR Phone</th>
-                  <th className="px-3 py-2 text-center bg-purple-50/30 border-r border-gray-200">Career Apply</th>
+                  <th className="px-3 py-2 text-center bg-purple-50 border-r border-gray-200 sticky top-[37px] z-20">HR Email</th>
+                  <th className="px-3 py-2 text-center bg-purple-50 border-r border-gray-200 sticky top-[37px] z-20">HR Phone</th>
+                  <th className="px-3 py-2 text-center bg-purple-50 border-r border-gray-200 sticky top-[37px] z-20">Career Apply</th>
 
                   {/* Contact Page Sub-columns */}
-                  <th className="px-3 py-2 text-center bg-teal-50/30 border-r border-gray-100">Contact Email</th>
-                  <th className="px-3 py-2 text-center bg-teal-50/30 border-r border-gray-100">Contact Phone</th>
-                  <th className="px-3 py-2 text-center bg-teal-50/30">Contact Form</th>
+                  <th className="px-3 py-2 text-center bg-teal-50 border-r border-gray-200 sticky top-[37px] z-20">Contact Email</th>
+                  <th className="px-3 py-2 text-center bg-teal-50 border-r border-gray-200 sticky top-[37px] z-20">Contact Phone</th>
+                  <th className="px-3 py-2 text-center bg-teal-50 sticky top-[37px] z-20">Contact Form</th>
                 </tr>
               </thead>
 
